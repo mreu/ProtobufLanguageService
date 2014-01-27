@@ -1,0 +1,23 @@
+message TestRequest {
+ required string t1 = 1;
+ optional string t2 = 2;
+ repeated string t3 = 3;
+
+ extensions 1000 to 1234, 5555 to 6000;
+}
+
+message TestResponse {
+  required bool ack = 1;
+  ;
+}
+
+extend TestRequest {
+  optional string  my_option = 1234;
+}
+
+ service TestService
+ {
+ //option (my_option) = "option";
+ rpc Test (TestRequest) returns (TestResponse) ;
+ }
+

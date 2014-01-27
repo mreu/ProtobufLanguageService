@@ -1,0 +1,12 @@
+message test3 { // this is a comment
+ required string t1 = 1;
+ optional string t2 = 2;
+ repeated string t3 = 3;
+}
+
+import "Test2.proto";
+
+message test31 {
+  required test2 t1 = 1;
+}
+

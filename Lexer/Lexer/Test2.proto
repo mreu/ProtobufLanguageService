@@ -1,0 +1,5 @@
+message test2 { // this is a comment
+ required string t1 = 1;
+ optional string t2 = 2;
+ repeated string t3 = 3;
+}
