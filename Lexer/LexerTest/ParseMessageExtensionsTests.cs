@@ -64,6 +64,20 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
+    public void MessageField_OK05()
+    {
+      const string text = "  extensions 0x100c to 0x199c;";
+
+      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+
+      Assert.IsTrue(lex.ParseMessageExtensions());
+
+      Assert.AreEqual(4, lex.Tokens.Count);
+      Assert.AreEqual(0, lex.Errors.Count);
+      Assert.AreEqual(5, lex.ix);
+    }
+
+    [TestMethod]
     public void MessageField_NOK01()
     {
       const string text = "  extensions 10"; // incomplete statement
@@ -187,6 +201,34 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
       Assert.AreEqual(4, lex.ix);
+    }
+
+    [TestMethod]
+    public void MessageField_NOK10()
+    {
+      const string text = "  extensions 100c to 113c;"; // incomplete statement
+
+      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+
+      Assert.IsFalse(lex.ParseMessageExtensions());
+
+      Assert.AreEqual(1, lex.Tokens.Count);
+      Assert.AreEqual(1, lex.Errors.Count);
+      Assert.AreEqual(1, lex.ix);
+    }
+
+    [TestMethod]
+    public void MessageField_NOK11()
+    {
+      const string text = "  extensions 0x100x to 113c;"; // incomplete statement
+
+      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+
+      Assert.IsFalse(lex.ParseMessageExtensions());
+
+      Assert.AreEqual(1, lex.Tokens.Count);
+      Assert.AreEqual(1, lex.Errors.Count);
+      Assert.AreEqual(1, lex.ix);
     }
   }
 }

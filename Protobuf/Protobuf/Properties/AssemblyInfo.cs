@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Michael Reukauff")]
 [assembly: AssemblyProduct("Protobuf Language Service")]
-[assembly: AssemblyCopyright("(c) 2013 Michael Reukauff")]
+[assembly: AssemblyCopyright("Copyright © 2014 Michael Reukauff")]
 [assembly: AssemblyTrademark("All rights reserved.")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("0.6.*")]
-[assembly: AssemblyFileVersion("0.6.0.0")]
+[assembly: AssemblyVersion("1.1.*")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

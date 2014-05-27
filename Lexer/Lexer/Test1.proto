@@ -3,16 +3,15 @@ message TestRequest {
  optional string t2 = 2;
  repeated string t3 = 3;
 
- extensions 1000 to 1234, 5555 to 6000;
+ extensions 0x1000 to 0x1234, 5555 to 6000;
 }
 
 message TestResponse {
-  required bool ack = 1;
-  ;
+  required bool ack = 0x234c;
 }
 
 extend TestRequest {
-  optional string  my_option = 1234;
+  optional string  my_option = 0x1234;
 }
 
  service TestService

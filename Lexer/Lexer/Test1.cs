@@ -49,7 +49,7 @@ namespace MichaelReukauff.Lexer
     public TestResponse() {}
     
     private bool _ack;
-    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"ack", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(9036, IsRequired = true, Name=@"ack", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool ack
     {
       get { return _ack; }

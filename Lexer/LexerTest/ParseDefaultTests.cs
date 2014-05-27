@@ -179,6 +179,27 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
+    public void Default_OK09()
+    {
+      const string text = "default=0x123c]";
+
+      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+
+      Field field = new Field { fieldType = FieldType.type_uint64, hasOption = false };
+
+      Assert.IsTrue(lex.ParseDefault(field));
+
+      Assert.AreEqual(2, lex.Tokens.Count);
+      Assert.AreEqual(0, lex.Errors.Count);
+      Assert.AreEqual(0, lex.Tokens[0].Position);
+      Assert.AreEqual(7, lex.Tokens[0].Length);
+      Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
+      Assert.AreEqual(8, lex.Tokens[1].Position);
+      Assert.AreEqual(6, lex.Tokens[1].Length);
+      Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
+    }
+
+    [TestMethod]
     public void Default_NOK01()
     {
       const string text = "default=-1234a]";
@@ -442,6 +463,52 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
       Assert.AreEqual(8, lex.Errors[0].Position);
       Assert.AreEqual(2, lex.Errors[0].Length);
+    }
+
+    [TestMethod]
+    public void Default_NOK13()
+    {
+      const string text = "default=0x12x";
+
+      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+
+      Field field = new Field { fieldType = FieldType.type_uint64, hasOption = false };
+
+      Assert.IsTrue(lex.ParseDefault(field));
+
+      Assert.AreEqual(2, lex.Tokens.Count);
+      Assert.AreEqual(1, lex.Errors.Count);
+      Assert.AreEqual(0, lex.Tokens[0].Position);
+      Assert.AreEqual(7, lex.Tokens[0].Length);
+      Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
+      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(8, lex.Tokens[1].Position);
+      Assert.AreEqual(5, lex.Tokens[1].Length);
+      Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
+      Assert.AreEqual(0, lex.line);
+    }
+
+    [TestMethod]
+    public void Default_NOK14()
+    {
+      const string text = "default=0x12x";
+
+      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+
+      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+
+      Assert.IsTrue(lex.ParseDefault(field));
+
+      Assert.AreEqual(2, lex.Tokens.Count);
+      Assert.AreEqual(1, lex.Errors.Count);
+      Assert.AreEqual(0, lex.Tokens[0].Position);
+      Assert.AreEqual(7, lex.Tokens[0].Length);
+      Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
+      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(8, lex.Tokens[1].Position);
+      Assert.AreEqual(5, lex.Tokens[1].Length);
+      Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
+      Assert.AreEqual(0, lex.line);
     }
   }
 }

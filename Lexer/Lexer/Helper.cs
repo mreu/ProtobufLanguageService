@@ -145,7 +145,13 @@ namespace MichaelReukauff.Lexer
       long result;
 
       if (!Int64.TryParse(text, NumberStyles.AllowLeadingSign, new CultureInfo("en-US"), out result))
-        return false;
+      {
+        if (!text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+          return false;
+
+        if (!Int64.TryParse(text.Substring(2), NumberStyles.AllowHexSpecifier, new CultureInfo("en-US"), out result))
+          return false;
+      }
 
       if (result < 0)
         return false;
@@ -164,13 +170,20 @@ namespace MichaelReukauff.Lexer
       long result;
 
       if (!Int64.TryParse(text, NumberStyles.AllowLeadingSign, new CultureInfo("en-US"), out result))
-        return false;
+      {
+        if (!text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+          return false;
+
+        if (!Int64.TryParse(text.Substring(2), NumberStyles.AllowHexSpecifier, new CultureInfo("en-US"), out result))
+          return false;
+      }
 
       return result >= 0;
     }
 
     /// <summary>
     /// check if the given text is an integer (64 bit)
+    /// can be a decimal or an hexadecimal value
     /// </summary>
     /// <param name="text">The text to check</param>
     /// <returns>True if it is an integer otherwise false</returns>
@@ -178,7 +191,13 @@ namespace MichaelReukauff.Lexer
     {
       long result;
 
-      return Int64.TryParse(text, NumberStyles.AllowLeadingSign, new CultureInfo("en-US"), out result);
+      if (Int64.TryParse(text, NumberStyles.AllowLeadingSign, new CultureInfo("en-US"), out result))
+        return true;
+
+      if (!text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+        return false;
+
+      return Int64.TryParse(text.Substring(2), NumberStyles.AllowHexSpecifier, new CultureInfo("en-US"), out result);
     }
 
     /// <summary>

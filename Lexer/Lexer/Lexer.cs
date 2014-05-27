@@ -1408,32 +1408,27 @@
       return new Tuple<string, bool>(number, false);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddNewToken(CodeType codeType)
     {
       Tokens.Add(new Token(line, matches[ix], codeType));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddNewToken(Token token)
     {
       Tokens.Add(token);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddNewToken(int offset, int length, string text, CodeType codeType)
     {
       Tokens.Add(new Token(line, offset, length, text, codeType));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddNewError(string message, CodeType codeType = CodeType.Text)
     {
       if (Errors.All(x => x.Position != matches[ix].Index))
         Errors.Add(new Error(line, matches[ix], codeType, message));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddNewError(int offset, int length, string message, string text = "", CodeType codeType = CodeType.Text)
     {
       if (Errors.All(x => x.Position != offset))
@@ -1445,7 +1440,6 @@
     /// </summary>
     public string Word
     {
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
       get
       {
         return matches[ix].Value;

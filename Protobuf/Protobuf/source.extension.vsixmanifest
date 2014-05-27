@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="5d89ec18-2175-4dc0-861a-9718edfa0be1" Version="1.0.0" Language="en-US" Publisher="Michael Reukauff" />
+    <Identity Id="5d89ec18-2175-4dc0-861a-9718edfa0be1" Version="1.1.0" Language="en-US" Publisher="Michael Reukauff" />
     <DisplayName>Protobuf Language Service</DisplayName>
     <Description xml:space="preserve">Protobuf Editor with Intellisense and Syntax Coloring for Googles Protobuf syntax.</Description>
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/4bc0f38c-b058-4e05-ae38-155e053c19c5</MoreInfo>
