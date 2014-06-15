@@ -24,14 +24,14 @@ namespace MichaelReukauff.Protobuf
 
     private SnapshotPoint? CurrentChar { get; set; }
 
-    private readonly Dictionary<char, char> m_braceList;
+    private readonly Dictionary<char, char> _braceList;
 
     public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
     internal BraceMatchingTagger(ITextView view, ITextBuffer sourceBuffer)
     {
       // here the keys are the open braces, and the values are the close braces
-      m_braceList = new Dictionary<char, char> { { '{', '}' }, { '[', ']' }, { '(', ')'} };
+      _braceList = new Dictionary<char, char> { { '{', '}' }, { '[', ']' }, { '(', ')'} };
 
       View = view;
       SourceBuffer = sourceBuffer;
@@ -106,22 +106,16 @@ namespace MichaelReukauff.Protobuf
       }
 
       // get the current char and the previous char 
-      char currentText;
-      if (CurrentChar.Value.Position >= CurrentChar.Value.Snapshot.Length)
-      {
-        currentText = (currentChar - 1).GetChar();
-      }
-      else
-        currentText = currentChar.GetChar();
+      char currentText = CurrentChar.Value.Position >= CurrentChar.Value.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
 
       SnapshotPoint lastChar = currentChar == 0 ? currentChar : currentChar - 1; // if currentChar is 0 (beginning of buffer), don't move it back
       char lastText = lastChar.GetChar();
       SnapshotSpan pairSpan;
 
-      if (m_braceList.ContainsKey(currentText)) // the key is the open brace
+      if (_braceList.ContainsKey(currentText)) // the key is the open brace
       {
         char closeChar;
-        m_braceList.TryGetValue(currentText, out closeChar);
+        _braceList.TryGetValue(currentText, out closeChar);
         if (FindMatchingCloseChar(currentChar, currentText, closeChar, View.TextViewLines.Count, out pairSpan))
         {
           yield return new TagSpan<TextMarkerTag>(new SnapshotSpan(currentChar, 1), new BraceMatchingTag());
@@ -129,9 +123,9 @@ namespace MichaelReukauff.Protobuf
         }
       }
       else
-        if (m_braceList.ContainsValue(lastText)) // the value is the close brace, which is the *previous* character
+        if (_braceList.ContainsValue(lastText)) // the value is the close brace, which is the *previous* character
         {
-          var open = from n in m_braceList
+          var open = from n in _braceList
                      where n.Value.Equals(lastText)
                      select n.Key;
 

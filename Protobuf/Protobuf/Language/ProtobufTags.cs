@@ -8,7 +8,7 @@
 
 namespace MichaelReukauff.Protobuf
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   using Microsoft.VisualStudio.Text.Tagging;
 
@@ -17,11 +17,11 @@ namespace MichaelReukauff.Protobuf
   /// </summary>
   public class ProtobufTokenTag : ITag
   {
-    public CodeType _type { get; private set; }
+    public CodeType CodeType { get; private set; }
 
     public ProtobufTokenTag(CodeType type)
     {
-      _type = type;
+      CodeType = type;
     }
   }
 
@@ -30,12 +30,12 @@ namespace MichaelReukauff.Protobuf
   /// </summary>
   public class ProtobufErrorTag : ProtobufTokenTag
   {
-    public string _message { get; private set; }
+    public string Message { get; private set; }
 
     public ProtobufErrorTag(string message)
       : base(CodeType.Error)
     {
-      _message = message;
+      Message = message;
     }
   }
 }

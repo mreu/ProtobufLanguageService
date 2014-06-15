@@ -20,9 +20,9 @@ namespace MichaelReukauff.Protobuf
   /// </summary>
   internal static class BufferIdleEventUtil
   {
-    private static readonly object _bufferListenersKey = new object();
+    private static readonly object BufferListenersKey = new object();
 
-    private static readonly object _bufferTimerKey = new object();
+    private static readonly object BufferTimerKey = new object();
 
     #region Public interface
     public static bool AddBufferIdleEventListener(ITextBuffer buffer, EventHandler handler)
@@ -62,17 +62,17 @@ namespace MichaelReukauff.Protobuf
     #region Helpers
     private static bool TryGetBufferListeners(ITextBuffer buffer, out HashSet<EventHandler> listeners)
     {
-      return buffer.Properties.TryGetProperty(_bufferListenersKey, out listeners);
+      return buffer.Properties.TryGetProperty(BufferListenersKey, out listeners);
     }
 
     private static void ClearBufferListeners(ITextBuffer buffer)
     {
-      buffer.Properties.RemoveProperty(_bufferListenersKey);
+      buffer.Properties.RemoveProperty(BufferListenersKey);
     }
 
     private static bool TryGetBufferTimer(ITextBuffer buffer, out DispatcherTimer timer)
     {
-      return buffer.Properties.TryGetProperty(_bufferTimerKey, out timer);
+      return buffer.Properties.TryGetProperty(BufferTimerKey, out timer);
     }
 
     private static void ClearBufferTimer(ITextBuffer buffer)
@@ -84,7 +84,7 @@ namespace MichaelReukauff.Protobuf
         if (timer != null)
           timer.Stop();
 
-        buffer.Properties.RemoveProperty(_bufferTimerKey);
+        buffer.Properties.RemoveProperty(BufferTimerKey);
       }
     }
 
@@ -95,7 +95,7 @@ namespace MichaelReukauff.Protobuf
       ClearBufferListeners(buffer);
       ClearBufferTimer(buffer);
 
-      buffer.Properties.RemoveProperty(_bufferListenersKey);
+      buffer.Properties.RemoveProperty(BufferListenersKey);
     }
 
     private static HashSet<EventHandler> ConnectToBuffer(ITextBuffer buffer)
@@ -104,8 +104,8 @@ namespace MichaelReukauff.Protobuf
 
       RestartTimerForBuffer(buffer);
 
-      HashSet<EventHandler> listenersForBuffer = new HashSet<EventHandler>();
-      buffer.Properties[_bufferListenersKey] = listenersForBuffer;
+      var listenersForBuffer = new HashSet<EventHandler>();
+      buffer.Properties[BufferListenersKey] = listenersForBuffer;
 
       return listenersForBuffer;
     }
@@ -139,7 +139,7 @@ namespace MichaelReukauff.Protobuf
           }
         };
 
-        buffer.Properties[_bufferTimerKey] = timer;
+        buffer.Properties[BufferTimerKey] = timer;
       }
 
       timer.Start();
@@ -147,7 +147,7 @@ namespace MichaelReukauff.Protobuf
 
     private static void BufferChanged(object sender, TextContentChangedEventArgs e)
     {
-      ITextBuffer buffer = sender as ITextBuffer;
+      var buffer = sender as ITextBuffer;
 
       if (buffer == null)
         return;

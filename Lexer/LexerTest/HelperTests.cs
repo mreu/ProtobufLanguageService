@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   /// <summary>
   /// Summary description for UnitTest1
@@ -135,22 +135,22 @@ namespace MichaelReukauff.LexerTest
     [TestMethod]
     public void GetFieldType_Test()
     {
-      Assert.AreEqual(FieldType.type_unknown, Helper.GetFieldType("farz"));
-      Assert.AreEqual(FieldType.type_double, Helper.GetFieldType("double"));
-      Assert.AreEqual(FieldType.type_float, Helper.GetFieldType("float"));
-      Assert.AreEqual(FieldType.type_uint64, Helper.GetFieldType("uint64"));
-      Assert.AreEqual(FieldType.type_uint32, Helper.GetFieldType("uint32"));
-      Assert.AreEqual(FieldType.type_fixed64, Helper.GetFieldType("fixed64"));
-      Assert.AreEqual(FieldType.type_fixed32, Helper.GetFieldType("fixed32"));
-      Assert.AreEqual(FieldType.type_sfixed32, Helper.GetFieldType("sfixed32"));
-      Assert.AreEqual(FieldType.type_sfixed64, Helper.GetFieldType("sfixed64"));
-      Assert.AreEqual(FieldType.type_int32, Helper.GetFieldType("int32"));
-      Assert.AreEqual(FieldType.type_int64, Helper.GetFieldType("int64"));
-      Assert.AreEqual(FieldType.type_sint32, Helper.GetFieldType("sint32"));
-      Assert.AreEqual(FieldType.type_sint64, Helper.GetFieldType("sint64"));
-      Assert.AreEqual(FieldType.type_bool, Helper.GetFieldType("bool"));
-      Assert.AreEqual(FieldType.type_string, Helper.GetFieldType("string"));
-      Assert.AreEqual(FieldType.type_bytes, Helper.GetFieldType("bytes"));
+      Assert.AreEqual(FieldType.TypeUnknown, Helper.GetFieldType("farz"));
+      Assert.AreEqual(FieldType.TypeDouble, Helper.GetFieldType("double"));
+      Assert.AreEqual(FieldType.TypeFloat, Helper.GetFieldType("float"));
+      Assert.AreEqual(FieldType.TypeUint64, Helper.GetFieldType("uint64"));
+      Assert.AreEqual(FieldType.TypeUint32, Helper.GetFieldType("uint32"));
+      Assert.AreEqual(FieldType.TypeFixed64, Helper.GetFieldType("fixed64"));
+      Assert.AreEqual(FieldType.TypeFixed32, Helper.GetFieldType("fixed32"));
+      Assert.AreEqual(FieldType.TypeSfixed32, Helper.GetFieldType("sfixed32"));
+      Assert.AreEqual(FieldType.TypeSfixed64, Helper.GetFieldType("sfixed64"));
+      Assert.AreEqual(FieldType.TypeInt32, Helper.GetFieldType("int32"));
+      Assert.AreEqual(FieldType.TypeInt64, Helper.GetFieldType("int64"));
+      Assert.AreEqual(FieldType.TypeSint32, Helper.GetFieldType("sint32"));
+      Assert.AreEqual(FieldType.TypeSint64, Helper.GetFieldType("sint64"));
+      Assert.AreEqual(FieldType.TypeBool, Helper.GetFieldType("bool"));
+      Assert.AreEqual(FieldType.TypeString, Helper.GetFieldType("string"));
+      Assert.AreEqual(FieldType.TypeBytes, Helper.GetFieldType("bytes"));
     }
 
     #endregion

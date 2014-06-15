@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseDefaultTests
@@ -13,9 +12,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=1234]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -24,11 +23,11 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(0, lex.Tokens[0].Position);
       Assert.AreEqual(7, lex.Tokens[0].Length);
       Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
       Assert.AreEqual(8, lex.Tokens[1].Position);
       Assert.AreEqual(4, lex.Tokens[1].Length);
       Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
     }
 
     [TestMethod]
@@ -36,9 +35,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-1234]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -57,9 +56,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=ABCDE]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_unknown, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUnknown, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -78,9 +77,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=1234567890]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_uint64, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUint64, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -99,9 +98,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=12345]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_uint32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUint32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -120,9 +119,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=1.2345E+3]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_float, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeFloat, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -141,9 +140,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=true]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_bool, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeBool, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -162,9 +161,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=false]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_bool, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeBool, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -183,9 +182,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=0x123c]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_uint64, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUint64, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -204,9 +203,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-1234a]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -215,11 +214,11 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(0, lex.Tokens[0].Position);
       Assert.AreEqual(7, lex.Tokens[0].Length);
       Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
       Assert.AreEqual(8, lex.Tokens[1].Position);
       Assert.AreEqual(6, lex.Tokens[1].Length);
       Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
     }
 
     [TestMethod]
@@ -227,9 +226,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=\"-1234a\"]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -238,11 +237,11 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(0, lex.Tokens[0].Position);
       Assert.AreEqual(7, lex.Tokens[0].Length);
       Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
       Assert.AreEqual(8, lex.Tokens[1].Position);
       Assert.AreEqual(1, lex.Tokens[1].Length);
       Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
     }
 
     [TestMethod]
@@ -250,9 +249,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-1234a]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_string, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeString, HasOption = false };
 
       Assert.IsFalse(lex.ParseDefault(field));
 
@@ -271,9 +270,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=\"abcde\"]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_string, hasOption = true };
+      var field = new Field { FieldType = FieldType.TypeString, HasOption = true };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -295,9 +294,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_string, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeString, HasOption = false };
 
       Assert.IsFalse(lex.ParseDefault(field));
 
@@ -316,9 +315,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default 0";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_string, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeString, HasOption = false };
 
       Assert.IsFalse(lex.ParseDefault(field));
 
@@ -337,9 +336,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default =";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_string, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeString, HasOption = false };
 
       Assert.IsFalse(lex.ParseDefault(field));
 
@@ -358,9 +357,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=farz]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_bool, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeBool, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -378,9 +377,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-1234567890]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_uint64, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUint64, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -401,9 +400,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-12345]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_uint32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUint32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -424,9 +423,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-1.2345E+]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_float, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeFloat, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -447,9 +446,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=-1]";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_error, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeError, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -470,9 +469,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=0x12x";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_uint64, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUint64, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -481,11 +480,11 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(0, lex.Tokens[0].Position);
       Assert.AreEqual(7, lex.Tokens[0].Length);
       Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
       Assert.AreEqual(8, lex.Tokens[1].Position);
       Assert.AreEqual(5, lex.Tokens[1].Length);
       Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
     }
 
     [TestMethod]
@@ -493,9 +492,9 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "default=0x12x";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
       Assert.IsTrue(lex.ParseDefault(field));
 
@@ -504,11 +503,11 @@ namespace MichaelReukauff.LexerTest
       Assert.AreEqual(0, lex.Tokens[0].Position);
       Assert.AreEqual(7, lex.Tokens[0].Length);
       Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
       Assert.AreEqual(8, lex.Tokens[1].Position);
       Assert.AreEqual(5, lex.Tokens[1].Length);
       Assert.AreEqual(CodeType.Number, lex.Tokens[1].CodeType);
-      Assert.AreEqual(0, lex.line);
+      Assert.AreEqual(0, lex.Line);
     }
   }
 }

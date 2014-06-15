@@ -11,7 +11,7 @@ namespace MichaelReukauff.Protobuf
   using System;
   using System.Collections.Generic;
 
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   using Microsoft.VisualStudio.Shell;
   using Microsoft.VisualStudio.Text;
@@ -74,12 +74,12 @@ namespace MichaelReukauff.Protobuf
     {
       foreach (var tagSpan in _aggregator.GetTags(spans))
       {
-        if (tagSpan.Tag._type == CodeType.Error)
+        if (tagSpan.Tag.CodeType == CodeType.Error)
         {
           var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
-          ProtobufErrorTag tag = tagSpan.Tag as ProtobufErrorTag;
+          var tag = tagSpan.Tag as ProtobufErrorTag;
           if (tag != null)
-            yield return new TagSpan<ErrorTag>(tagSpans[0], new ErrorTag("error", tag._message));
+            yield return new TagSpan<ErrorTag>(tagSpans[0], new ErrorTag("error", tag.Message));
         }
       }
     }
@@ -95,16 +95,16 @@ namespace MichaelReukauff.Protobuf
     void ReparseFile(object sender, EventArgs args)
     {
       ITextSnapshot snapshot = _buffer.CurrentSnapshot;
-      NormalizedSnapshotSpanCollection spans = new NormalizedSnapshotSpanCollection(new SnapshotSpan(snapshot, 0, snapshot.Length));
+      var spans = new NormalizedSnapshotSpanCollection(new SnapshotSpan(snapshot, 0, snapshot.Length));
 
       _errorProvider.Tasks.Clear();
 
       foreach (var tagSpan in _aggregator.GetTags(spans))
       {
-        if (tagSpan.Tag._type == CodeType.Error)
+        if (tagSpan.Tag.CodeType == CodeType.Error)
         {
           var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
-          ProtobufErrorTag tag = tagSpan.Tag as ProtobufErrorTag;
+          var tag = tagSpan.Tag as ProtobufErrorTag;
           AddErrorTask(tagSpans[0], tag);
         }
       }
@@ -117,11 +117,11 @@ namespace MichaelReukauff.Protobuf
     {
       if (_errorProvider != null)
       {
-        ErrorTask task = new ErrorTask { CanDelete = true };
+        var task = new ErrorTask { CanDelete = true };
         if (_document != null)
           task.Document = _document.FilePath;
         task.ErrorCategory = TaskErrorCategory.Error;
-        task.Text = tag._message;
+        task.Text = tag.Message;
         task.Line = span.Start.GetContainingLine().LineNumber;
         task.Column = span.Start.Position - span.Start.GetContainingLine().Start.Position;
 
@@ -136,11 +136,10 @@ namespace MichaelReukauff.Protobuf
     /// </summary>
     void task_Navigate(object sender, EventArgs e)
     {
-      ErrorTask error = sender as ErrorTask;
+      var error = sender as ErrorTask;
 
       if (error != null)
       {
-
         error.Line += 1;
         error.Column += 1;
         _errorProvider.Navigate(error, new Guid(EnvDTE.Constants.vsViewKindCode));

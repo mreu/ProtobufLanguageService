@@ -21,7 +21,7 @@ namespace MichaelReukauff.Protobuf.Outlining
   internal sealed class OutliningTaggerProvider : ITaggerProvider
   {
     /// <summary>
-    /// Implement the CreateTagger<T> method by adding an OutliningTagger to the properties of the buffer.
+    /// Implement the CreateTagger&lt;T&gt; method by adding an OutliningTagger to the properties of the buffer.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="buffer"></param>

@@ -22,7 +22,7 @@ namespace MichaelReukauff.Protobuf
   internal class QuickInfoSourceProvider : IQuickInfoSourceProvider
   {
     [Import]
-    IBufferTagAggregatorFactoryService aggService { get; set; }
+    IBufferTagAggregatorFactoryService AggService { get; set; }
 
     /// <summary>
     /// Implement TryCreateQuickInfoSource to return a new QuickInfoSource.
@@ -31,7 +31,7 @@ namespace MichaelReukauff.Protobuf
     /// <returns>The new IQuickInfoSource</returns>
     public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
     {
-      return new QuickInfoSource(textBuffer, aggService.CreateTagAggregator<ProtobufTokenTag>(textBuffer));
+      return new QuickInfoSource(textBuffer, AggService.CreateTagAggregator<ProtobufTokenTag>(textBuffer));
     }
   }
 }

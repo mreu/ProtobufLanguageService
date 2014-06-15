@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseOptionTest
@@ -12,13 +12,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option java_package = \"sakldfjhfggh.lkj l\";\r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseOption(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(11, lex.ix);
+      Assert.AreEqual(11, lex.Index);
     }
 
     [TestMethod]
@@ -26,13 +26,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option java_package = \"sakldfjhfggh.lkj l\"\r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseOption(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(10, lex.ix);
+      Assert.AreEqual(10, lex.Index);
     }
 
     [TestMethod]
@@ -40,13 +40,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option java_package = \"sakldfjhfggh.lkj l\r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseOption(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(2, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
     }
 
     [TestMethod]
@@ -54,13 +54,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option java_package = \"\r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseOption(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(2, lex.Errors.Count);
-      Assert.AreEqual(5, lex.ix);
+      Assert.AreEqual(5, lex.Index);
     }
 
     [TestMethod]
@@ -68,13 +68,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option java_package = \r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseOption(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
     }
 
     [TestMethod]
@@ -82,13 +82,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option java_package\r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseOption(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
 
     [TestMethod]
@@ -96,13 +96,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  option\r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseOption(true));
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
   }

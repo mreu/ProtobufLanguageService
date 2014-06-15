@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+using Microsoft.VisualStudio.Text.Tagging;
+
 namespace MichaelReukauff.Protobuf
 {
   using System;
@@ -33,6 +35,9 @@ namespace MichaelReukauff.Protobuf
     [Import]
     internal SVsServiceProvider ServiceProvider { get; set; }
 
+    [Import]
+    internal IBufferTagAggregatorFactoryService AggregatorFactory { get; set; }
+
     /// <summary>
     /// Implement the VsTextViewCreated method to instantiate the command handler.
     /// </summary>
@@ -43,7 +48,7 @@ namespace MichaelReukauff.Protobuf
       if (textView == null)
         return;
 
-      Func<CompletionHandler> createCommandHandler = delegate { return new CompletionHandler(textViewAdapter, textView, this); };
+      Func<CompletionHandler> createCommandHandler = () => new CompletionHandler(textViewAdapter, textView, this);
       textView.Properties.GetOrCreateSingletonProperty(createCommandHandler);
     }
   }

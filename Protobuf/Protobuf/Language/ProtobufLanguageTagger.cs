@@ -12,7 +12,7 @@ namespace MichaelReukauff.Protobuf
   using System.Collections.Generic;
   using System.Threading.Tasks;
 
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   using Microsoft.VisualStudio.Text;
   using Microsoft.VisualStudio.Text.Tagging;
@@ -21,7 +21,7 @@ namespace MichaelReukauff.Protobuf
   /// ProtobufLanguageTagger is the core parser for the protobuf 'language'. It handles continuation lines
   /// and finds both language elements and errors within the given SnapshotSpan(s)
   /// </summary>
-  internal sealed class ProtobufLanguageTagger : ITagger<ProtobufTokenTag>
+  internal sealed class ProtobufLanguageTagger : ITagger<ProtobufTokenTag>, IDisposable
   {
     readonly ITextBuffer _buffer;
 
@@ -52,10 +52,10 @@ namespace MichaelReukauff.Protobuf
     {
       Parse();
 
-      SnapshotPoint startPoint = new SnapshotPoint(snapshot, 0);
-      SnapshotPoint endPoint = new SnapshotPoint(snapshot, snapshot.Length);
-      SnapshotSpan expandedSpan = new SnapshotSpan(startPoint, endPoint);
-      SnapshotSpanEventArgs args = new SnapshotSpanEventArgs(expandedSpan);
+      var startPoint = new SnapshotPoint(snapshot, 0);
+      var endPoint = new SnapshotPoint(snapshot, snapshot.Length);
+      var expandedSpan = new SnapshotSpan(startPoint, endPoint);
+      var args = new SnapshotSpanEventArgs(expandedSpan);
       TagsChanged(this, args);
     }
 
@@ -72,7 +72,7 @@ namespace MichaelReukauff.Protobuf
       foreach (var message in _lexer.Errors)
       {
         // check the length of the new span, should not be longer than the current text
-        int length = message.Length;
+        var length = message.Length;
         if (message.Position + message.Length > _buffer.CurrentSnapshot.Length)
         {
           length = _buffer.CurrentSnapshot.Length - message.Position;
@@ -88,7 +88,7 @@ namespace MichaelReukauff.Protobuf
       foreach (var token in _lexer.Tokens)
       {
         // check the length of the new span, should not be longer than the current text
-        int length = token.Length;
+        var length = token.Length;
         if (token.Position + token.Length > _buffer.CurrentSnapshot.Length)
         {
           length = _buffer.CurrentSnapshot.Length - token.Position;
@@ -107,7 +107,6 @@ namespace MichaelReukauff.Protobuf
     /// </summary>
     private void buffer_Changed(object sender, TextContentChangedEventArgs e)
     {
-      System.Diagnostics.Debug.WriteLine("buffer_changed start");
       var temp = TagsChanged;
       if (temp != null)
       {
@@ -115,7 +114,6 @@ namespace MichaelReukauff.Protobuf
         _task = new Task(action, e.After.TextBuffer.CurrentSnapshot); // start background parsing
         _task.Start();
       }
-      System.Diagnostics.Debug.WriteLine("buffer_changed end");
     }
 
     public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
@@ -129,5 +127,12 @@ namespace MichaelReukauff.Protobuf
     {
       return _tagList;
     }
+
+    #region IDisposable
+    public void Dispose()
+    {
+      _task.Dispose();
+    }
+    #endregion IDisposable
   }
 }

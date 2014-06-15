@@ -53,7 +53,7 @@ namespace MichaelReukauff.Protobuf
       // find each span that looks like a token and look it up in the dictionary
       foreach (IMappingTagSpan<ProtobufTokenTag> curTag in _aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint)))
       {
-        if (curTag.Tag._type == CodeType.Keyword)
+        if (curTag.Tag.CodeType == CodeType.Keyword)
         {
           SnapshotSpan tagSpan = curTag.Span.GetSpans(_buffer).First();
           if (_keywords.Keys.Contains(tagSpan.GetText()))

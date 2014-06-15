@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseEnumTest
@@ -12,13 +12,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text { \r\n ABC = 1; \r\n DEF = 2; \r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseEnum(true));
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(15, lex.ix);
+      Assert.AreEqual(15, lex.Index);
     }
 
     [TestMethod]
@@ -26,13 +26,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text { \r\n option allow_alias = true; \r\n ABC = 1; \r\n DEF = 2; \r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseEnum(false));
 
       Assert.AreEqual(9, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(21, lex.ix);
+      Assert.AreEqual(21, lex.Index);
     }
 
     [TestMethod]
@@ -40,13 +40,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text { \r\n option allow_alias = true; \r\n ABC = 1 [abc=true]; \r\n DEF = 2; \r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseEnum(false));
 
       Assert.AreEqual(11, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(26, lex.ix);
+      Assert.AreEqual(26, lex.Index);
     }
 
     [TestMethod]
@@ -54,13 +54,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = 2; \r\n "; // closing bracket is missed
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(10, lex.ix);
+      Assert.AreEqual(10, lex.Index);
     }
 
     [TestMethod]
@@ -68,13 +68,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = 2;"; // closing bracket is missed
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
     }
 
     [TestMethod]
@@ -82,13 +82,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = 2";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(8, lex.ix);
+      Assert.AreEqual(8, lex.Index);
     }
 
     [TestMethod]
@@ -96,13 +96,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(7, lex.ix);
+      Assert.AreEqual(7, lex.Index);
     }
 
     [TestMethod]
@@ -110,13 +110,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(6, lex.ix);
+      Assert.AreEqual(6, lex.Index);
     }
 
     [TestMethod]
@@ -124,13 +124,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(5, lex.ix);
+      Assert.AreEqual(5, lex.Index);
     }
 
     [TestMethod]
@@ -138,13 +138,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
 
     [TestMethod]
@@ -152,13 +152,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -166,13 +166,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -180,14 +180,14 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = 2; \r\n \r\n"; // closing bracket is missed
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(11, lex.ix);
-      Assert.AreEqual(4, lex.line);
+      Assert.AreEqual(11, lex.Index);
+      Assert.AreEqual(4, lex.Line);
     }
 
     [TestMethod]
@@ -195,13 +195,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum 1text \r\n  { \r\n DEF = 2; \r\n ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -209,13 +209,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  x \r\n DEF = 2; \r\n ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
 
     [TestMethod]
@@ -223,13 +223,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF x 2; \r\n ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(6, lex.ix);
+      Assert.AreEqual(6, lex.Index);
     }
 
     [TestMethod]
@@ -237,13 +237,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = 2 x \r\n ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(8, lex.ix);
+      Assert.AreEqual(8, lex.Index);
     }
 
     [TestMethod]
@@ -251,13 +251,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text \r\n  { \r\n DEF = x; \r\n ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(true));
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(7, lex.ix);
+      Assert.AreEqual(7, lex.Index);
     }
 
     [TestMethod]
@@ -265,13 +265,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text { \r\n option allow_alias = true \r\n ABC = 1; \r\n DEF = 2; \r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(false));
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
     }
 
     [TestMethod]
@@ -279,13 +279,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text { \r\n option allow_alias = true; \r\n ABC = 1 [xxx x true]\r\n DEF = 2; \r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(false));
 
       Assert.AreEqual(8, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(15, lex.ix);
+      Assert.AreEqual(15, lex.Index);
     }
 
     [TestMethod]
@@ -293,13 +293,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  enum text { \r\n option allow_alias = true; \r\n 1ABC = 1 [xxx x true]\r\n DEF = 2; \r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseEnum(false));
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(10, lex.ix);
+      Assert.AreEqual(10, lex.Index);
     }
   }
 }

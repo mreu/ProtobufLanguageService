@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseExtendTests
@@ -12,13 +12,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo {\r\n optional int32 bar = 126;\r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseExtend());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(12, lex.ix);
+      Assert.AreEqual(12, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(9, lex.Tokens[1].Position);
@@ -47,13 +47,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -61,13 +61,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend 1Foo {\r\n optional int32 bar = 126;\r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -75,13 +75,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -89,13 +89,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo x\r\n optional int32 bar = 126;\r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -103,13 +103,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo {";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
 
     [TestMethod]
@@ -117,13 +117,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo {\r\n optional int32 bar x 126;\r\n }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(7, lex.ix);
+      Assert.AreEqual(7, lex.Index);
     }
 
     [TestMethod]
@@ -131,13 +131,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo {\r\n optional int32 bar = 126;";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(10, lex.ix);
+      Assert.AreEqual(10, lex.Index);
     }
 
     [TestMethod]
@@ -145,13 +145,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  extend Foo {\r\n optional int32 bar = 126;\r\n x";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseExtend());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(12, lex.ix);
+      Assert.AreEqual(12, lex.Index);
     }
   }
 }

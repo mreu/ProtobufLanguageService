@@ -17,24 +17,24 @@ namespace MichaelReukauff.Lexer
 
   internal enum FieldType
   {
-    type_unknown,
-    type_double,
-    type_float,
-    type_uint64,
-    type_fixed64,
-    type_fixed32,
-    type_bool,
-    type_string,
-    type_group,
-    type_bytes,
-    type_uint32,
-    type_sfixed32,
-    type_sfixed64,
-    type_int32,
-    type_int64,
-    type_sint32,
-    type_sint64,
-    type_error,  // this one is only for unit tests and should not be used outside of unit tests
+    TypeUnknown,
+    TypeDouble,
+    TypeFloat,
+    TypeUint64,
+    TypeFixed64,
+    TypeFixed32,
+    TypeBool,
+    TypeString,
+    TypeGroup,
+    TypeBytes,
+    TypeUint32,
+    TypeSfixed32,
+    TypeSfixed64,
+    TypeInt32,
+    TypeInt64,
+    TypeSint32,
+    TypeSint64,
+    TypeError,  // this one is only for unit tests and should not be used outside of unit tests
 
   }
 
@@ -61,7 +61,7 @@ namespace MichaelReukauff.Lexer
     /// </summary>
     internal static List<Match> SplitText(string text)
     {
-      Regex regex = new Regex(
+      var regex = new Regex(
         // "\\w+|//|/\\*|\\*/|\\{|\\}|=|;|\\[|\\]|\"|\\n|\\(|\\)|\\.",
         // @"\w+|//|/\*|\*/|\{|\}|=|;|\[|\]|\n|\(|\)|\.|\""",
         // @"\w+|//|/\*|\*/|\{|\}|=|;|\[|\]|\n|\(|\)|\.|([""'])(?:(?=(\\?))\2.)*?\1", // http://stackoverflow.com/questions/171480/regex-grabbing-values-between-quotation-marks
@@ -85,7 +85,7 @@ namespace MichaelReukauff.Lexer
 
     internal static bool IsIdentifier(string text)
     {
-      Regex regex = new Regex(@"\b([A-Za-z_]{1}[a-zA-Z0-9_]*)\z", RegexOptions.Compiled);
+      var regex = new Regex(@"\b([A-Za-z_]{1}[a-zA-Z0-9_]*)\z", RegexOptions.Compiled);
 
       //// var res = regex.Matches(text); // only for tests
 
@@ -94,7 +94,7 @@ namespace MichaelReukauff.Lexer
 
     internal static bool IsFieldRule(string text)
     {
-      List<string> list = new List<string>
+      var list = new List<string>
       {
         "optional", "repeated", "required"
       };
@@ -109,30 +109,30 @@ namespace MichaelReukauff.Lexer
     /// <returns>The field type or unknown if not found</returns>
     internal static FieldType GetFieldType(string text)
     {
-      Dictionary<string, FieldType> list = new Dictionary<string, FieldType>
+      var list = new Dictionary<string, FieldType>
       {
-        {"double", FieldType.type_double},
-        {"float", FieldType.type_float},
-        {"uint64", FieldType.type_uint64},
-        {"uint32", FieldType.type_uint32},
-        {"fixed64", FieldType.type_fixed64},
-        {"fixed32", FieldType.type_fixed32},
-        {"sfixed32", FieldType.type_sfixed32},
-        {"sfixed64", FieldType.type_sfixed64},
-        {"int32", FieldType.type_int32},
-        {"int64", FieldType.type_int64},
-        {"sint32", FieldType.type_sint32},
-        {"sint64", FieldType.type_sint64},
-        {"bool", FieldType.type_bool},
-        {"string", FieldType.type_string},
-        {"bytes", FieldType.type_bytes},
+        {"double", FieldType.TypeDouble},
+        {"float", FieldType.TypeFloat},
+        {"uint64", FieldType.TypeUint64},
+        {"uint32", FieldType.TypeUint32},
+        {"fixed64", FieldType.TypeFixed64},
+        {"fixed32", FieldType.TypeFixed32},
+        {"sfixed32", FieldType.TypeSfixed32},
+        {"sfixed64", FieldType.TypeSfixed64},
+        {"int32", FieldType.TypeInt32},
+        {"int64", FieldType.TypeInt64},
+        {"sint32", FieldType.TypeSint32},
+        {"sint64", FieldType.TypeSint64},
+        {"bool", FieldType.TypeBool},
+        {"string", FieldType.TypeString},
+        {"bytes", FieldType.TypeBytes},
       };
 
       FieldType result;
       if (list.TryGetValue(text, out result))
         return result;
 
-      return FieldType.type_unknown;
+      return FieldType.TypeUnknown;
     }
 
     /// <summary>

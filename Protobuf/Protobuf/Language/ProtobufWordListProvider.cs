@@ -13,7 +13,7 @@ namespace MichaelReukauff.Protobuf
 
   internal class ProtobufWordListProvider
   {
-    private readonly List<ProtobufToken> list = new List<ProtobufToken>
+    private readonly List<ProtobufToken> _list = new List<ProtobufToken>
     {
       // first level keywords (+ service below)
       new ProtobufToken("package", "Use package to prevent name clashes between protocol message types."),
@@ -78,9 +78,14 @@ namespace MichaelReukauff.Protobuf
     };
 
     #region internal methods
+    internal IDictionary<string, string> GetWordsWithDescription(char append)
+    {
+      return _list.ToDictionary(x => x.Name + append, x => x.Description);
+    }
+
     internal IDictionary<string, string> GetWordsWithDescription()
     {
-      return list.ToDictionary(x => x.Name, x => x.Description);
+      return _list.ToDictionary(x => x.Name, x => x.Description);
     }
     #endregion internal methods
   }

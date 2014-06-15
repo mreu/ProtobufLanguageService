@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseFieldOptionTests
@@ -12,13 +12,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  packed=true];";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseFieldOption());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(6, lex.Tokens[0].Length);
@@ -33,13 +33,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  aaa=\"farz\"];";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseFieldOption());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(3, lex.Tokens[0].Length);
@@ -54,13 +54,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  aaa=1234];";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseFieldOption());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(3, lex.Tokens[0].Length);
@@ -75,13 +75,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  aaa=abcdefgh];";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseFieldOption());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(3, lex.Tokens[0].Length);
@@ -96,13 +96,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  aaa="; // incomplete statement
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOption());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(3, lex.Tokens[0].Length);
@@ -114,13 +114,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  aaa"; // incomplete statement
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOption());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(3, lex.Tokens[0].Length);
@@ -132,13 +132,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  1aaa"; // incomplete statement
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOption());
 
       Assert.AreEqual(0, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(0, lex.ix);
+      Assert.AreEqual(0, lex.Index);
     }
 
     [TestMethod]
@@ -146,13 +146,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  cpp=\r\n"; // incomplete statement
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOption());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
   }
 }

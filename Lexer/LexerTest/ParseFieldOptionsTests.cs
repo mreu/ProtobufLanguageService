@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseFieldOptions
@@ -12,15 +12,15 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  [default=123, packed=true];";
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseFieldOptions(field));
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
 
       Assert.AreEqual(3, lex.Tokens[0].Position);
       Assert.AreEqual(11, lex.Tokens[1].Position);
@@ -43,15 +43,15 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  [default=123 packed=true];"; // comma is missing
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseFieldOptions(field));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
     }
 
     [TestMethod]
@@ -59,15 +59,15 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  [";
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOptions(field));
 
       Assert.AreEqual(0, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -75,15 +75,15 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  [default x 123 packed=true];";
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOptions(field));
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -91,15 +91,15 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  [default = 123";
 
-      Field field = new Field { fieldType = FieldType.type_int32, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeInt32, HasOption = false };
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseFieldOptions(field));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
     }
   }
 }

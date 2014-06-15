@@ -20,24 +20,24 @@ namespace MichaelReukauff.Protobuf
     /// <summary>
     /// the characters that start the outlining region
     /// </summary>
-    private const string startHide = "{";
+    private const string StartHide = "{";
 
     /// <summary>
     /// the characters that end the outlining region
     /// </summary>
-    private const string endHide = "}";
+    private const string EndHide = "}";
 
     /// <summary>
     /// the characters that are displayed when the region is collapsed
     /// </summary>
-    private const string ellipsis = "...";
+    private const string Ellipsis = "...";
 
-    private int ix = 0;
+    private int _ix;
 
     /// <summary>
     /// the contents of the tooltip for the collapsed span
     /// </summary>
-    private string hoverText = string.Empty;
+    private string _hoverText = string.Empty;
 
     readonly ITextBuffer _buffer;
     ITextSnapshot _snapshot;
@@ -85,11 +85,11 @@ namespace MichaelReukauff.Protobuf
 
           var snapshot = new SnapshotSpan(startLine.Start + region.StartOffset, endLine.End);
 
-          hoverText = snapshot.GetText();
-          hoverText = hoverText.Substring(1, hoverText.Length - 2).Trim(new[] { '\r', '\n' });
+          _hoverText = snapshot.GetText();
+          _hoverText = _hoverText.Substring(1, _hoverText.Length - 2).Trim(new[] { '\r', '\n' });
 
           //the region starts at the beginning of the "{", and goes until the *end* of the line that contains the "}".
-          yield return new TagSpan<IOutliningRegionTag>(snapshot, new OutliningRegionTag(false, false, ellipsis + ix++, hoverText));
+          yield return new TagSpan<IOutliningRegionTag>(snapshot, new OutliningRegionTag(false, false, Ellipsis + _ix++, _hoverText));
         }
       }
     }
@@ -114,7 +114,7 @@ namespace MichaelReukauff.Protobuf
     void ReParse()
     {
       ITextSnapshot newSnapshot = _buffer.CurrentSnapshot;
-      List<Region> newRegions = new List<Region>();
+      var newRegions = new List<Region>();
 
       // keep the current (deepest) partial region, which will have
       // references to any parent partial regions.
@@ -126,7 +126,7 @@ namespace MichaelReukauff.Protobuf
         string text = line.GetText();
 
         // lines that contain a "{" denote the start of a new region.
-        if ((regionStart = text.IndexOf(startHide, StringComparison.Ordinal)) != -1)
+        if ((regionStart = text.IndexOf(StartHide, StringComparison.Ordinal)) != -1)
         {
           int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
           int newLevel;
@@ -170,7 +170,7 @@ namespace MichaelReukauff.Protobuf
           // lines that contain "}" denote the end of a region
         else
         {
-          if ((regionStart = text.IndexOf(endHide, StringComparison.Ordinal)) != -1)
+          if ((regionStart = text.IndexOf(EndHide, StringComparison.Ordinal)) != -1)
           {
             int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
             int closingLevel;
@@ -196,17 +196,16 @@ namespace MichaelReukauff.Protobuf
       }
 
       // determine the changed span, and send a changed event with the new spans
-      List<Span> oldSpans = new List<Span>(_regions.Select(r => AsSnapshotSpan(r, _snapshot)
+      var oldSpans = new List<Span>(_regions.Select(r => AsSnapshotSpan(r, _snapshot)
                                                                   .TranslateTo(newSnapshot, SpanTrackingMode.EdgeExclusive)
                                                                   .Span));
-      List<Span> newSpans = new List<Span>(newRegions.Select(r => AsSnapshotSpan(r, newSnapshot).Span));
+      var newSpans = new List<Span>(newRegions.Select(r => AsSnapshotSpan(r, newSnapshot).Span));
 
-      NormalizedSpanCollection oldSpanCollection = new NormalizedSpanCollection(oldSpans);
-      NormalizedSpanCollection newSpanCollection = new NormalizedSpanCollection(newSpans);
+      var oldSpanCollection = new NormalizedSpanCollection(oldSpans);
+      var newSpanCollection = new NormalizedSpanCollection(newSpans);
 
       // the changed regions are regions that appear in one set or the other, but not both.
-      NormalizedSpanCollection removed =
-      NormalizedSpanCollection.Difference(oldSpanCollection, newSpanCollection);
+      NormalizedSpanCollection removed = NormalizedSpanCollection.Difference(oldSpanCollection, newSpanCollection);
 
       int changeStart = int.MaxValue;
       int changeEnd = -1;

@@ -22,18 +22,18 @@ namespace MichaelReukauff.Protobuf
   internal sealed class ProtobufErrorTaggerProvider : ITaggerProvider
   {
     [Import(typeof(SVsServiceProvider))]
-    internal IServiceProvider _serviceProvider { get; set; }
+    internal IServiceProvider ServiceProvider { get; set; }
 
     [Import]
-    internal IBufferTagAggregatorFactoryService _aggregatorFactory { get; set; }
+    internal IBufferTagAggregatorFactoryService AggregatorFactory { get; set; }
 
     [Import]
-    ITextDocumentFactoryService _textDocumentFactory { get; set; }
+    internal ITextDocumentFactoryService TextDocumentFactory { get; set; }
 
     public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
     {
       // create a single tagger for each buffer.
-      Func<ITagger<T>> sc = () => new ErrorTagger(buffer, _aggregatorFactory, _serviceProvider, _textDocumentFactory) as ITagger<T>;
+      Func<ITagger<T>> sc = () => new ErrorTagger(buffer, AggregatorFactory, ServiceProvider, TextDocumentFactory) as ITagger<T>;
       return buffer.Properties.GetOrCreateSingletonProperty(sc);
     }
   }

@@ -11,7 +11,7 @@ namespace MichaelReukauff.Protobuf
   using System;
   using System.Collections.Generic;
 
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   using Microsoft.VisualStudio.Shell;
   using Microsoft.VisualStudio.Shell.Interop;
@@ -26,7 +26,7 @@ namespace MichaelReukauff.Protobuf
     readonly ITagAggregator<ProtobufTokenTag> _aggregator;
 
     private readonly Guid _outputPaneGuid = new Guid("{7451EC7F-98F4-48F3-9600-78DDFD826BBC}");
-    private const string _outputWindowName = "Protobuf";
+    private const string OutputWindowName = "Protobuf";
 
     public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
@@ -46,11 +46,11 @@ namespace MichaelReukauff.Protobuf
 
       _aggregator.TagsChanged += _aggregator_TagsChanged;
 
-      IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+      var outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
 
       if (outputWindow != null)
       {
-        outputWindow.CreatePane(ref _outputPaneGuid, _outputWindowName, 1, 1);
+        outputWindow.CreatePane(ref _outputPaneGuid, OutputWindowName, 1, 1);
         outputWindow.GetPane(ref _outputPaneGuid, out myOutputPane);
       }
 
@@ -80,7 +80,7 @@ namespace MichaelReukauff.Protobuf
         NormalizedSnapshotSpanCollection spans = e.Span.GetSpans(_buffer.CurrentSnapshot);
         if (spans.Count > 0)
         {
-          SnapshotSpan span = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End);
+          var span = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End);
           temp(this, new SnapshotSpanEventArgs(span));
         }
       }
@@ -94,7 +94,7 @@ namespace MichaelReukauff.Protobuf
       foreach (var tagSpan in _aggregator.GetTags(spans))
       {
         var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
-        yield return new TagSpan<ClassificationTag>(tagSpans[0], new ClassificationTag(_protobufTypes[tagSpan.Tag._type]));
+        yield return new TagSpan<ClassificationTag>(tagSpans[0], new ClassificationTag(_protobufTypes[tagSpan.Tag.CodeType]));
       }
     }
   }

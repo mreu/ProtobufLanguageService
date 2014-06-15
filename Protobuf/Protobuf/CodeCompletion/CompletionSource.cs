@@ -32,7 +32,7 @@ namespace MichaelReukauff.Protobuf
     {
       _buffer = buffer;
       _navigatorSelectorService = navigatorSelectorService;
-      _keywords = new ProtobufWordListProvider().GetWordsWithDescription();
+      _keywords = new ProtobufWordListProvider().GetWordsWithDescription(' ');
     }
 
     void IDisposable.Dispose()
@@ -54,7 +54,7 @@ namespace MichaelReukauff.Protobuf
     void ICompletionSource.AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
     {
       // create a list of completions from the dictionary of valid tokens
-      List<Completion> completions = new List<Completion>();
+      var completions = new List<Completion>();
       foreach (KeyValuePair<string, string> token in _keywords)
       {
         completions.Add(new Completion(token.Key, token.Key, token.Value, null, null));
@@ -64,7 +64,7 @@ namespace MichaelReukauff.Protobuf
       var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
 
       //var line = triggerPoint.GetContainingLine();
-      SnapshotPoint start = triggerPoint - 1;
+      //SnapshotPoint start = triggerPoint - 1;
 
       var res = FindTokenSpanAtPosition(session);
 

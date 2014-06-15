@@ -3,7 +3,6 @@
   using System;
   using System.Collections.Generic;
   using System.Linq;
-  using System.Runtime.CompilerServices;
   using System.Text.RegularExpressions;
 
   public class Lexer
@@ -16,7 +15,7 @@
     /// <summary>
     /// All matches from regEx
     /// </summary>
-    internal List<Match> matches;
+    internal List<Match> Matches;
 
     /// <summary>
     /// List of all token
@@ -31,12 +30,12 @@
     /// <summary>
     /// Index into the current matches
     /// </summary>
-    internal int ix;
+    internal int Index;
 
     /// <summary>
     /// Line number of the current line
     /// </summary>
-    internal int line = 0;
+    internal int Line = 0;
 
     /// <summary>
     /// Is set to true if a package top kevel statement occurs
@@ -61,24 +60,24 @@
     /// </summary>
     public void Analyze()
     {
-      matches = Helper.SplitText(_buffer);
+      Matches = Helper.SplitText(_buffer);
 
       // Eat all comments from the list, so that only pure code is left
       EatComments();
 
-      ix = 0;
-      line = 0;
+      Index = 0;
+      Line = 0;
 
       while (true)
       {
-        if (ix >= matches.Count)
+        if (Index >= Matches.Count)
           break;
 
         // if a new line is here, eat it and increment line number
         if (Word == "\n")
         {
-          ix++;
-          line++;
+          Index++;
+          Line++;
           continue;
         }
 
@@ -91,13 +90,20 @@
       }
     }
 
+    public void AnalyzeForCommentsOnly()
+    {
+      Matches = Helper.SplitText(_buffer);
+
+      EatComments();
+    }
+
     /// <summary>
     /// Set the line offset in all errors
     /// </summary>
     private void SetOffsetinErrors()
     {
       // get all line breaks
-      var res = matches.Where(x => x.Value == "\n");
+      var res = Matches.Where(x => x.Value == "\n");
 
       foreach (var error in Errors)
       {
@@ -153,14 +159,11 @@
     #region Parse option
     internal bool ParseOption(bool isTopLevel)
     {
-      if (isTopLevel)
-        AddNewToken(CodeType.TopLevelCmd);
-      else
-        AddNewToken(CodeType.Keyword);
+      AddNewToken(isTopLevel ? CodeType.TopLevelCmd : CodeType.Keyword);
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected option.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected option.");
         return false;
       }
 
@@ -169,7 +172,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\"");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\"");
         return false;
       }
 
@@ -192,7 +195,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected service name");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected service name");
         return false;
       }
 
@@ -206,7 +209,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"{\"");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"{\"");
         return false;
       }
 
@@ -218,7 +221,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"option\" or \"rpc\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"option\" or \"rpc\".");
         return false;
       }
 
@@ -236,7 +239,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected method name.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected method name.");
         return false;
       }
 
@@ -250,7 +253,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"(\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"(\".");
         return false;
       }
 
@@ -262,7 +265,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected name of request message.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected name of request message.");
         return false;
       }
 
@@ -276,7 +279,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \")\"");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\"");
         return false;
       }
 
@@ -288,7 +291,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"returns\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"returns\".");
         return false;
       }
 
@@ -302,7 +305,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"returns\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"returns\".");
         return false;
       }
 
@@ -314,7 +317,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected name of response message.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected name of response message.");
         return false;
       }
 
@@ -328,7 +331,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \")\"");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\"");
         return false;
       }
 
@@ -340,7 +343,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
         return false;
       }
 
@@ -352,7 +355,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"}\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"}\".");
         return false;
       }
 
@@ -376,16 +379,13 @@
     /// <returns></returns>
     internal bool ParseEnum(bool isTopLevel)
     {
-      Field field = new Field { fieldType = FieldType.type_unknown, hasOption = false };
+      var field = new Field { FieldType = FieldType.TypeUnknown, HasOption = false };
 
-      if (isTopLevel)
-        AddNewToken(CodeType.TopLevelCmd);
-      else
-        AddNewToken(CodeType.Keyword);
+      AddNewToken(isTopLevel ? CodeType.TopLevelCmd : CodeType.Keyword);
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected enum name.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected enum name.");
         return false;
       }
 
@@ -399,7 +399,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"{\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"{\".");
         return false;
       }
 
@@ -411,7 +411,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"option\", \"}\", \";\" or enum constant name.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"option\", \"}\", \";\" or enum constant name.");
         return false;
       }
 
@@ -433,7 +433,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"=\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"=\".");
           return false;
         }
 
@@ -445,7 +445,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected numeric value for enum constant.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected numeric value for enum constant.");
           return false;
         }
 
@@ -459,7 +459,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
           return false;
         }
 
@@ -474,7 +474,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"option\", \"}\", \";\" or enum constant name.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"option\", \"}\", \";\" or enum constant name.");
           return false;
         }
       }
@@ -493,14 +493,11 @@
     /// <returns></returns>
     internal bool ParseMessage(bool isTopLevel)
     {
-      if (isTopLevel)
-        AddNewToken(CodeType.TopLevelCmd);
-      else
-        AddNewToken(CodeType.Keyword);
+      AddNewToken(isTopLevel ? CodeType.TopLevelCmd : CodeType.Keyword);
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected message name.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected message name.");
         return false;
       }
 
@@ -514,7 +511,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"{\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"{\".");
         return false;
       }
 
@@ -526,7 +523,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"required\", \"optional\", or \"repeated\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"required\", \"optional\", or \"repeated\".");
         return false;
       }
 
@@ -554,9 +551,9 @@
             break;
         }
 
-        if (ix >= matches.Count)
+        if (Index >= Matches.Count)
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"}\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"}\".");
           return false;
         }
       }
@@ -579,7 +576,7 @@
       {
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected field number range.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field number range.");
           return false;
         }
 
@@ -593,7 +590,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected the word \"to\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected the word \"to\".");
           return false;
         }
 
@@ -607,7 +604,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected field number range.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field number range.");
           return false;
         }
 
@@ -626,7 +623,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
           return false;
         }
       }
@@ -649,7 +646,7 @@
     /// <returns></returns>
     internal bool ParseMessageField()
     {
-      Field field = new Field();
+      var field = new Field();
 
       if (!Helper.IsFieldRule(Word))
       {
@@ -662,12 +659,12 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected field type.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
         return false;
       }
 
-      field.fieldType = Helper.GetFieldType(Word);
-      if (field.fieldType == FieldType.type_unknown)
+      field.FieldType = Helper.GetFieldType(Word);
+      if (field.FieldType == FieldType.TypeUnknown)
       {
         while (true)
         {
@@ -678,7 +675,7 @@
 
           if (!IncrementIndex())
           {
-            AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected field name.");
+            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
             return false;
           }
 
@@ -686,7 +683,7 @@
           {
             if (!IncrementIndex())
             {
-              AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected Identifier.");
+              AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
               return false;
             }
           }
@@ -700,7 +697,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected field name.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
           return false;
         }
       }
@@ -715,7 +712,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"=\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"=\".");
         return false;
       }
 
@@ -727,7 +724,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected field number.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field number.");
         return false;
       }
 
@@ -739,7 +736,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\"");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\"");
           return false;
         }
       }
@@ -771,7 +768,7 @@
       {
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"option\" or \"default\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"option\" or \"default\".");
           return false;
         }
 
@@ -790,7 +787,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \",\" or \"]\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \",\" or \"]\".");
           return false;
         }
       }
@@ -826,7 +823,7 @@
 
         if (!IncrementIndex())
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \".\" or \"=\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\" or \"=\".");
           return false;
         }
       }
@@ -835,7 +832,7 @@
       if (Word == "\n")
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \".\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\".");
           return false;
         }
 
@@ -847,7 +844,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected option value.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected option value.");
         return false;
       }
 
@@ -877,7 +874,7 @@
     /// <returns>True if ok otherwise false</returns>
     internal bool ParseDefault(Field field)
     {
-      if (field.hasOption)
+      if (field.HasOption)
       {
         AddNewError("Already set option \"default\".");
       }
@@ -887,7 +884,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"=\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"=\".");
         return false;
       }
 
@@ -899,22 +896,22 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected default value.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected default value.");
         return false;
       }
 
-      switch (field.fieldType)
+      switch (field.FieldType)
       {
-        case FieldType.type_unknown: // enum value
+        case FieldType.TypeUnknown: // enum value
           AddNewToken(CodeType.Enums);
           break;
 
-        case FieldType.type_int32:
-        case FieldType.type_int64:
-        case FieldType.type_sint32:
-        case FieldType.type_sint64:
-        case FieldType.type_sfixed32:
-        case FieldType.type_sfixed64:
+        case FieldType.TypeInt32:
+        case FieldType.TypeInt64:
+        case FieldType.TypeSint32:
+        case FieldType.TypeSint64:
+        case FieldType.TypeSfixed32:
+        case FieldType.TypeSfixed64:
           if (!Helper.IsInteger(Word))
           {
             AddNewError("Expected number.");
@@ -923,8 +920,8 @@
           AddNewToken(CodeType.Number);
           break;
 
-        case FieldType.type_uint64:
-        case FieldType.type_fixed64:
+        case FieldType.TypeUint64:
+        case FieldType.TypeFixed64:
           if (!Helper.IsPositive64Integer(Word))
           {
             AddNewError("Expected unsigned number.");
@@ -933,8 +930,8 @@
           AddNewToken(CodeType.Number);
           break;
 
-        case FieldType.type_uint32:
-        case FieldType.type_fixed32:
+        case FieldType.TypeUint32:
+        case FieldType.TypeFixed32:
           if (!Helper.IsPositiveInteger(Word))
           {
             AddNewError("Expected unsigned number.");
@@ -943,29 +940,29 @@
           AddNewToken(CodeType.Number);
           break;
 
-        case FieldType.type_float:
-        case FieldType.type_double:
-          int i = matches[ix].Index; // save position
+        case FieldType.TypeFloat:
+        case FieldType.TypeDouble:
+          int i = Matches[Index].Index; // save position
 
           var num = GetFloatNumber();
 
           if (!Helper.IsDoubleOrFloat(num))
           {
-            AddNewError(i, matches[ix].Index + matches[ix].Length - i, "Expected number.");
+            AddNewError(i, Matches[Index].Index + Matches[Index].Length - i, "Expected number.");
           }
 
-          AddNewToken(i, matches[ix].Index + matches[ix].Length - i, num, CodeType.Number);
+          AddNewToken(i, Matches[Index].Index + Matches[Index].Length - i, num, CodeType.Number);
           break;
 
-        case FieldType.type_bool:
+        case FieldType.TypeBool:
           if (Helper.IsTrueOrFalse(Word))
             AddNewToken(CodeType.Keyword);
           else
             AddNewError("Expected \"true\" or \"false\".");
           break;
 
-        case FieldType.type_string:
-        case FieldType.type_bytes:
+        case FieldType.TypeString:
+        case FieldType.TypeBytes:
           // tokenize string
           if (!GetString("Expected string."))
             return false;
@@ -991,7 +988,7 @@
       AddNewToken(CodeType.TopLevelCmd);
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected expandee.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected expandee.");
         return false;
       }
 
@@ -1005,7 +1002,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \"{\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"{\".");
         return false;
       }
 
@@ -1018,7 +1015,7 @@
       // eat the {
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Reached end of input in extend definition.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Reached end of input in extend definition.");
         return false;
       }
 
@@ -1027,9 +1024,9 @@
         if (!ParseMessageField())
           return false;
 
-        if (ix >= matches.Count)
+        if (Index >= Matches.Count)
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected\"}\"");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected\"}\"");
           return false;
         }
 
@@ -1051,7 +1048,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected a string naming the file to import.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected a string naming the file to import.");
         return false;
       }
 
@@ -1061,7 +1058,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected a string naming the file to import.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected a string naming the file to import.");
           return false;
         }
       }
@@ -1072,7 +1069,7 @@
 
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected a string naming the file to import.");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected a string naming the file to import.");
           return false;
         }
       }
@@ -1083,7 +1080,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\".");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
         return false;
       }
 
@@ -1112,7 +1109,7 @@
 
       if (!IncrementIndex(true))
       {
-        AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected Identifier.");
+        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
         return false;
       }
 
@@ -1124,7 +1121,7 @@
         AddNewToken(CodeType.Namespace);
         if (!IncrementIndex())
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
           return false;
         }
 
@@ -1132,7 +1129,7 @@
         {
           if (!IncrementIndex())
           {
-            AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected Identifier.");
+            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
             return false;
           }
         }
@@ -1144,7 +1141,7 @@
       {
         if (!IncrementIndex(true))
         {
-          AddNewError(matches[ix - 1].Index + matches[ix - 1].Length, 1, "Expected \";\".");
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
           return false;
         }
       }
@@ -1168,28 +1165,28 @@
     /// </summary>
     internal void EatComments()
     {
-      for (int idx = 0; idx < matches.Count; idx++)
+      for (int idx = 0; idx < Matches.Count; idx++)
       {
-        var match = matches[idx];
+        var match = Matches[idx];
 
         // is it a line comment starting here
         if (match.Value == "//")
         {
-          var token = new Token(line, match.Index, 0, string.Empty, CodeType.Comment);
+          var token = new Token(Line, match.Index, 0, string.Empty, CodeType.Comment);
 
           // now search the end of this line
           int i = idx;
-          for (; i < matches.Count; i++)
+          for (; i < Matches.Count; i++)
           {
-            if (matches[i].Value == "\n")
+            if (Matches[i].Value == "\n")
               break;
           }
 
           // is comment until EOF
-          if (i == matches.Count)
-            token.Length = matches[i - 1].Index + matches[i - 1].Length - match.Index;
+          if (i == Matches.Count)
+            token.Length = Matches[i - 1].Index + Matches[i - 1].Length - match.Index;
           else
-            token.Length = matches[i].Index - match.Index;
+            token.Length = Matches[i].Index - match.Index;
 
           // set text from buffer
           token.Text = _buffer.Substring(token.Position, token.Length);
@@ -1200,36 +1197,36 @@
           AddNewToken(token);
 
           // now remove all found comment token from the list
-          matches.RemoveRange(idx, i - idx);
+          Matches.RemoveRange(idx, i - idx);
         }
 
         // is it a block comment starting here
         if (match.Value == "/*")
         {
-          var token = new Token(line, match.Index, 0, string.Empty, CodeType.Comment);
+          var token = new Token(Line, match.Index, 0, string.Empty, CodeType.Comment);
 
           // now search the */
           int i = idx;
-          for (; i < matches.Count; i++)
+          for (; i < Matches.Count; i++)
           {
-            if (matches[i].Value == "\n")
+            if (Matches[i].Value == "\n")
               continue;
 
-            if (matches[i].Value == "*/")
+            if (Matches[i].Value == "*/")
               break;
           }
 
           // is comment until EOF
-          if (i == matches.Count)
+          if (i == Matches.Count)
           {
-            token.Length = matches[i - 1].Index + matches[i - 1].Length - match.Index;
+            token.Length = Matches[i - 1].Index + Matches[i - 1].Length - match.Index;
 
             // and error */ is missed
-            AddNewError(matches[i - 1].Index + matches[i - 1].Length, 1, "Missing */");
+            AddNewError(Matches[i - 1].Index + Matches[i - 1].Length, 1, "Missing */");
           }
           else
           {
-            token.Length = matches[i].Index + matches[i].Length - match.Index;
+            token.Length = Matches[i].Index + Matches[i].Length - match.Index;
             i++;
           }
 
@@ -1240,7 +1237,7 @@
           AddNewToken(token);
 
           // now remove all found comment token from the list
-          matches.RemoveRange(idx, i - idx);
+          Matches.RemoveRange(idx, i - idx);
         }
       }
     }
@@ -1253,23 +1250,23 @@
     /// <returns>True if there are more matches otherwise false</returns>
     internal bool IncrementIndex(bool ignoreNewLine = false)
     {
-      ix++;
-      if (ix >= matches.Count)
+      Index++;
+      if (Index >= Matches.Count)
         return false;
 
       if (ignoreNewLine)
       {
         while (Word == "\n")
         {
-          ix++;
-          line++;
+          Index++;
+          Line++;
 
-          if (ix >= matches.Count)
+          if (Index >= Matches.Count)
             return false;
         }
       }
 
-      return (ix < matches.Count);
+      return (Index < Matches.Count);
     }
 
     /// <summary>
@@ -1285,39 +1282,39 @@
         return false;
       }
 
-      int i = ix + 1;
-      for (; i < matches.Count; i++) // find end of string or newline whatever comes first
+      int i = Index + 1;
+      for (; i < Matches.Count; i++) // find end of string or newline whatever comes first
       {
-        if (matches[i].Value == "\"" || matches[i].Value == "\n")
+        if (Matches[i].Value == "\"" || Matches[i].Value == "\n")
           break;
       }
 
-      if (i >= matches.Count) // until eof?
+      if (i >= Matches.Count) // until eof?
       {
-        AddNewToken(matches[ix].Index, matches[i - 1].Index + matches[i - 1].Length - matches[ix].Index, string.Empty, CodeType.String);
-        AddNewError(matches[i - 1].Index + matches[i - 1].Length, 1, "Closing \" missing.");
-        ix = i;
+        AddNewToken(Matches[Index].Index, Matches[i - 1].Index + Matches[i - 1].Length - Matches[Index].Index, string.Empty, CodeType.String);
+        AddNewError(Matches[i - 1].Index + Matches[i - 1].Length, 1, "Closing \" missing.");
+        Index = i;
         return false;
       }
 
-      if (matches[i].Value != "\"") // end of string found ?
+      if (Matches[i].Value != "\"") // end of string found ?
       {
         // end of string not found
         // find other limiting end
-        i = ix + 1;
-        for (; i < matches.Count; i++) // find end terminating char of string
+        i = Index + 1;
+        for (; i < Matches.Count; i++) // find end terminating char of string
         {
-          if (matches[i].Value == "]" || matches[i].Value == ";" || matches[i].Value == "\n")
+          if (Matches[i].Value == "]" || Matches[i].Value == ";" || Matches[i].Value == "\n")
             break;
         }
 
-        AddNewError(matches[i - 1].Index + matches[i - 1].Length, 1, "Closing \" missing.");
-        AddNewToken(matches[ix].Index, matches[i - 1].Index + matches[i - 1].Length - matches[ix].Index, string.Empty, CodeType.String);
+        AddNewError(Matches[i - 1].Index + Matches[i - 1].Length, 1, "Closing \" missing.");
+        AddNewToken(Matches[Index].Index, Matches[i - 1].Index + Matches[i - 1].Length - Matches[Index].Index, string.Empty, CodeType.String);
       }
       else
-        AddNewToken(matches[ix].Index, matches[i].Index + matches[i].Length - matches[ix].Index, string.Empty, CodeType.String);
+        AddNewToken(Matches[Index].Index, Matches[i].Index + Matches[i].Length - Matches[Index].Index, string.Empty, CodeType.String);
 
-      ix = i;
+      Index = i;
       return true;
     }
 
@@ -1333,26 +1330,26 @@
     /// <returns>The floating number as string</returns>
     internal string GetFloatNumber()
     {
-      int max = matches.Count;
+      int max = Matches.Count;
 
       var ret = GetExponent();
       string number = ret.Item1;
 
       if (!ret.Item2)
       {
-        if (ix + 1 >= max)
+        if (Index + 1 >= max)
           return number;
 
-        ix++;
+        Index++;
 
         if (Word == ".")
         {
           number += '.';
 
-          if (ix + 1 >= max)
+          if (Index + 1 >= max)
             return number;
 
-          ix++;
+          Index++;
 
           ret = GetExponent();
           number += ret.Item1;
@@ -1371,34 +1368,34 @@
       string number = Word;
       if (number == "+") // the + sign is a single token, we must get the nect token which is the numeric part of it
       {
-        if (ix < matches.Count)
+        if (Index < Matches.Count)
         {
-          ix++;
+          Index++;
           number += Word;
         }
       }
 
       if (Word.EndsWith("E") || Word.EndsWith("e"))
       {
-        if (ix + 1 >= matches.Count)
+        if (Index + 1 >= Matches.Count)
           return new Tuple<string, bool>(number, true);
 
-        ix++;
+        Index++;
 
         if (Word.StartsWith("+") || Word.StartsWith("-"))
         {
           number += Word;
 
-          if (ix + 1 >= matches.Count)
+          if (Index + 1 >= Matches.Count)
             return new Tuple<string, bool>(number, true);
 
-          ix++;
+          Index++;
 
           if (Helper.IsInteger(Word))
             number += Word;
           else
           {
-            ix--;
+            Index--;
           }
         }
 
@@ -1410,7 +1407,7 @@
 
     private void AddNewToken(CodeType codeType)
     {
-      Tokens.Add(new Token(line, matches[ix], codeType));
+      Tokens.Add(new Token(Line, Matches[Index], codeType));
     }
 
     private void AddNewToken(Token token)
@@ -1420,19 +1417,19 @@
 
     private void AddNewToken(int offset, int length, string text, CodeType codeType)
     {
-      Tokens.Add(new Token(line, offset, length, text, codeType));
+      Tokens.Add(new Token(Line, offset, length, text, codeType));
     }
 
     private void AddNewError(string message, CodeType codeType = CodeType.Text)
     {
-      if (Errors.All(x => x.Position != matches[ix].Index))
-        Errors.Add(new Error(line, matches[ix], codeType, message));
+      if (Errors.All(x => x.Position != Matches[Index].Index))
+        Errors.Add(new Error(Line, Matches[Index], codeType, message));
     }
 
     private void AddNewError(int offset, int length, string message, string text = "", CodeType codeType = CodeType.Text)
     {
       if (Errors.All(x => x.Position != offset))
-        Errors.Add(new Error(line, offset, length, text, codeType, message));
+        Errors.Add(new Error(Line, offset, length, text, codeType, message));
     }
 
     /// <summary>
@@ -1442,7 +1439,7 @@
     {
       get
       {
-        return matches[ix].Value;
+        return Matches[Index].Value;
       }
     }
     #endregion Helper methods
@@ -1450,7 +1447,7 @@
 
   class Field
   {
-    internal FieldType fieldType = FieldType.type_unknown;
-    internal bool hasOption = false;
+    internal FieldType FieldType = FieldType.TypeUnknown;
+    internal bool HasOption = false;
   }
 }

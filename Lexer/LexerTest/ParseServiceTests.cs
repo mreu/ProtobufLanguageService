@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseServiceTests
@@ -12,13 +12,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns (test4); }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(15, lex.ix);
+      Assert.AreEqual(15, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(10, lex.Tokens[1].Position);
@@ -50,13 +50,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n option abc = 123; \r\n rpc test2 (test3) returns (test4); }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseService());
 
       Assert.AreEqual(10, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(21, lex.ix);
+      Assert.AreEqual(21, lex.Index);
     }
 
     [TestMethod]
@@ -64,13 +64,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns (test4); ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(14, lex.ix);
+      Assert.AreEqual(14, lex.Index);
     }
 
     [TestMethod]
@@ -78,13 +78,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns (test4)";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(13, lex.ix);
+      Assert.AreEqual(13, lex.Index);
     }
 
     [TestMethod]
@@ -92,13 +92,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns (test4";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(12, lex.ix);
+      Assert.AreEqual(12, lex.Index);
     }
 
     [TestMethod]
@@ -106,13 +106,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns (te";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(12, lex.ix);
+      Assert.AreEqual(12, lex.Index);
     }
 
     [TestMethod]
@@ -120,13 +120,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns (";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(11, lex.ix);
+      Assert.AreEqual(11, lex.Index);
     }
 
     [TestMethod]
@@ -134,13 +134,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) returns ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(10, lex.ix);
+      Assert.AreEqual(10, lex.Index);
     }
 
     [TestMethod]
@@ -148,13 +148,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) retur";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
     }
 
     [TestMethod]
@@ -162,13 +162,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3) ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
     }
 
     [TestMethod]
@@ -176,13 +176,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (test3";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(8, lex.ix);
+      Assert.AreEqual(8, lex.Index);
     }
 
     [TestMethod]
@@ -190,13 +190,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (tes";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(8, lex.ix);
+      Assert.AreEqual(8, lex.Index);
     }
 
     [TestMethod]
@@ -204,13 +204,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(7, lex.ix);
+      Assert.AreEqual(7, lex.Index);
     }
 
     [TestMethod]
@@ -218,13 +218,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(6, lex.ix);
+      Assert.AreEqual(6, lex.Index);
     }
 
     [TestMethod]
@@ -232,13 +232,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc te";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(6, lex.ix);
+      Assert.AreEqual(6, lex.Index);
     }
 
     [TestMethod]
@@ -246,13 +246,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(5, lex.ix);
+      Assert.AreEqual(5, lex.Index);
     }
 
     [TestMethod]
@@ -260,13 +260,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rp";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
     }
 
     [TestMethod]
@@ -274,13 +274,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
     }
 
     [TestMethod]
@@ -288,13 +288,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
 
     [TestMethod]
@@ -302,13 +302,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -316,13 +316,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service te";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -330,13 +330,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service 1te";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -344,13 +344,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -358,13 +358,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service sdf x";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -372,13 +372,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc 2test2 ";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(3, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(5, lex.ix);
+      Assert.AreEqual(5, lex.Index);
     }
 
     [TestMethod]
@@ -386,13 +386,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 5";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(6, lex.ix);
+      Assert.AreEqual(6, lex.Index);
     }
 
     [TestMethod]
@@ -400,13 +400,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (5)";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(4, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(7, lex.ix);
+      Assert.AreEqual(7, lex.Index);
     }
 
     [TestMethod]
@@ -414,13 +414,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (hh g";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(8, lex.ix);
+      Assert.AreEqual(8, lex.Index);
     }
 
     [TestMethod]
@@ -428,13 +428,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (h) returns d";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(10, lex.ix);
+      Assert.AreEqual(10, lex.Index);
     }
 
     [TestMethod]
@@ -442,13 +442,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (h) returns (1";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(6, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(11, lex.ix);
+      Assert.AreEqual(11, lex.Index);
     }
 
     [TestMethod]
@@ -456,13 +456,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (h) returns (ss x";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(12, lex.ix);
+      Assert.AreEqual(12, lex.Index);
     }
 
     [TestMethod]
@@ -470,13 +470,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (h) returns (ss) s";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(13, lex.ix);
+      Assert.AreEqual(13, lex.Index);
     }
 
     [TestMethod]
@@ -484,13 +484,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n rpc test2 (h) returns (ss); d";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(7, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(14, lex.ix);
+      Assert.AreEqual(14, lex.Index);
     }
 
     [TestMethod]
@@ -498,13 +498,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  service test1 { \r\n option abc = 123 \r\n rpc test2 (test3) returns (test4); }";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseService());
 
       Assert.AreEqual(5, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(9, lex.ix);
+      Assert.AreEqual(9, lex.Index);
     }
   }
 }

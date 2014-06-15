@@ -83,7 +83,7 @@ namespace MichaelReukauff.Protobuf
     /// <param name="caretPosition"></param>
     void UpdateAtCaretPosition(CaretPosition caretPosition)
     {
-      SnapshotPoint? point = caretPosition.Point.GetPoint(SourceBuffer, caretPosition.Affinity);
+      var point = caretPosition.Point.GetPoint(SourceBuffer, caretPosition.Affinity);
 
       if (!point.HasValue)
         return;
@@ -104,12 +104,12 @@ namespace MichaelReukauff.Protobuf
 
     void UpdateWordAdornments()
     {
-      SnapshotPoint currentRequest = RequestedPoint;
-      List<SnapshotSpan> wordSpans = new List<SnapshotSpan>();
+      var currentRequest = RequestedPoint;
+      var wordSpans = new List<SnapshotSpan>();
 
       // Find all words in the buffer like the one the caret is on
-     TextExtent word = TextStructureNavigator.GetExtentOfWord(currentRequest);
-      bool foundWord = true;
+     var word = TextStructureNavigator.GetExtentOfWord(currentRequest);
+      var foundWord = true;
 
       // If we've selected something not worth highlighting, we might have missed a "word" by a little bit
       if (!WordExtentIsValid(currentRequest, word))
@@ -140,13 +140,13 @@ namespace MichaelReukauff.Protobuf
         return;
       }
 
-      SnapshotSpan currentWord = word.Span;
+      var currentWord = word.Span;
       // If this is the current word, and the caret moved within a word, we're done.
       if (CurrentWord.HasValue && currentWord == CurrentWord)
         return;
 
       // Find the new spans
-      FindData findData = new FindData(currentWord.GetText(), currentWord.Snapshot)
+      var findData = new FindData(currentWord.GetText(), currentWord.Snapshot)
       {
         FindOptions = FindOptions.WholeWord | FindOptions.MatchCase
       };
@@ -200,8 +200,8 @@ namespace MichaelReukauff.Protobuf
 
       // Hold on to a "snapshot" of the word spans and current word, so that we maintain the same
       // collection throughout
-      SnapshotSpan currentWord = CurrentWord.Value;
-      NormalizedSnapshotSpanCollection wordSpans = WordSpans;
+      var currentWord = CurrentWord.Value;
+      var wordSpans = WordSpans;
 
       if (spans.Count == 0 || wordSpans.Count == 0)
         yield break;
@@ -221,7 +221,7 @@ namespace MichaelReukauff.Protobuf
         yield return new TagSpan<HighlightWordTag>(currentWord, new HighlightWordTag());
 
       // Second, yield all the other words in the file
-      foreach (SnapshotSpan span in NormalizedSnapshotSpanCollection.Overlap(spans, wordSpans))
+      foreach (var span in NormalizedSnapshotSpanCollection.Overlap(spans, wordSpans))
       {
         yield return new TagSpan<HighlightWordTag>(span, new HighlightWordTag());
       }

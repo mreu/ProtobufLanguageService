@@ -2,7 +2,7 @@
 
 namespace MichaelReukauff.LexerTest
 {
-  using MichaelReukauff.Lexer;
+  using Lexer;
 
   [TestClass]
   public class ParseMessageTest
@@ -12,13 +12,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n  required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(14, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(26, lex.ix);
+      Assert.AreEqual(26, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(10, lex.Tokens[1].Position);
@@ -71,13 +71,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n  required string url = 2;\r\n \r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(14, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(27, lex.ix);
+      Assert.AreEqual(27, lex.Index);
 
       Assert.AreEqual(2, lex.Tokens[0].Position);
       Assert.AreEqual(10, lex.Tokens[1].Position);
@@ -130,13 +130,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(4, lex.ix);
+      Assert.AreEqual(4, lex.Index);
     }
 
     [TestMethod]
@@ -144,13 +144,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n option abc = true; \r\n required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(17, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(32, lex.ix);
+      Assert.AreEqual(32, lex.Index);
     }
 
     [TestMethod]
@@ -158,13 +158,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n enum abc { a = 1; b=2;} \r\n required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(20, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(39, lex.ix);
+      Assert.AreEqual(39, lex.Index);
     }
 
     [TestMethod]
@@ -172,13 +172,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n extensions 100 to 199; \r\n required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(18, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(32, lex.ix);
+      Assert.AreEqual(32, lex.Index);
     }
 
     [TestMethod]
@@ -186,13 +186,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n extend msg {  optional int32 t1 = 1;} \r\n required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(20, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(37, lex.ix);
+      Assert.AreEqual(37, lex.Index);
     }
 
     [TestMethod]
@@ -200,13 +200,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n message msg {  optional int32 t1 = 1;} \r\n required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(true));
 
       Assert.AreEqual(20, lex.Tokens.Count);
       Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(37, lex.ix);
+      Assert.AreEqual(37, lex.Index);
     }
 
     [TestMethod]
@@ -214,13 +214,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n  required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(14, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(24, lex.ix);
+      Assert.AreEqual(24, lex.Index);
     }
 
     [TestMethod]
@@ -228,13 +228,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -242,13 +242,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message 1SearchResponse {\r\n  required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(1, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(1, lex.ix);
+      Assert.AreEqual(1, lex.Index);
     }
 
     [TestMethod]
@@ -256,13 +256,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -270,13 +270,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse x\r\n  required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(2, lex.ix);
+      Assert.AreEqual(2, lex.Index);
     }
 
     [TestMethod]
@@ -284,13 +284,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(2, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(3, lex.ix);
+      Assert.AreEqual(3, lex.Index);
     }
 
     [TestMethod]
@@ -298,13 +298,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n  required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsFalse(lex.ParseMessage(false));
 
       Assert.AreEqual(14, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(24, lex.ix);
+      Assert.AreEqual(24, lex.Index);
     }
 
     [TestMethod]
@@ -312,13 +312,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n  required string url ;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(false));
 
       Assert.AreEqual(13, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(23, lex.ix);
+      Assert.AreEqual(23, lex.Index);
     }
 
     [TestMethod]
@@ -326,13 +326,13 @@ namespace MichaelReukauff.LexerTest
     {
       const string text = "  message SearchResponse {\r\n\r\n  required string url ;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;}";
 
-      var lex = new Lexer(text) { matches = Helper.SplitText(text) };
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
       Assert.IsTrue(lex.ParseMessage(false));
 
       Assert.AreEqual(13, lex.Tokens.Count);
       Assert.AreEqual(1, lex.Errors.Count);
-      Assert.AreEqual(24, lex.ix);
+      Assert.AreEqual(24, lex.Index);
     }
   }
 }

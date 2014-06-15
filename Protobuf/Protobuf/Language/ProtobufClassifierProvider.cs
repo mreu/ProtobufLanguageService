@@ -30,7 +30,7 @@ namespace MichaelReukauff.Protobuf
     internal IClassificationTypeRegistryService ClassificationTypeRegistry { get; set; }
 
     [Import]
-    internal IBufferTagAggregatorFactoryService aggregatorFactory { get; set; }
+    internal IBufferTagAggregatorFactoryService AggregatorFactory { get; set; }
 
     [Import]
     internal IContentTypeRegistryService ContentTypeRegistryService { get; set; }
@@ -38,7 +38,7 @@ namespace MichaelReukauff.Protobuf
     public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
     {
       // create a single tagger for each buffer.
-      Func<ITagger<T>> sc = () => new ProtobufClassifier(buffer, aggregatorFactory, ClassificationTypeRegistry) as ITagger<T>;
+      Func<ITagger<T>> sc = () => new ProtobufClassifier(buffer, AggregatorFactory, ClassificationTypeRegistry) as ITagger<T>;
 
       var ct = ContentTypeRegistryService.ContentTypes;
 
