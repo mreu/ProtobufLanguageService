@@ -1,7 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#region Copyright © 2014 Michael Reukauff
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ParseEnumTest.cs" company="Michael Reukauff">
+//   Copyright © 2014 Michael Reukauff
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
 
 namespace MichaelReukauff.LexerTest
 {
+  using Microsoft.VisualStudio.TestTools.UnitTesting;
+
   using Lexer;
 
   [TestClass]

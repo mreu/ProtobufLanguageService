@@ -1,8 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#region Copyright © 2014 Michael Reukauff
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LexerTests.cs" company="Michael Reukauff">
+//   Copyright © 2014 Michael Reukauff
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
 
 namespace MichaelReukauff.LexerTest
 {
-  using Lexer;
+  using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+  using MichaelReukauff.Lexer;
 
   [TestClass]
   public class LexerTests

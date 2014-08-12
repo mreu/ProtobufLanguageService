@@ -7,6 +7,7 @@ message TestRequest {
 }
 
 message TestResponse {
+ option (my_option) = "option"  ;
   required bool ack = 0x234c;
 }
 
@@ -16,7 +17,9 @@ extend TestRequest {
 
  service TestService
  {
- //option (my_option) = "option";
- rpc Test (TestRequest) returns (TestResponse) ;
+ option (my_option) = "option"  ;
+ rpc Test1 (TestRequest) returns (TestResponse) ;
+ rpc Test2 (TestRequest) returns (TestResponse);
+ rpc Test3 (TestRequest) returns (TestResponse);
  }
 

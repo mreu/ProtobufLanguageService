@@ -1,10 +1,21 @@
-﻿namespace MichaelReukauff.Lexer
+﻿#region Copyright © 2014 Michael Reukauff
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Lexer.cs" company="Michael Reukauff">
+//   Copyright © 2014 Michael Reukauff
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+namespace MichaelReukauff.Lexer
 {
   using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Text.RegularExpressions;
 
+  /// <summary>
+  /// Lexer class.
+  /// </summary>
   public class Lexer
   {
     /// <summary>
@@ -90,6 +101,9 @@
       }
     }
 
+    /// <summary>
+    /// Analyze for comments only.
+    /// </summary>
     public void AnalyzeForCommentsOnly()
     {
       Matches = Helper.SplitText(_buffer);
@@ -108,7 +122,9 @@
       foreach (var error in Errors)
       {
         if (error.Line == 0)
+        {
           error.Offset = error.Position;
+        }
         else
         {
           var l = res.Skip(error.Line - 1).First();
@@ -189,6 +205,10 @@
     #endregion Parse option
 
     #region Parse service
+    /// <summary>
+    /// Parse the service entry.
+    /// </summary>
+    /// <returns>True if ok, else false.</returns>
     internal bool ParseService()
     {
       AddNewToken(CodeType.TopLevelCmd);
@@ -229,12 +249,45 @@
         if (!ParseOption(false))
           return false;
 
-      if (Word != "rpc")
+      // there can be multiple rpcs
+      while (true)
       {
-        AddNewError("Expected \"rpc\"");
+        if (Word == "rpc")
+          if (!ParseRpc())
+            return false;
+          else
+          {
+            if (!IncrementIndex(true))
+            {
+              AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"}\" or \"rpc\".");
+              return false;
+            }
+
+            continue;
+          }
+
+        break;
+      }
+
+      if (Word != "}")
+      {
+        AddNewError("Expected \"}\".");
         return false;
       }
 
+      IncrementIndex(true);
+
+      return true;
+    }
+    #endregion Parse service
+
+    #region Parse rpc
+    /// <summary>
+    /// Parse the PRC entry.
+    /// </summary>
+    /// <returns>True if ok, else false.</returns>
+    internal bool ParseRpc()
+    {
       AddNewToken(CodeType.Keyword);
 
       if (!IncrementIndex(true))
@@ -353,30 +406,16 @@
         return false;
       }
 
-      if (!IncrementIndex(true))
-      {
-        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"}\".");
-        return false;
-      }
-
-      if (Word != "}")
-      {
-        AddNewError("Expected \"}\".");
-        return false;
-      }
-
-      IncrementIndex(true);
-
       return true;
     }
-    #endregion Parse service
+    #endregion Parse rpc
 
     #region Parse enum
     /// <summary>
-    /// Parse enum
+    /// Parse enum entry.
     /// </summary>
-    /// <param name="isTopLevel"></param>
-    /// <returns></returns>
+    /// <param name="isTopLevel">True if top level commend else false.</param>
+    /// <returns>True if ok, else false.</returns>
     internal bool ParseEnum(bool isTopLevel)
     {
       var field = new Field { FieldType = FieldType.TypeUnknown, HasOption = false };
@@ -811,8 +850,20 @@
     /// <returns></returns>
     internal bool ParseFieldOption()
     {
+      bool isOpenBracket = false;
+
       do
       {
+        if (Word == "(")
+        {
+          isOpenBracket = true;
+          if (!IncrementIndex())
+          {
+            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected identifier.");
+            return false;
+          }
+        }
+
         if (!Helper.IsIdentifier(Word))
         {
           AddNewError("Expected valid option.");
@@ -823,11 +874,29 @@
 
         if (!IncrementIndex())
         {
-          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\" or \"=\".");
+          if (isOpenBracket)
+            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\", \")\" or \"=\".");
+          else
+            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\" or \"=\".");
           return false;
         }
       }
       while (Word == ".");
+
+      if (isOpenBracket)
+      {
+        if (Word != ")")
+        {
+          AddNewError("Expected \")\"");
+          return false;
+        }
+
+        if (!IncrementIndex())
+        {
+          AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\".");
+          return false;
+        }
+      }
 
       if (Word == "\n")
         if (!IncrementIndex(true))

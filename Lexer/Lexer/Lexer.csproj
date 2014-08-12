@@ -54,12 +54,6 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lexer.cs" />
-    <Compile Include="Test1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Test1.proto</DependentUpon>
-    </Compile>
     <Compile Include="Test2.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,7 +73,6 @@
     <None Include="packages.config" />
     <None Include="Test1.proto">
       <Generator>ProtoBufTool</Generator>
-      <LastGenOutput>Test1.cs</LastGenOutput>
     </None>
     <None Include="Test2.proto">
       <Generator>ProtoBufTool</Generator>
