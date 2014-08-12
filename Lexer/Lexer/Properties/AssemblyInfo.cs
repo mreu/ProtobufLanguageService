@@ -1,4 +1,12 @@
-﻿using System.Reflection;
+﻿#region Copyright © 2014 Michael Reukauff
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Michael Reukauff">
+//   Copyright © 2014 Michael Reukauff
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +18,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Lexer")]
-[assembly: AssemblyCopyright("Copyright © Michael Reukauff 2014")]
+[assembly: AssemblyCopyright("Copyright © 2014 Michael Reukauff")]
 [assembly: AssemblyTrademark("All rights reserved")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +43,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyFileVersion("1.3.0.0")]
