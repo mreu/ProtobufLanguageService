@@ -1,35 +1,49 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BraceMatchingTaggerProvider.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
 namespace MichaelReukauff.Protobuf
 {
-  using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition;
 
-  using Microsoft.VisualStudio.Text;
-  using Microsoft.VisualStudio.Text.Editor;
-  using Microsoft.VisualStudio.Text.Tagging;
-  using Microsoft.VisualStudio.Utilities;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Editor;
+    using Microsoft.VisualStudio.Text.Tagging;
+    using Microsoft.VisualStudio.Utilities;
 
-  [Export(typeof(IViewTaggerProvider))]
-  [ContentType(ProtobufLanguage.ContentType)]
-  [TagType(typeof(BraceMatchingTag))]
-  internal class BraceMatchingTaggerProvider : IViewTaggerProvider
-  {
-    public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+    /// <summary>
+    /// The brace matching tagger provider.
+    /// </summary>
+    [Export(typeof(IViewTaggerProvider))]
+    [ContentType(ProtobufLanguage.ContentType)]
+    [TagType(typeof(BraceMatchingTag))]
+    internal class BraceMatchingTaggerProvider : IViewTaggerProvider
     {
-      if (textView == null)
-        return null;
+        /// <summary>
+        /// The create tagger.
+        /// </summary>
+        /// <param name="textView">The text view.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <typeparam name="T">The tagger.</typeparam>
+        /// <returns>The <see cref="ITagger{T}"/>.</returns>
+        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+        {
+            if (textView == null)
+            {
+                return null;
+            }
 
-      // provide highlighting only on the top-level buffer
-      if (textView.TextBuffer != buffer)
-        return null;
+            // provide highlighting only on the top-level buffer
+            if (textView.TextBuffer != buffer)
+            {
+                return null;
+            }
 
-      return new BraceMatchingTagger(textView, buffer) as ITagger<T>;
+            return new BraceMatchingTagger(textView, buffer) as ITagger<T>;
+        }
     }
-  }
 }

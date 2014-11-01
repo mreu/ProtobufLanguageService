@@ -1,19 +1,26 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufWordListProvider.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System.Collections.Generic;
-  using System.Linq;
+    using System.Collections.Generic;
+    using System.Linq;
 
-  internal class ProtobufWordListProvider
-  {
-    private readonly List<ProtobufToken> _list = new List<ProtobufToken>
+    /// <summary>
+    /// The protobuf word list provider.
+    /// </summary>
+    internal class ProtobufWordListProvider
+    {
+        /// <summary>
+        /// The _list.
+        /// </summary>
+        private readonly List<ProtobufToken> list = new List<ProtobufToken>
     {
       // first level keywords (+ service below)
       new ProtobufToken("package", "Use package to prevent name clashes between protocol message types."),
@@ -77,34 +84,56 @@ namespace MichaelReukauff.Protobuf
       new ProtobufToken("deprecated", " If set to true, indicates that the field is deprecated and should not be used by new code"),
     };
 
-    #region internal methods
-    internal IDictionary<string, string> GetWordsWithDescription(char append)
-    {
-      return _list.ToDictionary(x => x.Name + append, x => x.Description);
+        #region internal methods
+        /// <summary>
+        /// The get words with description.
+        /// </summary>
+        /// <param name="append">The append.</param>
+        /// <returns>The <see cref="IDictionary{TKey,TValue}"/>.</returns>
+        internal IDictionary<string, string> GetWordsWithDescription(char append)
+        {
+            return list.ToDictionary(x => x.Name + append, x => x.Description);
+        }
+
+        /// <summary>
+        /// The get words with description.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IDictionary{TKey,TValue}"/>.
+        /// </returns>
+        internal IDictionary<string, string> GetWordsWithDescription()
+        {
+            return list.ToDictionary(x => x.Name, x => x.Description);
+        }
+        #endregion internal methods
     }
 
-    internal IDictionary<string, string> GetWordsWithDescription()
+    #region ProtobufToken
+    /// <summary>
+    /// The Protobuf Token with description.
+    /// </summary>
+    internal class ProtobufToken
     {
-      return _list.ToDictionary(x => x.Name, x => x.Description);
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        internal string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        internal string Description { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProtobufToken"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        internal ProtobufToken(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
     }
-    #endregion internal methods
-  }
-
-  #region ProtobufToken
-  /// <summary>
-  /// The Protobuf Token with description
-  /// </summary>
-  internal class ProtobufToken
-  {
-    internal string Name { get; set; }
-
-    internal string Description { get; set; }
-
-    internal ProtobufToken(string name, string description)
-    {
-      Name = name;
-      Description = description;
-    }
-  }
-  #endregion ProtobufToken
+    #endregion ProtobufToken
 }

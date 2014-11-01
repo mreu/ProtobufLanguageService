@@ -1,101 +1,132 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufClassifier.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System;
-  using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
 
-  using Lexer;
+    using Lexer;
 
-  using Microsoft.VisualStudio.Shell;
-  using Microsoft.VisualStudio.Shell.Interop;
-  using Microsoft.VisualStudio.Text;
-  using Microsoft.VisualStudio.Text.Classification;
-  using Microsoft.VisualStudio.Text.Tagging;
-
-  internal sealed class ProtobufClassifier : ITagger<ClassificationTag>
-  {
-    readonly ITextBuffer _buffer;
-
-    readonly ITagAggregator<ProtobufTokenTag> _aggregator;
-
-    private readonly Guid _outputPaneGuid = new Guid("{7451EC7F-98F4-48F3-9600-78DDFD826BBC}");
-    private const string OutputWindowName = "Protobuf";
-
-    public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
-
-    readonly IDictionary<CodeType, IClassificationType> _protobufTypes;
+    using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Classification;
+    using Microsoft.VisualStudio.Text.Tagging;
 
     /// <summary>
-    /// Constructor
+    /// The protobuf classifier.
     /// </summary>
-    /// <param name="buffer">The buffer</param>
-    /// <param name="aggregatorFactory"></param>
-    /// <param name="typeService"></param>
-    internal ProtobufClassifier(ITextBuffer buffer, IBufferTagAggregatorFactoryService aggregatorFactory, IClassificationTypeRegistryService typeService)
+    internal sealed class ProtobufClassifier : ITagger<ClassificationTag>
     {
-      IVsOutputWindowPane myOutputPane;
-      _buffer = buffer;
-      _aggregator = aggregatorFactory.CreateTagAggregator<ProtobufTokenTag>(buffer);
+        /// <summary>
+        /// The _buffer.
+        /// </summary>
+        public readonly ITextBuffer Buffer;
 
-      _aggregator.TagsChanged += _aggregator_TagsChanged;
+        /// <summary>
+        /// The _aggregator.
+        /// </summary>
+        public readonly ITagAggregator<ProtobufTokenTag> Aggregator;
 
-      var outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+        /// <summary>
+        /// The _output pane guid.
+        /// </summary>
+        private readonly Guid outputPaneGuid = new Guid("{7451EC7F-98F4-48F3-9600-78DDFD826BBC}");
 
-      if (outputWindow != null)
-      {
-        outputWindow.CreatePane(ref _outputPaneGuid, OutputWindowName, 1, 1);
-        outputWindow.GetPane(ref _outputPaneGuid, out myOutputPane);
-      }
+        /// <summary>
+        /// The output window name.
+        /// </summary>
+        private const string OutputWindowName = "Protobuf";
 
-      // create mapping from token types to classification types
-      _protobufTypes = new Dictionary<CodeType, IClassificationType>();
-      _protobufTypes[CodeType.Text] = typeService.GetClassificationType(ProtobufFormatDefinitions.Text);
-      _protobufTypes[CodeType.Keyword] = typeService.GetClassificationType(ProtobufFormatDefinitions.Keyword);
-      _protobufTypes[CodeType.Comment] = typeService.GetClassificationType(ProtobufFormatDefinitions.Comment);
-      _protobufTypes[CodeType.Identifier] = typeService.GetClassificationType(ProtobufFormatDefinitions.Identifier);
-      _protobufTypes[CodeType.String] = typeService.GetClassificationType(ProtobufFormatDefinitions.String);
-      _protobufTypes[CodeType.Number] = typeService.GetClassificationType(ProtobufFormatDefinitions.Number);
-      _protobufTypes[CodeType.Error] = typeService.GetClassificationType(ProtobufFormatDefinitions.Text);
+        /// <summary>
+        /// The tags changed.
+        /// </summary>
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
-      _protobufTypes[CodeType.Enums] = typeService.GetClassificationType(ProtobufFormatDefinitions.Enum);
-      _protobufTypes[CodeType.SymDef] = typeService.GetClassificationType(ProtobufFormatDefinitions.SymDef);
-      _protobufTypes[CodeType.SymRef] = typeService.GetClassificationType(ProtobufFormatDefinitions.SymRef);
-      _protobufTypes[CodeType.FieldRule] = typeService.GetClassificationType(ProtobufFormatDefinitions.FieldRule);
-      _protobufTypes[CodeType.TopLevelCmd] = typeService.GetClassificationType(ProtobufFormatDefinitions.TopLevelCmd);
-      _protobufTypes[CodeType.Namespace] = typeService.GetClassificationType(ProtobufFormatDefinitions.Keyword);
-    }
+        /// <summary>
+        /// The _protobuf types.
+        /// </summary>
+        public readonly IDictionary<CodeType, IClassificationType> ProtobufTypes;
 
-    void _aggregator_TagsChanged(object sender, TagsChangedEventArgs e)
-    {
-      var temp = TagsChanged;
-      if (temp != null)
-      {
-        NormalizedSnapshotSpanCollection spans = e.Span.GetSpans(_buffer.CurrentSnapshot);
-        if (spans.Count > 0)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProtobufClassifier"/> class. 
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="aggregatorFactory">The aggregate factory.</param>
+        /// <param name="typeService">The type service.</param>
+        internal ProtobufClassifier(ITextBuffer buffer, IBufferTagAggregatorFactoryService aggregatorFactory, IClassificationTypeRegistryService typeService)
         {
-          var span = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End);
-          temp(this, new SnapshotSpanEventArgs(span));
-        }
-      }
-    }
+            Buffer = buffer;
+            Aggregator = aggregatorFactory.CreateTagAggregator<ProtobufTokenTag>(buffer);
 
-    /// <summary>
-    /// Translate each TokenColor to an appropriate ClassificationTag
-    /// </summary>
-    public IEnumerable<ITagSpan<ClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
-    {
-      foreach (var tagSpan in _aggregator.GetTags(spans))
-      {
-        var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
-        yield return new TagSpan<ClassificationTag>(tagSpans[0], new ClassificationTag(_protobufTypes[tagSpan.Tag.CodeType]));
-      }
+            Aggregator.TagsChanged += AggregatorTagsChanged;
+
+            var outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+
+            if (outputWindow != null)
+            {
+                outputWindow.CreatePane(ref outputPaneGuid, OutputWindowName, 1, 1);
+                IVsOutputWindowPane myOutputPane;
+                outputWindow.GetPane(ref outputPaneGuid, out myOutputPane);
+            }
+
+            // create mapping from token types to classification types
+            ProtobufTypes = new Dictionary<CodeType, IClassificationType>();
+            ProtobufTypes[CodeType.Text] = typeService.GetClassificationType(ProtobufFormatDefinitions.Text);
+            ProtobufTypes[CodeType.Keyword] = typeService.GetClassificationType(ProtobufFormatDefinitions.Keyword);
+            ProtobufTypes[CodeType.Comment] = typeService.GetClassificationType(ProtobufFormatDefinitions.Comment);
+            ProtobufTypes[CodeType.Identifier] = typeService.GetClassificationType(ProtobufFormatDefinitions.Identifier);
+            ProtobufTypes[CodeType.String] = typeService.GetClassificationType(ProtobufFormatDefinitions.String);
+            ProtobufTypes[CodeType.Number] = typeService.GetClassificationType(ProtobufFormatDefinitions.Number);
+            ProtobufTypes[CodeType.Error] = typeService.GetClassificationType(ProtobufFormatDefinitions.Text);
+
+            ProtobufTypes[CodeType.Enums] = typeService.GetClassificationType(ProtobufFormatDefinitions.Enum);
+            ProtobufTypes[CodeType.SymDef] = typeService.GetClassificationType(ProtobufFormatDefinitions.SymDef);
+            ProtobufTypes[CodeType.SymRef] = typeService.GetClassificationType(ProtobufFormatDefinitions.SymRef);
+            ProtobufTypes[CodeType.FieldRule] = typeService.GetClassificationType(ProtobufFormatDefinitions.FieldRule);
+            ProtobufTypes[CodeType.TopLevelCmd] = typeService.GetClassificationType(ProtobufFormatDefinitions.TopLevelCmd);
+            ProtobufTypes[CodeType.Namespace] = typeService.GetClassificationType(ProtobufFormatDefinitions.Keyword);
+        }
+
+        /// <summary>
+        /// The aggregator tags changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="TagsChangedEventArgs"/>.</param>
+        private void AggregatorTagsChanged(object sender, TagsChangedEventArgs e)
+        {
+            var temp = TagsChanged;
+            if (temp != null)
+            {
+                NormalizedSnapshotSpanCollection spans = e.Span.GetSpans(Buffer.CurrentSnapshot);
+                if (spans.Count > 0)
+                {
+                    var span = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End);
+                    temp(this, new SnapshotSpanEventArgs(span));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Translate each TokenColor to an appropriate ClassificationTag.
+        /// </summary>
+        /// <param name="spans">The spans.</param>
+        /// <returns>The <see cref="IEnumerable{ITagSpan}"/>.</returns>
+        public IEnumerable<ITagSpan<ClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+        {
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var tagSpan in Aggregator.GetTags(spans))
+            {
+                var tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
+                yield return new TagSpan<ClassificationTag>(tagSpans[0], new ClassificationTag(ProtobufTypes[tagSpan.Tag.CodeType]));
+            }
+        }
     }
-  }
 }

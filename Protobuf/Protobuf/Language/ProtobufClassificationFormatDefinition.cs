@@ -1,61 +1,80 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufClassificationFormatDefinition.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System.ComponentModel.Composition;
-  using System.Windows.Media;
+    using System.ComponentModel.Composition;
+    using System.Windows.Media;
 
-  using Microsoft.VisualStudio.Text.Classification;
-  using Microsoft.VisualStudio.Utilities;
+    using Microsoft.VisualStudio.Text.Classification;
+    using Microsoft.VisualStudio.Utilities;
 
-  [Export(typeof(EditorFormatDefinition))]
-  [ClassificationType(ClassificationTypeNames = ProtobufFormatDefinitions.Enum)]
-  [Name(ProtobufFormatDefinitions.Enum)]
-  [UserVisible(true)]
-  [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
-  internal sealed class ProtobufEnum : ClassificationFormatDefinition
-  {
-    public ProtobufEnum()
+    /// <summary>
+    /// The protobuf enum.
+    /// </summary>
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = ProtobufFormatDefinitions.Enum)]
+    [Name(ProtobufFormatDefinitions.Enum)]
+    [UserVisible(true)]
+    [Order(Before = Priority.Default)] // set the priority to be after the default classifiers
+    internal sealed class ProtobufEnum : ClassificationFormatDefinition
     {
-      IsBold = false;
-      ForegroundColor = Colors.Olive;
-      DisplayName = "Protobuf Enum";
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProtobufEnum"/> class.
+        /// </summary>
+        public ProtobufEnum()
+        {
+            IsBold = false;
+            ForegroundColor = Colors.Olive;
+            DisplayName = "Protobuf Enum";
+        }
     }
-  }
 
-  [Export(typeof(EditorFormatDefinition))]
-  [ClassificationType(ClassificationTypeNames = ProtobufFormatDefinitions.FieldRule)]
-  [Name(ProtobufFormatDefinitions.FieldRule)]
-  [UserVisible(true)]
-  [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
-  internal sealed class ProtobufFieldRule : ClassificationFormatDefinition
-  {
-    public ProtobufFieldRule()
+    /// <summary>
+    /// The protobuf field rule.
+    /// </summary>
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = ProtobufFormatDefinitions.FieldRule)]
+    [Name(ProtobufFormatDefinitions.FieldRule)]
+    [UserVisible(true)]
+    [Order(Before = Priority.Default)] // set the priority to be after the default classifiers
+    internal sealed class ProtobufFieldRule : ClassificationFormatDefinition
     {
-      IsBold = false;
-      ForegroundColor = Colors.Orchid;
-      DisplayName = "Protobuf Field Rule";
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProtobufFieldRule"/> class.
+        /// </summary>
+        public ProtobufFieldRule()
+        {
+            IsBold = false;
+            ForegroundColor = Colors.Orchid;
+            DisplayName = "Protobuf Field Rule";
+        }
     }
-  }
 
-  [Export(typeof(EditorFormatDefinition))]
-  [ClassificationType(ClassificationTypeNames = ProtobufFormatDefinitions.TopLevelCmd)]
-  [Name(ProtobufFormatDefinitions.TopLevelCmd)]
-  [UserVisible(true)]
-  [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
-  internal sealed class ProtobufTopLevelCmd : ClassificationFormatDefinition
-  {
-    public ProtobufTopLevelCmd()
+    /// <summary>
+    /// The protobuf top level cmd.
+    /// </summary>
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = ProtobufFormatDefinitions.TopLevelCmd)]
+    [Name(ProtobufFormatDefinitions.TopLevelCmd)]
+    [UserVisible(true)]
+    [Order(Before = Priority.Default)] // set the priority to be after the default classifiers
+    internal sealed class ProtobufTopLevelCmd : ClassificationFormatDefinition
     {
-      IsBold = false;
-      ForegroundColor = Colors.DodgerBlue;
-      DisplayName = "Protobuf Top Level Cmd";
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProtobufTopLevelCmd"/> class.
+        /// </summary>
+        public ProtobufTopLevelCmd()
+        {
+            IsBold = false;
+            ForegroundColor = Colors.DodgerBlue;
+            DisplayName = "Protobuf Top Level Cmd";
+        }
     }
-  }
 }

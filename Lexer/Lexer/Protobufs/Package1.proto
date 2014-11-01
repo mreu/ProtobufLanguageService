@@ -1,0 +1,6 @@
+package Package1;
+
+message Foo {
+    optional int32 foo1 = 1;
+    extensions 100 to 1000;
+}

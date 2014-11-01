@@ -1,138 +1,161 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufLanguageTagger.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Threading.Tasks;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-  using Lexer;
+    using Lexer;
 
-  using Microsoft.VisualStudio.Text;
-  using Microsoft.VisualStudio.Text.Tagging;
-
-  /// <summary>
-  /// ProtobufLanguageTagger is the core parser for the protobuf 'language'. It handles continuation lines
-  /// and finds both language elements and errors within the given SnapshotSpan(s)
-  /// </summary>
-  internal sealed class ProtobufLanguageTagger : ITagger<ProtobufTokenTag>, IDisposable
-  {
-    readonly ITextBuffer _buffer;
-
-    private Task _task;
-
-    private Lexer _lexer;
-
-    private readonly List<ITagSpan<ProtobufTokenTag>> _tagList = new List<ITagSpan<ProtobufTokenTag>>();
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Tagging;
 
     /// <summary>
-    /// Constructor
+    /// ProtobufLanguageTagger is the core parser for the protobuf 'language'. It handles continuation lines
+    /// and finds both language elements and errors within the given SnapshotSpan(s).
     /// </summary>
-    /// <param name="buffer">The text buffer</param>
-    internal ProtobufLanguageTagger(ITextBuffer buffer)
+    internal sealed class ProtobufLanguageTagger : ITagger<ProtobufTokenTag>, IDisposable
     {
-      _buffer = buffer;
+        /// <summary>
+        /// The _buffer.
+        /// </summary>
+        private readonly ITextBuffer buffer;
 
-      Parse();
+        /// <summary>
+        /// The _task.
+        /// </summary>
+        private Task task;
 
-      _buffer.Changed += buffer_Changed;
-    }
+        /// <summary>
+        /// The _lexer.
+        /// </summary>
+        private Lexer lexer;
 
-    /// <summary>
-    /// Task to reparse the whole text and fires a TagsChanged event
-    /// </summary>
-    /// <param name="snapshot"></param>
-    private void Parse(ITextSnapshot snapshot)
-    {
-      Parse();
+        /// <summary>
+        /// The _tag list.
+        /// </summary>
+        private readonly List<ITagSpan<ProtobufTokenTag>> tagList = new List<ITagSpan<ProtobufTokenTag>>();
 
-      var startPoint = new SnapshotPoint(snapshot, 0);
-      var endPoint = new SnapshotPoint(snapshot, snapshot.Length);
-      var expandedSpan = new SnapshotSpan(startPoint, endPoint);
-      var args = new SnapshotSpanEventArgs(expandedSpan);
-      TagsChanged(this, args);
-    }
-
-    /// <summary>
-    /// Parse the text and build error and token lists
-    /// </summary>
-    private void Parse()
-    {
-      _lexer = new Lexer(_buffer.CurrentSnapshot.GetText());
-      _lexer.Analyze();
-
-      _tagList.Clear();
-
-      foreach (var message in _lexer.Errors)
-      {
-        // check the length of the new span, should not be longer than the current text
-        var length = message.Length;
-        if (message.Position + message.Length > _buffer.CurrentSnapshot.Length)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProtobufLanguageTagger"/> class.
+        /// </summary>
+        /// <param name="buffer">The text buffer.</param>
+        internal ProtobufLanguageTagger(ITextBuffer buffer)
         {
-          length = _buffer.CurrentSnapshot.Length - message.Position;
+            this.buffer = buffer;
+
+            Parse();
+
+            this.buffer.Changed += BufferChanged;
         }
 
-        if (length > 0)
+        /// <summary>
+        /// Task to reparse the whole text and fires a TagsChanged event.
+        /// </summary>
+        /// <param name="snapshot">
+        /// The snapshot.
+        /// </param>
+        private void Parse(ITextSnapshot snapshot)
         {
-          var newSpan = new Span(message.Position, length);
-          _tagList.Add(new TagSpan<ProtobufTokenTag>(new SnapshotSpan(_buffer.CurrentSnapshot, newSpan), new ProtobufErrorTag(message.Message)));
-        }
-      }
+            Parse();
 
-      foreach (var token in _lexer.Tokens)
-      {
-        // check the length of the new span, should not be longer than the current text
-        var length = token.Length;
-        if (token.Position + token.Length > _buffer.CurrentSnapshot.Length)
+            var startPoint = new SnapshotPoint(snapshot, 0);
+            var endPoint = new SnapshotPoint(snapshot, snapshot.Length);
+            var expandedSpan = new SnapshotSpan(startPoint, endPoint);
+            var args = new SnapshotSpanEventArgs(expandedSpan);
+            TagsChanged(this, args);
+        }
+
+        /// <summary>
+        /// Parse the text and build error and token lists.
+        /// </summary>
+        private void Parse()
         {
-          length = _buffer.CurrentSnapshot.Length - token.Position;
+            lexer = new Lexer(buffer.CurrentSnapshot.GetText());
+            lexer.Analyze();
+
+            tagList.Clear();
+
+            foreach (var message in lexer.Errors)
+            {
+                // check the length of the new span, should not be longer than the current text
+                var length = message.Length;
+                if (message.Position + message.Length > buffer.CurrentSnapshot.Length)
+                {
+                    length = buffer.CurrentSnapshot.Length - message.Position;
+                }
+
+                if (length > 0)
+                {
+                    var newSpan = new Span(message.Position, length);
+                    tagList.Add(new TagSpan<ProtobufTokenTag>(new SnapshotSpan(buffer.CurrentSnapshot, newSpan), new ProtobufErrorTag(message.Message)));
+                }
+            }
+
+            foreach (var token in lexer.Tokens)
+            {
+                // check the length of the new span, should not be longer than the current text
+                var length = token.Length;
+                if (token.Position + token.Length > buffer.CurrentSnapshot.Length)
+                {
+                    length = buffer.CurrentSnapshot.Length - token.Position;
+                }
+
+                if (length > 0)
+                {
+                    var newSpan = new Span(token.Position, length);
+                    tagList.Add(new TagSpan<ProtobufTokenTag>(new SnapshotSpan(buffer.CurrentSnapshot, newSpan), new ProtobufTokenTag(token.CodeType)));
+                }
+            }
         }
 
-        if (length > 0)
+        /// <summary>
+        /// When the buffer changes, we reparse all in a separate task.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="TextContentChangedEventArgs"/>.</param>
+        private void BufferChanged(object sender, TextContentChangedEventArgs e)
         {
-          var newSpan = new Span(token.Position, length);
-          _tagList.Add(new TagSpan<ProtobufTokenTag>(new SnapshotSpan(_buffer.CurrentSnapshot, newSpan), new ProtobufTokenTag(token.CodeType)));
+            var temp = TagsChanged;
+            if (temp != null)
+            {
+                Action<object> action = obj => Parse((ITextSnapshot)obj);
+                task = new Task(action, e.After.TextBuffer.CurrentSnapshot); // start background parsing
+                task.Start();
+            }
         }
-      }
-    }
 
-    /// <summary>
-    /// When the buffer changes, we reparse all in a separate task
-    /// </summary>
-    private void buffer_Changed(object sender, TextContentChangedEventArgs e)
-    {
-      var temp = TagsChanged;
-      if (temp != null)
-      {
-        Action<object> action = obj => Parse((ITextSnapshot)obj);
-        _task = new Task(action, e.After.TextBuffer.CurrentSnapshot); // start background parsing
-        _task.Start();
-      }
-    }
+        /// <summary>
+        /// The tags changed.
+        /// </summary>
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
-    public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+        /// <summary>
+        /// Parse the given span(s) and return all the tags that intersect the specified spans.
+        /// </summary>
+        /// <param name="spans">Ordered collection of non-overlapping spans.</param>
+        /// <returns>Unordered enumeration of tags.</returns>
+        public IEnumerable<ITagSpan<ProtobufTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+        {
+            return tagList;
+        }
 
-    /// <summary>
-    /// Parse the given span(s) and return all the tags that intersect the specified spans.
-    /// </summary>
-    /// <param name="spans">ordered collection of non-overlapping spans</param>
-    /// <returns>unordered enumeration of tags</returns>
-    public IEnumerable<ITagSpan<ProtobufTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
-    {
-      return _tagList;
+        #region IDisposable
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            task.Dispose();
+        }
+        #endregion IDisposable
     }
-
-    #region IDisposable
-    public void Dispose()
-    {
-      _task.Dispose();
-    }
-    #endregion IDisposable
-  }
 }
