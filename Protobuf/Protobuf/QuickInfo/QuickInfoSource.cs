@@ -1,72 +1,104 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuickInfoSource.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System.Collections.Generic;
-  using System.Linq;
+    using System.Collections.Generic;
+    using System.Linq;
 
-  using MichaelReukauff.Lexer;
+    using MichaelReukauff.Lexer;
 
-  using Microsoft.VisualStudio.Language.Intellisense;
-  using Microsoft.VisualStudio.Text;
-  using Microsoft.VisualStudio.Text.Tagging;
-
-  internal class QuickInfoSource : IQuickInfoSource
-  {
-    private readonly ITagAggregator<ProtobufTokenTag> _aggregator;
-    private readonly ITextBuffer _buffer;
-
-    private readonly IDictionary<string, string> _keywords;
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Tagging;
 
     /// <summary>
-    /// The constructor sets the QuickInfo source provider and the text buffer, and populates the set of method names, and method signatures and descriptions.
+    /// The quick info source.
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <param name="aggregator"></param>
-    public QuickInfoSource(ITextBuffer buffer, ITagAggregator<ProtobufTokenTag> aggregator)
+    internal class QuickInfoSource : IQuickInfoSource
     {
-      _aggregator = aggregator;
-      _buffer = buffer;
-      _keywords = new ProtobufWordListProvider().GetWordsWithDescription();
-    }
+        /// <summary>
+        /// The _aggregator.
+        /// </summary>
+        private readonly ITagAggregator<ProtobufTokenTag> aggregator;
 
-    /// <summary>
-    /// Implement the AugmentQuickInfoSession method.
-    /// Here the method finds the current word, or the previous word if the cursor is at the end of a line or a text buffer.
-    /// If the word is one of the method names, the description for that method name is added to the QuickInfo content.
-    /// </summary>
-    /// <param name="session"></param>
-    /// <param name="quickInfoContent"></param>
-    /// <param name="applicableToSpan"></param>
-    public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent, out ITrackingSpan applicableToSpan)
-    {
-      applicableToSpan = null;
+        /// <summary>
+        /// The _buffer.
+        /// </summary>
+        private readonly ITextBuffer buffer;
 
-      var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(_buffer.CurrentSnapshot);
+        /// <summary>
+        /// The _keywords.
+        /// </summary>
+        private readonly IDictionary<string, string> keywords;
 
-      // find each span that looks like a token and look it up in the dictionary
-      foreach (IMappingTagSpan<ProtobufTokenTag> curTag in _aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint)))
-      {
-        if (curTag.Tag.CodeType == CodeType.Keyword)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuickInfoSource"/> class. 
+        /// The constructor sets the QuickInfo source provider and the text buffer, and populates the set of method names, and method signatures and descriptions.
+        /// </summary>
+        /// <param name="buffer">
+        /// The text buffer.
+        /// </param>
+        /// <param name="aggregator">
+        /// The aggregator.
+        /// </param>
+        public QuickInfoSource(ITextBuffer buffer, ITagAggregator<ProtobufTokenTag> aggregator)
         {
-          SnapshotSpan tagSpan = curTag.Span.GetSpans(_buffer).First();
-          if (_keywords.Keys.Contains(tagSpan.GetText()))
-          {
-            applicableToSpan = _buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
-            quickInfoContent.Add(_keywords[tagSpan.GetText()]);
-          }
+            this.aggregator = aggregator;
+            this.buffer = buffer;
+            keywords = new ProtobufWordListProvider().GetWordsWithDescription();
         }
-      }
-    }
 
-    public void Dispose()
-    {
+        /// <summary>
+        /// Implement the AugmentQuickInfoSession method.
+        /// Here the method finds the current word, or the previous word if the cursor is at the end of a line or a text buffer.
+        /// If the word is one of the method names, the description for that method name is added to the QuickInfo content.
+        /// </summary>
+        /// <param name="session">
+        /// The session.
+        /// </param>
+        /// <param name="quickInfoContent">
+        /// The quick info content.
+        /// </param>
+        /// <param name="applicableToSpan">
+        /// The tracking span.
+        /// </param>
+        public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent, out ITrackingSpan applicableToSpan)
+        {
+            applicableToSpan = null;
+
+            var snapshotPoint = session.GetTriggerPoint(buffer.CurrentSnapshot);
+            if (snapshotPoint != null)
+            {
+                var triggerPoint = (SnapshotPoint)snapshotPoint;
+
+                // find each span that looks like a token and look it up in the dictionary
+                foreach (IMappingTagSpan<ProtobufTokenTag> curTag in aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint)))
+                {
+                    if (curTag.Tag.CodeType == CodeType.Keyword)
+                    {
+                        SnapshotSpan tagSpan = curTag.Span.GetSpans(buffer).First();
+                        if (keywords.Keys.Contains(tagSpan.GetText()))
+                        {
+                            applicableToSpan = buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
+                            quickInfoContent.Add(keywords[tagSpan.GetText()]);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public void Dispose()
+        {
+        }
     }
-  }
 }

@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright © 2014 Michael Reukauff
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Michael Reukauff">
+//   Copyright © 2014 Michael Reukauff
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
@@ -27,5 +35,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.3.*")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.4.*")]
+[assembly: AssemblyFileVersion("1.4.0.0")]

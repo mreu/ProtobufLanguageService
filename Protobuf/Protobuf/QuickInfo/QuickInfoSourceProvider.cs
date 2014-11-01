@@ -1,37 +1,48 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuickInfoSourceProvider.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition;
 
-  using Microsoft.VisualStudio.Language.Intellisense;
-  using Microsoft.VisualStudio.Text;
-  using Microsoft.VisualStudio.Text.Tagging;
-  using Microsoft.VisualStudio.Utilities;
-
-  [Export(typeof(IQuickInfoSourceProvider))]
-  [Name("Protobuf ToolTip QuickInfo Source")]
-  [Order(Before = "Default Quick Info Presenter")]
-  [ContentType(ProtobufLanguage.ContentType)]
-  internal class QuickInfoSourceProvider : IQuickInfoSourceProvider
-  {
-    [Import]
-    IBufferTagAggregatorFactoryService AggService { get; set; }
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Tagging;
+    using Microsoft.VisualStudio.Utilities;
 
     /// <summary>
-    /// Implement TryCreateQuickInfoSource to return a new QuickInfoSource.
+    /// The quick info source provider.
     /// </summary>
-    /// <param name="textBuffer"></param>
-    /// <returns>The new IQuickInfoSource</returns>
-    public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
+    [Export(typeof(IQuickInfoSourceProvider))]
+    [Name("Protobuf ToolTip QuickInfo Source")]
+    [Order(Before = "Default Quick Info Presenter")]
+    [ContentType(ProtobufLanguage.ContentType)]
+    internal class QuickInfoSourceProvider : IQuickInfoSourceProvider
     {
-      return new QuickInfoSource(textBuffer, AggService.CreateTagAggregator<ProtobufTokenTag>(textBuffer));
+        /// <summary>
+        /// Gets or sets the agg service.
+        /// </summary>
+        [Import]
+        public IBufferTagAggregatorFactoryService AggService { get; set; }
+
+        /// <summary>
+        /// Implement TryCreateQuickInfoSource to return a new QuickInfoSource.
+        /// </summary>
+        /// <param name="textBuffer">
+        /// The text buffer.
+        /// </param>
+        /// <returns>
+        /// The new IQuickInfoSource.
+        /// </returns>
+        public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
+        {
+            return new QuickInfoSource(textBuffer, AggService.CreateTagAggregator<ProtobufTokenTag>(textBuffer));
+        }
     }
-  }
 }

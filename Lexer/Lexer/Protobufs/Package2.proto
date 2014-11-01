@@ -1,0 +1,7 @@
+package Package2;
+
+import "Package1.proto";
+
+extend Package1.Foo {
+    optional string bar = 100;
+}

@@ -1,48 +1,60 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighlightWordTaggerProvider.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
-  using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition;
 
-  using Microsoft.VisualStudio.Text;
-  using Microsoft.VisualStudio.Text.Editor;
-  using Microsoft.VisualStudio.Text.Operations;
-  using Microsoft.VisualStudio.Text.Tagging;
-  using Microsoft.VisualStudio.Utilities;
-
-  [Export(typeof(IViewTaggerProvider))]
-  [ContentType(ProtobufLanguage.ContentType)]
-  [TagType(typeof(TextMarkerTag))]
-  internal class HighlightWordTaggerProvider : IViewTaggerProvider
-  {
-    [Import]
-    internal ITextSearchService TextSearchService { get; set; }
-
-    [Import]
-    internal ITextStructureNavigatorSelectorService TextStructureNavigatorSelector { get; set; }
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Editor;
+    using Microsoft.VisualStudio.Text.Operations;
+    using Microsoft.VisualStudio.Text.Tagging;
+    using Microsoft.VisualStudio.Utilities;
 
     /// <summary>
-    /// Implement the CreateTagger method to return an instance of HighlightWordTagger.
+    /// The highlight word tagger provider.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="textView"></param>
-    /// <param name="buffer"></param>
-    /// <returns></returns>
-    public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+    [Export(typeof(IViewTaggerProvider))]
+    [ContentType(ProtobufLanguage.ContentType)]
+    [TagType(typeof(TextMarkerTag))]
+    internal class HighlightWordTaggerProvider : IViewTaggerProvider
     {
-      // provide highlighting only on the top buffer
-      if (textView.TextBuffer != buffer)
-        return null;
+        /// <summary>
+        /// Gets or sets the text search service.
+        /// </summary>
+        [Import]
+        internal ITextSearchService TextSearchService { get; set; }
 
-      ITextStructureNavigator textStructureNavigator = TextStructureNavigatorSelector.GetTextStructureNavigator(buffer);
+        /// <summary>
+        /// Gets or sets the text structure navigator selector.
+        /// </summary>
+        [Import]
+        internal ITextStructureNavigatorSelectorService TextStructureNavigatorSelector { get; set; }
 
-      return new HighlightWordTagger(textView, buffer, TextSearchService, textStructureNavigator) as ITagger<T>;
+        /// <summary>
+        /// Implement the CreateTagger method to return an instance of HighlightWordTagger.
+        /// </summary>
+        /// <typeparam name="T">The tagger.</typeparam>
+        /// <param name="textView">The text view.</param>
+        /// <param name="buffer">The text buffer.</param>
+        /// <returns>An ITagger.</returns>
+        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+        {
+            // provide highlighting only on the top buffer
+            if (textView.TextBuffer != buffer)
+            {
+                return null;
+            }
+
+            ITextStructureNavigator textStructureNavigator = TextStructureNavigatorSelector.GetTextStructureNavigator(buffer);
+
+            return new HighlightWordTagger(textView, buffer, TextSearchService, textStructureNavigator) as ITagger<T>;
+        }
     }
-  }
 }

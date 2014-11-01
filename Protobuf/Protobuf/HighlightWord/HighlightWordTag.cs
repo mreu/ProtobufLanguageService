@@ -1,18 +1,23 @@
-﻿#region Copyright © 2013 Michael Reukauff
+﻿#region Copyright © 2014 Michael Reukauff
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighlightWordTag.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2014 Michael Reukauff
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
 {
   using Microsoft.VisualStudio.Text.Tagging;
 
-  internal class HighlightWordTag : TextMarkerTag
+    /// <summary>
+    /// The highlight word tag.
+    /// </summary>
+    public class HighlightWordTag : TextMarkerTag
   {
     /// <summary>
+    /// Initializes a new instance of the <see cref="HighlightWordTag"/> class. 
     /// In the constructor, pass in the name of the format definition.
     /// </summary>
     public HighlightWordTag()
