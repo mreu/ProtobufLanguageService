@@ -72,6 +72,7 @@
     <Compile Include="ParseServiceTests.cs" />
     <Compile Include="ParseOptionTest.cs" />
     <Compile Include="ParseExtendTests.cs" />
+    <Compile Include="ParseOneOfTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lexer\Lexer.csproj">

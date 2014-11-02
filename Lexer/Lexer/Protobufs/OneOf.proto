@@ -1,0 +1,9 @@
+package Package1;
+
+message Bar {}
+
+oneof oneof_name {
+    Bar foo1 = 1;
+    int32 foo2 = 2;
+    string foo3 = 3;
+}

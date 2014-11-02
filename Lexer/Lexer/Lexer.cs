@@ -155,6 +155,9 @@ namespace MichaelReukauff.Lexer
                 case "message":
                     ParseMessage(true);
                     break;
+                case "oneof":
+                    ParseOneOf();
+                    break;
                 case "enum":
                     ParseEnum(true);
                     break;
@@ -552,6 +555,174 @@ namespace MichaelReukauff.Lexer
             return true;
         }
         #endregion Parse enum
+
+        #region Parse oneof
+        /// <summary>
+        /// Parse a oneof.
+        /// </summary>
+        /// <returns>True if ok otherwise false.</returns>
+        internal bool ParseOneOf()
+        {
+            AddNewToken(CodeType.TopLevelCmd);
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected oneof name.");
+                return false;
+            }
+
+            if (!Helper.IsIdentifier(Word))
+            {
+                AddNewError("Expected oneof name.");
+                return false;
+            }
+
+            AddNewToken(CodeType.SymDef);
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"{\".");
+                return false;
+            }
+
+            if (Word != "{")
+            {
+                AddNewError("Expected \"{\".");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+                return false;
+            }
+
+            while (Word != "}")
+            {
+                ParseOneOfField();
+
+                if (Index >= Matches.Count)
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"}\".");
+                    return false;
+                }
+            }
+
+            // eat the }
+            IncrementIndex(true);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Parse a oneof field.
+        /// </summary>
+        /// <returns>True if ok otherwise false.</returns>
+        internal bool ParseOneOfField()
+        {
+            var field = new Field();
+
+            //if (!IncrementIndex(true))
+            //{
+            //    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+            //    return false;
+            //}
+
+            field.FieldType = Helper.GetFieldType(Word);
+            if (field.FieldType == FieldType.TypeUnknown)
+            {
+                while (true)
+                {
+                    if (!Helper.IsIdentifier(Word))
+                    {
+                        AddNewError("Expected Identifier.");
+                    }
+
+                    AddNewToken(CodeType.SymRef);
+
+                    if (!IncrementIndex())
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                        return false;
+                    }
+
+                    if (Word == ".")
+                    {
+                        if (!IncrementIndex())
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                AddNewToken(CodeType.Keyword);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                    return false;
+                }
+            }
+
+            if (!Helper.IsIdentifier(Word))
+            {
+                AddNewError("Invalid field name.");
+                return false;
+            }
+
+            AddNewToken(CodeType.SymDef);
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"=\".");
+                return false;
+            }
+
+            if (Word != "=")
+            {
+                AddNewError("Expected \"=\".");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field number.");
+                return false;
+            }
+
+            if (!Helper.IsPositiveInteger(Word))
+            {
+                AddNewError("Expected field number.");
+            }
+            else
+            {
+                AddNewToken(CodeType.Number);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\"");
+                    return false;
+                }
+            }
+
+            if (Word != ";")
+            {
+                AddNewError("Expected \";\"");
+                return false;
+            }
+
+            IncrementIndex(true);
+
+            return true;
+        }
+        #endregion Parse oneof
 
         #region Parse message
         /// <summary>
@@ -1136,7 +1307,7 @@ namespace MichaelReukauff.Lexer
 
                     AddNewToken(CodeType.SymRef);
 
-                    if (!IncrementIndex())
+                    if (!IncrementIndex(true))
                     {
                         AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
                         return false;

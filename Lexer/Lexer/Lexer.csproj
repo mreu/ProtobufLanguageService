@@ -83,6 +83,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Protobufs\OneOf.proto">
+      <Generator>ProtoBufTool</Generator>
+    </None>
     <None Include="Protobufs\Package1.proto">
       <Generator>ProtoBufTool</Generator>
       <LastGenOutput>Package1.cs</LastGenOutput>
