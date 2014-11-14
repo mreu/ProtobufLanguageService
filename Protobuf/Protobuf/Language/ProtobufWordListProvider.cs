@@ -29,6 +29,7 @@ namespace MichaelReukauff.Protobuf
       new ProtobufToken("message", "A protobuf message"),
       new ProtobufToken("enum", "An enumeration"),
       new ProtobufToken("extend", "Extend a message"),
+      new ProtobufToken("oneof", "OneOf"),
 
       // field rules
       new ProtobufToken("required", "A well-formed message must have exactly one of this field."),
