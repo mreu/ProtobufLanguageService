@@ -156,7 +156,7 @@ namespace MichaelReukauff.Lexer
                     ParseMessage(true);
                     break;
                 case "oneof":
-                    ParseOneOf();
+                    ParseOneOf(true);
                     break;
                 case "enum":
                     ParseEnum(true);
@@ -441,7 +441,7 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// Parse enum entry.
         /// </summary>
-        /// <param name="isTopLevel">True if top level commend else false.</param>
+        /// <param name="isTopLevel">True if top level command else false.</param>
         /// <returns>True if ok, else false.</returns>
         internal bool ParseEnum(bool isTopLevel)
         {
@@ -560,10 +560,11 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// Parse a oneof.
         /// </summary>
+        /// <param name="isTopLevel">True if top level command else false.</param>
         /// <returns>True if ok otherwise false.</returns>
-        internal bool ParseOneOf()
+        internal bool ParseOneOf(bool isTopLevel)
         {
-            AddNewToken(CodeType.TopLevelCmd);
+            AddNewToken(isTopLevel ? CodeType.TopLevelCmd : CodeType.Keyword);
 
             if (!IncrementIndex(true))
             {
@@ -762,7 +763,7 @@ namespace MichaelReukauff.Lexer
 
             if (!IncrementIndex(true))
             {
-                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"required\", \"optional\", or \"repeated\".");
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"required\", \"optional\", \"oneof\" or \"repeated\".");
                 return false;
             }
 
@@ -784,6 +785,9 @@ namespace MichaelReukauff.Lexer
                         break;
                     case "option":
                         ParseOption(false);
+                        break;
+                    case "oneof":
+                        ParseOneOf(false);
                         break;
                     default:
                         ParseMessageField();
