@@ -7,3 +7,14 @@ oneof oneof_name {
     int32 foo2 = 2;
     string foo3 = 3;
 }
+
+message CommandMessage
+{
+  oneof Command
+  {
+    SetCommand set = 1;
+    IncCommand inc = 2;
+    ReturnCommand return = 3;
+    QuitCommand quit = 4;
+  }
+}
