@@ -19,13 +19,28 @@ namespace MichaelReukauff.LexerTest
     public class ParseOneOfTests
     {
         [TestMethod]
-        public void ParseOneOf_OK01()
+        public void ParseOneOf_NOK01()
         {
             const string Text = "  oneof oneof_name {\r\n  string url = 2;\r\n  string title = 3;\r\n  msg1 snippets = 4;\r\n}";
 
             var lex = new Lexer(Text) { Matches = Helper.SplitText(Text) };
 
             lex.ParseTopLevelStatement();
+
+            Assert.AreEqual(0, lex.Tokens.Count);
+            Assert.AreEqual(1, lex.Errors.Count);
+            Assert.AreEqual(1, lex.Index);
+
+        }
+
+        [TestMethod]
+        public void ParseOneOf_OK01()
+        {
+            const string Text = "  oneof oneof_name {\r\n  string url = 2;\r\n  string title = 3;\r\n  msg1 snippets = 4;\r\n}";
+
+            var lex = new Lexer(Text) { Matches = Helper.SplitText(Text) };
+
+            Assert.IsTrue(lex.ParseOneOf());
 
             Assert.AreEqual(11, lex.Tokens.Count);
             Assert.AreEqual(0, lex.Errors.Count);

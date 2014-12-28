@@ -155,9 +155,6 @@ namespace MichaelReukauff.Lexer
                 case "message":
                     ParseMessage(true);
                     break;
-                case "oneof":
-                    ParseOneOf(true);
-                    break;
                 case "enum":
                     ParseEnum(true);
                     break;
@@ -176,6 +173,9 @@ namespace MichaelReukauff.Lexer
                 case "option":
                     ParseOption(true);
                     break;
+                case "syntax":
+                    ParseSyntax();
+                    break;
                 default:
                     // Syntax error
                     AddNewError("Expected top-level statement (e.g. \"message\").");
@@ -183,6 +183,85 @@ namespace MichaelReukauff.Lexer
                     break;
             }
         }
+
+        #region Parse syntax
+        /// <summary>
+        /// Parse the option.
+        /// </summary>
+        internal bool ParseSyntax()
+        {
+            AddNewToken(CodeType.TopLevelCmd);
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"=\".");
+                return false;
+            }
+
+            if (Word != "=")
+            {
+                AddNewError("Expected \"=\"");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"proto2\" or \"proto3\".");
+                return false;
+            }
+
+            if (Word != "\"")
+            {
+                AddNewError("Expected \"\"\"");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"\"\".");
+                return false;
+            }
+
+            switch (Word)
+            {
+                case "proto2":
+                case "proto3":
+                    AddNewToken(CodeType.Keyword);
+                    break;
+                default:
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"proto2\" or \"proto3\".");
+                    return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"\"\".");
+                return false;
+            }
+
+            if (Word != "\"")
+            {
+                AddNewError("Expected \"\"\"");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\".");
+                return false;
+            }
+
+            if (Word != ";")
+            {
+                AddNewError("Expected \";\"");
+                return false;
+            }
+
+            IncrementIndex(true);
+
+            return true;
+        }
+        #endregion Parse syntax
 
         #region Parse option
         /// <summary>
@@ -560,11 +639,10 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// Parse a oneof.
         /// </summary>
-        /// <param name="isTopLevel">True if top level command else false.</param>
         /// <returns>True if ok otherwise false.</returns>
-        internal bool ParseOneOf(bool isTopLevel)
+        internal bool ParseOneOf()
         {
-            AddNewToken(isTopLevel ? CodeType.TopLevelCmd : CodeType.Keyword);
+            AddNewToken(CodeType.Keyword);
 
             if (!IncrementIndex(true))
             {
@@ -787,7 +865,7 @@ namespace MichaelReukauff.Lexer
                         ParseOption(false);
                         break;
                     case "oneof":
-                        ParseOneOf(false);
+                        ParseOneOf();
                         break;
                     default:
                         ParseMessageField();
@@ -1904,6 +1982,7 @@ namespace MichaelReukauff.Lexer
         #endregion Helper methods
     }
 
+    #region class Field
     /// <summary>
     /// The field class.
     /// </summary>
@@ -1928,4 +2007,5 @@ namespace MichaelReukauff.Lexer
             HasOption = false;
         }
     }
+    #endregion class Field
 }

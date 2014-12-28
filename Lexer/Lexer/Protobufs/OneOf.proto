@@ -1,20 +1,33 @@
+syntax = "proto2";
+
+option deprecated=true;
+
 package Package1;
 
 message Bar {}
 
-oneof oneof_name {
-    Bar foo1 = 1;
-    int32 foo2 = 2;
-    string foo3 = 3;
-}
-
 message CommandMessage
 {
-  oneof Command
-  {
-    SetCommand set = 1;
-    IncCommand inc = 2;
-    ReturnCommand return = 3;
-    QuitCommand quit = 4;
-  }
+    option deprecated=true;
+
+    oneof Command
+    {
+        SetCommand set = 1;
+        IncCommand inc = 2;
+        ReturnCommand return = 3;
+        QuitCommand quit = 4;
+    }
+}
+
+enum test 
+{
+    option deprecated=true;
+    test1 = 1;
+    test2 = 2;
+}
+
+service SearchService {
+  option deprecated=true;
+
+  rpc Search (SearchRequest) returns (SearchResponse);
 }

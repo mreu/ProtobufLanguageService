@@ -24,6 +24,15 @@ namespace Package1
       get { return _foo1; }
       set { _foo1 = value; }
     }
+
+    private string _text = "";
+    [global::System.Obsolete, global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"text", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string text
+    {
+      get { return _text; }
+      set { _text = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

@@ -2,5 +2,6 @@ package Package1;
 
 message Foo {
     optional int32 foo1 = 1;
+    optional string text = 2  [deprecated=true];
     extensions 100 to 1000;
 }
