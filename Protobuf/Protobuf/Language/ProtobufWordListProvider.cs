@@ -62,6 +62,7 @@ namespace MichaelReukauff.Protobuf
       new ProtobufToken("default", "Default value"),
       new ProtobufToken("public", "This import is public"),
       new ProtobufToken("extensions", "This extend a message"),
+      new ProtobufToken("syntax", "The syntax of the protobuf language used. Must be \"prot2\" or \"proto3\""),
 
       // Literals
       new ProtobufToken("true", "A boolean"),
@@ -82,7 +83,7 @@ namespace MichaelReukauff.Protobuf
       new ProtobufToken("py_generic_services", "Whether or not the protocol buffer compiler should generate abstract service code."),
       new ProtobufToken("message_set_wire_format", "If set to true, the message uses a different binary format intended to be compatible with an old format used inside Google called MessageSet. Users outside Google will probably never need to use this option."),
       new ProtobufToken("packed", "If set to true on a repeated field of a basic integer type, a more compact encoding will be used."),
-      new ProtobufToken("deprecated", " If set to true, indicates that the field is deprecated and should not be used by new code"),
+      new ProtobufToken("deprecated", " If set to true, indicates that the files, service, enum, message, method or enum value is deprecated and should not be used by new code"),
     };
 
         #region internal methods
