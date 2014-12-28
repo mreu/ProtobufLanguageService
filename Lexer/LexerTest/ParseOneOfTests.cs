@@ -70,7 +70,7 @@ namespace MichaelReukauff.LexerTest
             Assert.AreEqual(8, lex.Tokens[9].Length);
             Assert.AreEqual(1, lex.Tokens[10].Length);
 
-            Assert.AreEqual(CodeType.TopLevelCmd, lex.Tokens[0].CodeType);
+            Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
             Assert.AreEqual(CodeType.SymDef, lex.Tokens[1].CodeType);
             Assert.AreEqual(CodeType.Keyword, lex.Tokens[2].CodeType);
             Assert.AreEqual(CodeType.SymDef, lex.Tokens[3].CodeType);
