@@ -140,14 +140,17 @@ namespace MichaelReukauff.Protobuf
                 yield break;
             }
 
-            // if the requested snapshot isn't the same as the one the brace is on, translate our spans to the expected snapshot 
+            // if the requested snapshot isn't the same as the one the brace is on, translate our spans to the expected snapshot
             if (spans[0].Snapshot != currentChar.Snapshot)
             {
                 currentChar = currentChar.TranslateTo(spans[0].Snapshot, PointTrackingMode.Positive);
             }
 
-            // get the current char and the previous char 
-            char currentText = CurrentChar.Value.Position >= CurrentChar.Value.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
+            // get the current char or the previous char
+            char currentText = currentChar.Position == currentChar.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
+
+            //// old code, crashed under some circumstands
+            //// char currentText = CurrentChar.Value.Position >= CurrentChar.Value.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
 
             // if currentChar is 0 (beginning of buffer), don't move it back
             SnapshotPoint lastChar = currentChar == 0 ? currentChar : currentChar - 1;

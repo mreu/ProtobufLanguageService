@@ -381,7 +381,15 @@ namespace MichaelReukauff.Lexer
                 return false;
             }
 
-            IncrementIndex(true);
+            if (!IncrementIndex(true))
+            {
+                return true;
+            }
+
+            if (Word == ";")
+            {
+                IncrementIndex(true);
+            }
 
             return true;
         }
@@ -629,7 +637,15 @@ namespace MichaelReukauff.Lexer
             }
             while (Word != "}");
 
-            IncrementIndex(true);
+            if (!IncrementIndex(true))
+            {
+                return true;
+            }
+
+            if (Word == ";")
+            {
+                IncrementIndex(true);
+            }
 
             return true;
         }
@@ -880,7 +896,15 @@ namespace MichaelReukauff.Lexer
             }
 
             // eat the }
-            IncrementIndex(true);
+            if (!IncrementIndex(true))
+            {
+                return true;
+            }
+
+            if (Word == ";")
+            {
+                IncrementIndex(true);
+            }
 
             return true;
         }
@@ -1452,7 +1476,15 @@ namespace MichaelReukauff.Lexer
                 }
             }
 
-            IncrementIndex(true);
+            if (!IncrementIndex(true))
+            {
+                return true;
+            }
+
+            if (Word == ";")
+            {
+                IncrementIndex(true);
+            }
 
             return true;
         }
