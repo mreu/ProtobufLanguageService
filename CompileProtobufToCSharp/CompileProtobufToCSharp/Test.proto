@@ -1,0 +1,126 @@
+//#;fixCase;asynchronous;datacontract;clientProxy
+//#TreatObsoleteAsError
+
+
+message simpleMessage
+{
+    required int32 i1_int32_test = 1;
+    optional int32 i2 = 2;
+    optional string s1_string = 12;
+    repeated int32 i3_3d = 3;
+    optional simpleEnum type = 44 [default=zwei];
+    optional simpleEnum type2 = 45 [default=zwei];
+    optional verySimple msg = 33;
+    repeated verySimple list = 34;
+}
+
+message verySimple
+{}
+
+message inMsg
+{}
+
+message outMsg
+{}
+
+enum simpleEnum
+{
+    eins = 1;
+    zwei = 2;
+}
+
+service simpleService1
+{
+    rpc s1 (inMsg) returns (outMsg);
+    rpc s11 (simpleMessage) returns (simpleMessage);
+}
+
+service simpleService2
+{
+    rpc s2 (simpleMessage) returns (simpleMessage);
+}
+
+/*
+service service1
+{
+    rpc serv1 (test1) returns (test2);
+    rpc serv2 (test2) returns (test1);
+}
+
+message test3
+{
+    required test10.test11 test = 1 [deprecated=true];
+    extensions 12300 to 12399;
+}
+
+extend test3
+{
+    optional string testex = 12345;
+}
+
+message test2
+{
+    repeated int32 field1 = 33;
+    repeated int32 field2 = 3 [packed=true];
+}
+
+message test10
+{
+    optional int32 field1 = 10;
+    required string field2 = 22;
+    repeated string fields = 33;
+
+    message test11
+    {}
+
+    enum enum11
+    {
+    test1 = 1;
+    test2 = 2;
+    }
+}
+
+message allTypes
+{
+    optional double doublef = 1;
+    optional float floatf = 2;
+    optional int64 int64f = 3;
+    optional uint64 uint64f = 4;
+    optional int32 int32f = 5;
+    optional fixed64 fixed64f = 6;
+    optional fixed32 fixed32f = 7;
+    optional bool boolf = 8;
+    optional string stringf = 9;
+    optional bytes bytesf = 10;
+    optional uint32 uint32f = 11;
+    optional sfixed32 sfixed32f = 12;
+    optional sfixed64 sfixed64f = 13;
+    optional sint32 sint32f = 14;
+    optional sint64 sint64f = 15;
+    optional testenum1 enumf = 16 [default = enum2];
+    optional test1 messagef = 17;
+
+    optional bool boolf2 = 28 [default=true];
+    optional int32 int32f2 = 25 [default =123];
+    optional string stringf2 = 29 [default="lkjlkj"];
+    optional bytes bytesf2 = 20 [default="1,2,3"];
+    optional testenum1 enumf2 = 26 [default = enum1];
+}
+
+message test1
+{}
+
+enum testenum1
+{
+ enum1 = 1;
+ enum2 = 12 [deprecated=true];
+}
+
+enum testenum2
+{
+ option allow_alias = true;
+ enum3 = 1;
+ enum4 = 12;
+ enum5 = 12;
+}
+*/

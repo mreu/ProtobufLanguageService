@@ -1,0 +1,11 @@
+message required1 
+{
+    required int32 i1 = 1;
+    optional int32 i2 = 2;
+    repeated int32 i3 = 4;
+    optional string i4 = 8;
+    optional t1 i5 = 16;
+}
+
+message t1
+{}
