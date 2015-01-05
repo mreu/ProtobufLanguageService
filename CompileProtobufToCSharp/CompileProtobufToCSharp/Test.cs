@@ -14,9 +14,9 @@
 // Generated from: Test.proto
 namespace Test
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"simpleMessage")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"simpleMessage")]
-  public partial class SimpleMessage : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"simpleMessage1")]
+  [global::System.Runtime.Serialization.DataContract(Name=@"simpleMessage1")]
+  public partial class SimpleMessage1 : global::ProtoBuf.IExtensible
   {
     private int _i1Int32Test = default(int);
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"i1_int32_test", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -110,18 +110,18 @@ namespace Test
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"inMsg")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"inMsg")]
-  public partial class InMsg : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"inMsg1")]
+  [global::System.Runtime.Serialization.DataContract(Name=@"inMsg1")]
+  public partial class InMsg1 : global::ProtoBuf.IExtensible
   {
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"outMsg")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"outMsg")]
-  public partial class OutMsg : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"outMsg2")]
+  [global::System.Runtime.Serialization.DataContract(Name=@"outMsg2")]
+  public partial class OutMsg2 : global::ProtoBuf.IExtensible
   {
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -142,342 +142,342 @@ namespace Test
       Zwei = 2
     }
   
-    [global::System.ServiceModel.ServiceContract(Name = @"simpleService1")]
-    public interface ISimpleService1
+    [global::System.ServiceModel.ServiceContract(Name = @"simpleService3")]
+    public interface ISimpleService3
     {
       
-        [global::System.ServiceModel.OperationContract(Name = @"s1")]
+        [global::System.ServiceModel.OperationContract(Name = @"s21")]
         [global::ProtoBuf.ServiceModel.ProtoBehavior]
-        OutMsg S1(InMsg request);
+        OutMsg2 S21(InMsg1 request);
     
-        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s1")]
-        global::System.IAsyncResult BeginS1(InMsg request, global::System.AsyncCallback callback, object state);
-    OutMsg EndS1(global::System.IAsyncResult ar);
+        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s21")]
+        global::System.IAsyncResult BeginS21(InMsg1 request, global::System.AsyncCallback callback, object state);
+    OutMsg2 EndS21(global::System.IAsyncResult ar);
     
-        [global::System.ServiceModel.OperationContract(Name = @"s11")]
+        [global::System.ServiceModel.OperationContract(Name = @"s211")]
         [global::ProtoBuf.ServiceModel.ProtoBehavior]
-        SimpleMessage S11(SimpleMessage request);
+        SimpleMessage1 S211(SimpleMessage1 request);
     
-        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s11")]
-        global::System.IAsyncResult BeginS11(SimpleMessage request, global::System.AsyncCallback callback, object state);
-    SimpleMessage EndS11(global::System.IAsyncResult ar);
+        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s211")]
+        global::System.IAsyncResult BeginS211(SimpleMessage1 request, global::System.AsyncCallback callback, object state);
+    SimpleMessage1 EndS211(global::System.IAsyncResult ar);
     
     }
 
-    public partial class S1CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
+    public partial class S21CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
     {
         private readonly object[] results;
 
-        public S1CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
+        public S21CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
             : base(exception, cancelled, userState) 
         {
             this.results = results;
         }
         
-        public OutMsg Result
+        public OutMsg2 Result
         {
             get { 
                 base.RaiseExceptionIfNecessary();
-                return (OutMsg)(this.results[0]);
+                return (OutMsg2)(this.results[0]);
             }
         }
     }
   
 
-    public partial class S11CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
+    public partial class S211CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
     {
         private readonly object[] results;
 
-        public S11CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
+        public S211CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
             : base(exception, cancelled, userState) 
         {
             this.results = results;
         }
         
-        public SimpleMessage Result
+        public SimpleMessage1 Result
         {
             get { 
                 base.RaiseExceptionIfNecessary();
-                return (SimpleMessage)(this.results[0]);
+                return (SimpleMessage1)(this.results[0]);
             }
         }
     }
   
     [global::System.Diagnostics.DebuggerStepThroughAttribute()]
-    public partial class SimpleService1Client : global::System.ServiceModel.ClientBase<ISimpleService1>, ISimpleService1
+    public partial class SimpleService3Client : global::System.ServiceModel.ClientBase<ISimpleService3>, ISimpleService3
     {
-        public SimpleService1Client()
+        public SimpleService3Client()
         {}
-        public SimpleService1Client(string endpointConfigurationName) 
+        public SimpleService3Client(string endpointConfigurationName) 
             : base(endpointConfigurationName) 
         {}
-        public SimpleService1Client(string endpointConfigurationName, string remoteAddress) 
+        public SimpleService3Client(string endpointConfigurationName, string remoteAddress) 
             : base(endpointConfigurationName, remoteAddress)
         {}
-        public SimpleService1Client(string endpointConfigurationName, global::System.ServiceModel.EndpointAddress remoteAddress)
+        public SimpleService3Client(string endpointConfigurationName, global::System.ServiceModel.EndpointAddress remoteAddress)
             : base(endpointConfigurationName, remoteAddress)
         {}
-        public SimpleService1Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)
+        public SimpleService3Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)
             : base(binding, remoteAddress)
         {}
 
         
-        private BeginOperationDelegate onBeginS1Delegate;
-        private EndOperationDelegate onEndS1Delegate;
-        private global::System.Threading.SendOrPostCallback onS1CompletedDelegate;
+        private BeginOperationDelegate onBeginS21Delegate;
+        private EndOperationDelegate onEndS21Delegate;
+        private global::System.Threading.SendOrPostCallback onS21CompletedDelegate;
 
-        public event global::System.EventHandler<S1CompletedEventArgs> S1Completed;
+        public event global::System.EventHandler<S21CompletedEventArgs> S21Completed;
 
-        public OutMsg S1(InMsg request)
+        public OutMsg2 S21(InMsg1 request)
         {
-            return base.Channel.S1(request);
+            return base.Channel.S21(request);
         }
 
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public global::System.IAsyncResult BeginS1(InMsg request, global::System.AsyncCallback callback, object asyncState)
+        public global::System.IAsyncResult BeginS21(InMsg1 request, global::System.AsyncCallback callback, object asyncState)
         {
-            return base.Channel.BeginS1(request, callback, asyncState);
+            return base.Channel.BeginS21(request, callback, asyncState);
         }
 
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public OutMsg EndS1(global::System.IAsyncResult result)
+        public OutMsg2 EndS21(global::System.IAsyncResult result)
         {
-            return base.Channel.EndS1(result);
+            return base.Channel.EndS21(result);
         }
 
-        private global::System.IAsyncResult OnBeginS1(object[] inValues, global::System.AsyncCallback callback, object asyncState)
+        private global::System.IAsyncResult OnBeginS21(object[] inValues, global::System.AsyncCallback callback, object asyncState)
         {
-            InMsg request = ((InMsg)(inValues[0]));
-            return this.BeginS1(request, callback, asyncState);
+            InMsg1 request = ((InMsg1)(inValues[0]));
+            return this.BeginS21(request, callback, asyncState);
         }
 
-        private object[] OnEndS1(global::System.IAsyncResult result)
+        private object[] OnEndS21(global::System.IAsyncResult result)
         {
-            OutMsg retVal = this.EndS1(result);
+            OutMsg2 retVal = this.EndS21(result);
             return new object[] {
                 retVal};
         }
 
-        private void OnS1Completed(object state)
+        private void OnS21Completed(object state)
         {
-            if ((this.S1Completed != null))
+            if ((this.S21Completed != null))
             {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S1Completed(this, new S1CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.S21Completed(this, new S21CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
 
-        public void S1Async(InMsg request)
+        public void S21Async(InMsg1 request)
         {
-            this.S1Async(request, null);
+            this.S21Async(request, null);
         }
 
-        public void S1Async(InMsg request, object userState)
+        public void S21Async(InMsg1 request, object userState)
         {
-            if ((this.onBeginS1Delegate == null))
+            if ((this.onBeginS21Delegate == null))
             {
-                this.onBeginS1Delegate = new BeginOperationDelegate(this.OnBeginS1);
+                this.onBeginS21Delegate = new BeginOperationDelegate(this.OnBeginS21);
             }
-            if ((this.onEndS1Delegate == null))
+            if ((this.onEndS21Delegate == null))
             {
-                this.onEndS1Delegate = new EndOperationDelegate(this.OnEndS1);
+                this.onEndS21Delegate = new EndOperationDelegate(this.OnEndS21);
             }
-            if ((this.onS1CompletedDelegate == null))
+            if ((this.onS21CompletedDelegate == null))
             {
-                this.onS1CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS1Completed);
+                this.onS21CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS21Completed);
             }
-            base.InvokeAsync(this.onBeginS1Delegate, new object[] {
-                    request}, this.onEndS1Delegate, this.onS1CompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginS21Delegate, new object[] {
+                    request}, this.onEndS21Delegate, this.onS21CompletedDelegate, userState);
         }
     
-        private BeginOperationDelegate onBeginS11Delegate;
-        private EndOperationDelegate onEndS11Delegate;
-        private global::System.Threading.SendOrPostCallback onS11CompletedDelegate;
+        private BeginOperationDelegate onBeginS211Delegate;
+        private EndOperationDelegate onEndS211Delegate;
+        private global::System.Threading.SendOrPostCallback onS211CompletedDelegate;
 
-        public event global::System.EventHandler<S11CompletedEventArgs> S11Completed;
+        public event global::System.EventHandler<S211CompletedEventArgs> S211Completed;
 
-        public SimpleMessage S11(SimpleMessage request)
+        public SimpleMessage1 S211(SimpleMessage1 request)
         {
-            return base.Channel.S11(request);
+            return base.Channel.S211(request);
         }
 
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public global::System.IAsyncResult BeginS11(SimpleMessage request, global::System.AsyncCallback callback, object asyncState)
+        public global::System.IAsyncResult BeginS211(SimpleMessage1 request, global::System.AsyncCallback callback, object asyncState)
         {
-            return base.Channel.BeginS11(request, callback, asyncState);
+            return base.Channel.BeginS211(request, callback, asyncState);
         }
 
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public SimpleMessage EndS11(global::System.IAsyncResult result)
+        public SimpleMessage1 EndS211(global::System.IAsyncResult result)
         {
-            return base.Channel.EndS11(result);
+            return base.Channel.EndS211(result);
         }
 
-        private global::System.IAsyncResult OnBeginS11(object[] inValues, global::System.AsyncCallback callback, object asyncState)
+        private global::System.IAsyncResult OnBeginS211(object[] inValues, global::System.AsyncCallback callback, object asyncState)
         {
-            SimpleMessage request = ((SimpleMessage)(inValues[0]));
-            return this.BeginS11(request, callback, asyncState);
+            SimpleMessage1 request = ((SimpleMessage1)(inValues[0]));
+            return this.BeginS211(request, callback, asyncState);
         }
 
-        private object[] OnEndS11(global::System.IAsyncResult result)
+        private object[] OnEndS211(global::System.IAsyncResult result)
         {
-            SimpleMessage retVal = this.EndS11(result);
+            SimpleMessage1 retVal = this.EndS211(result);
             return new object[] {
                 retVal};
         }
 
-        private void OnS11Completed(object state)
+        private void OnS211Completed(object state)
         {
-            if ((this.S11Completed != null))
+            if ((this.S211Completed != null))
             {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S11Completed(this, new S11CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.S211Completed(this, new S211CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
 
-        public void S11Async(SimpleMessage request)
+        public void S211Async(SimpleMessage1 request)
         {
-            this.S11Async(request, null);
+            this.S211Async(request, null);
         }
 
-        public void S11Async(SimpleMessage request, object userState)
+        public void S211Async(SimpleMessage1 request, object userState)
         {
-            if ((this.onBeginS11Delegate == null))
+            if ((this.onBeginS211Delegate == null))
             {
-                this.onBeginS11Delegate = new BeginOperationDelegate(this.OnBeginS11);
+                this.onBeginS211Delegate = new BeginOperationDelegate(this.OnBeginS211);
             }
-            if ((this.onEndS11Delegate == null))
+            if ((this.onEndS211Delegate == null))
             {
-                this.onEndS11Delegate = new EndOperationDelegate(this.OnEndS11);
+                this.onEndS211Delegate = new EndOperationDelegate(this.OnEndS211);
             }
-            if ((this.onS11CompletedDelegate == null))
+            if ((this.onS211CompletedDelegate == null))
             {
-                this.onS11CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS11Completed);
+                this.onS211CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS211Completed);
             }
-            base.InvokeAsync(this.onBeginS11Delegate, new object[] {
-                    request}, this.onEndS11Delegate, this.onS11CompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginS211Delegate, new object[] {
+                    request}, this.onEndS211Delegate, this.onS211CompletedDelegate, userState);
         }
     
     }
   
-    [global::System.ServiceModel.ServiceContract(Name = @"simpleService2")]
-    public interface ISimpleService2
+    [global::System.ServiceModel.ServiceContract(Name = @"simpleService4")]
+    public interface ISimpleService4
     {
       
-        [global::System.ServiceModel.OperationContract(Name = @"s2")]
+        [global::System.ServiceModel.OperationContract(Name = @"s22")]
         [global::ProtoBuf.ServiceModel.ProtoBehavior]
-        SimpleMessage S2(SimpleMessage request);
+        SimpleMessage1 S22(SimpleMessage1 request);
     
-        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s2")]
-        global::System.IAsyncResult BeginS2(SimpleMessage request, global::System.AsyncCallback callback, object state);
-    SimpleMessage EndS2(global::System.IAsyncResult ar);
+        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s22")]
+        global::System.IAsyncResult BeginS22(SimpleMessage1 request, global::System.AsyncCallback callback, object state);
+    SimpleMessage1 EndS22(global::System.IAsyncResult ar);
     
     }
 
-    public partial class S2CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
+    public partial class S22CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
     {
         private readonly object[] results;
 
-        public S2CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
+        public S22CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
             : base(exception, cancelled, userState) 
         {
             this.results = results;
         }
         
-        public SimpleMessage Result
+        public SimpleMessage1 Result
         {
             get { 
                 base.RaiseExceptionIfNecessary();
-                return (SimpleMessage)(this.results[0]);
+                return (SimpleMessage1)(this.results[0]);
             }
         }
     }
   
     [global::System.Diagnostics.DebuggerStepThroughAttribute()]
-    public partial class SimpleService2Client : global::System.ServiceModel.ClientBase<ISimpleService2>, ISimpleService2
+    public partial class SimpleService4Client : global::System.ServiceModel.ClientBase<ISimpleService4>, ISimpleService4
     {
-        public SimpleService2Client()
+        public SimpleService4Client()
         {}
-        public SimpleService2Client(string endpointConfigurationName) 
+        public SimpleService4Client(string endpointConfigurationName) 
             : base(endpointConfigurationName) 
         {}
-        public SimpleService2Client(string endpointConfigurationName, string remoteAddress) 
+        public SimpleService4Client(string endpointConfigurationName, string remoteAddress) 
             : base(endpointConfigurationName, remoteAddress)
         {}
-        public SimpleService2Client(string endpointConfigurationName, global::System.ServiceModel.EndpointAddress remoteAddress)
+        public SimpleService4Client(string endpointConfigurationName, global::System.ServiceModel.EndpointAddress remoteAddress)
             : base(endpointConfigurationName, remoteAddress)
         {}
-        public SimpleService2Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)
+        public SimpleService4Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)
             : base(binding, remoteAddress)
         {}
 
         
-        private BeginOperationDelegate onBeginS2Delegate;
-        private EndOperationDelegate onEndS2Delegate;
-        private global::System.Threading.SendOrPostCallback onS2CompletedDelegate;
+        private BeginOperationDelegate onBeginS22Delegate;
+        private EndOperationDelegate onEndS22Delegate;
+        private global::System.Threading.SendOrPostCallback onS22CompletedDelegate;
 
-        public event global::System.EventHandler<S2CompletedEventArgs> S2Completed;
+        public event global::System.EventHandler<S22CompletedEventArgs> S22Completed;
 
-        public SimpleMessage S2(SimpleMessage request)
+        public SimpleMessage1 S22(SimpleMessage1 request)
         {
-            return base.Channel.S2(request);
+            return base.Channel.S22(request);
         }
 
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public global::System.IAsyncResult BeginS2(SimpleMessage request, global::System.AsyncCallback callback, object asyncState)
+        public global::System.IAsyncResult BeginS22(SimpleMessage1 request, global::System.AsyncCallback callback, object asyncState)
         {
-            return base.Channel.BeginS2(request, callback, asyncState);
+            return base.Channel.BeginS22(request, callback, asyncState);
         }
 
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public SimpleMessage EndS2(global::System.IAsyncResult result)
+        public SimpleMessage1 EndS22(global::System.IAsyncResult result)
         {
-            return base.Channel.EndS2(result);
+            return base.Channel.EndS22(result);
         }
 
-        private global::System.IAsyncResult OnBeginS2(object[] inValues, global::System.AsyncCallback callback, object asyncState)
+        private global::System.IAsyncResult OnBeginS22(object[] inValues, global::System.AsyncCallback callback, object asyncState)
         {
-            SimpleMessage request = ((SimpleMessage)(inValues[0]));
-            return this.BeginS2(request, callback, asyncState);
+            SimpleMessage1 request = ((SimpleMessage1)(inValues[0]));
+            return this.BeginS22(request, callback, asyncState);
         }
 
-        private object[] OnEndS2(global::System.IAsyncResult result)
+        private object[] OnEndS22(global::System.IAsyncResult result)
         {
-            SimpleMessage retVal = this.EndS2(result);
+            SimpleMessage1 retVal = this.EndS22(result);
             return new object[] {
                 retVal};
         }
 
-        private void OnS2Completed(object state)
+        private void OnS22Completed(object state)
         {
-            if ((this.S2Completed != null))
+            if ((this.S22Completed != null))
             {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S2Completed(this, new S2CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.S22Completed(this, new S22CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
 
-        public void S2Async(SimpleMessage request)
+        public void S22Async(SimpleMessage1 request)
         {
-            this.S2Async(request, null);
+            this.S22Async(request, null);
         }
 
-        public void S2Async(SimpleMessage request, object userState)
+        public void S22Async(SimpleMessage1 request, object userState)
         {
-            if ((this.onBeginS2Delegate == null))
+            if ((this.onBeginS22Delegate == null))
             {
-                this.onBeginS2Delegate = new BeginOperationDelegate(this.OnBeginS2);
+                this.onBeginS22Delegate = new BeginOperationDelegate(this.OnBeginS22);
             }
-            if ((this.onEndS2Delegate == null))
+            if ((this.onEndS22Delegate == null))
             {
-                this.onEndS2Delegate = new EndOperationDelegate(this.OnEndS2);
+                this.onEndS22Delegate = new EndOperationDelegate(this.OnEndS22);
             }
-            if ((this.onS2CompletedDelegate == null))
+            if ((this.onS22CompletedDelegate == null))
             {
-                this.onS2CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS2Completed);
+                this.onS22CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS22Completed);
             }
-            base.InvokeAsync(this.onBeginS2Delegate, new object[] {
-                    request}, this.onEndS2Delegate, this.onS2CompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginS22Delegate, new object[] {
+                    request}, this.onEndS22Delegate, this.onS22CompletedDelegate, userState);
         }
     
     }

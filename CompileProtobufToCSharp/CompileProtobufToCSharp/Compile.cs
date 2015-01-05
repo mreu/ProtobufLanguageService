@@ -388,11 +388,7 @@ namespace CompileProtobufToCSharp
         {
             foreach (var item in services)
             {
-                if (first)
-                {
-                    first = false;
-                }
-                else
+                if (!first)
                 {
                     file.WriteLine();
                 }
@@ -401,9 +397,6 @@ namespace CompileProtobufToCSharp
 
                 if (options.IsObsolete)
                 {
-                    WriteLineIntended(
-                        file,
-                        string.Format("[global::System.Obsolete(\"This is obsolete.\", {0})]", options.TreatObsoleteAsError ? "true" : "false"));
                     obsolete = true;
                 }
                 else
@@ -412,12 +405,16 @@ namespace CompileProtobufToCSharp
                     {
                         if (item.options.deprecated)
                         {
-                            WriteLineIntended(
-                                file,
-                                string.Format("[global::System.Obsolete(\"This is obsolete.\", {0})]", options.TreatObsoleteAsError ? "true" : "false"));
                             obsolete = true;
                         }
                     }
+                }
+
+                if (obsolete)
+                {
+                    WriteLineIntended(
+                        file,
+                        string.Format("[global::System.Obsolete(\"This is obsolete.\", {0})]", options.TreatObsoleteAsError ? "true" : "false"));
                 }
 
                 if (options.DataContract)
@@ -482,7 +479,7 @@ namespace CompileProtobufToCSharp
                             string.Format(
                                 "global::System.IAsyncResult Begin{0}({1} request, global::System.AsyncCallback callback, object state);",
                                 name,
-                                output));
+                                input));
                         WriteLineIntended(file, string.Format("{0} End{1}(global::System.IAsyncResult ar);", output, name));
                     }
                 }
@@ -494,6 +491,11 @@ namespace CompileProtobufToCSharp
                 {
                     foreach (var method in item.method)
                     {
+                        var input = method.input_type.StartsWith(".") ? method.input_type.Substring(1) : method.input_type;
+                        input = options.FixCase ? ToPascalCase(input) : input;
+                        var output = method.output_type.StartsWith(".") ? method.output_type.Substring(1) : method.output_type;
+                        output = options.FixCase ? ToPascalCase(output) : output;
+
                         file.WriteLine();
 
                         WriteLineIntended(
@@ -524,14 +526,14 @@ namespace CompileProtobufToCSharp
 
                         file.WriteLine();
 
-                        WriteLineIntended(file, "public SimpleMessage Result");
+                        WriteLineIntended(file, string.Format("public {0} Result", output));
                         WriteLineIntended(file, "{");
                         intend++;
                         WriteLineIntended(file, "get");
                         WriteLineIntended(file, "{");
                         intend++;
                         WriteLineIntended(file, "base.RaiseExceptionIfNecessary();");
-                        WriteLineIntended(file, "return (SimpleMessage)(this.results[0]);");
+                        WriteLineIntended(file, string.Format("return ({0})(this.results[0]);", output));
                         intend--;
                         WriteLineIntended(file, "}");
                         intend--;
@@ -568,18 +570,23 @@ namespace CompileProtobufToCSharp
 
                     WriteLineIntended(file, string.Format("public {0}Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)", options.FixCase ? ToPascalCase(item.name) : item.name));
                     intend++;
-                    WriteLineIntended(file, ": base(endpointConfigurationName, remoteAddress)");
+                    WriteLineIntended(file, ": base(binding, remoteAddress)");
                     intend--;
                     WriteLineIntended(file, "{ }");
 
                     foreach (var method in item.method)
                     {
+                        var input = method.input_type.StartsWith(".") ? method.input_type.Substring(1) : method.input_type;
+                        input = options.FixCase ? ToPascalCase(input) : input;
+                        var output = method.output_type.StartsWith(".") ? method.output_type.Substring(1) : method.output_type;
+                        output = options.FixCase ? ToPascalCase(output) : output;
+
                         file.WriteLine();
 
                         WriteLineIntended(file, string.Format("private BeginOperationDelegate onBegin{0}Delegate;", options.FixCase ? ToPascalCase(method.name) : method.name));
                         WriteLineIntended(file, string.Format("private EndOperationDelegate onEnd{0}Delegate;", options.FixCase ? ToPascalCase(method.name) : method.name));
                         WriteLineIntended(file, string.Format("private global::System.Threading.SendOrPostCallback on{0}CompletedDelegate;", options.FixCase ? ToPascalCase(method.name) : method.name));
-                        WriteLineIntended(file, string.Format("public event global::System.EventHandler<S1CompletedEventArgs> {0}Completed;", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, string.Format("public event global::System.EventHandler<{0}CompletedEventArgs> {0}Completed;", options.FixCase ? ToPascalCase(method.name) : method.name));
                         file.WriteLine();
 
                         WriteLineIntended(file, string.Format("public {1} {0}({2} request)", options.FixCase ? ToPascalCase(method.name) : method.name, output, input));
@@ -608,63 +615,81 @@ namespace CompileProtobufToCSharp
                         WriteLineIntended(file, "}");
                         file.WriteLine();
 
-                        WriteLineIntended(file, string.Format("", options.FixCase ? ToPascalCase(method.name) : method.name));
-                        WriteLineIntended(file, string.Format("", options.FixCase ? ToPascalCase(method.name) : method.name));
-                        WriteLineIntended(file, "");
-                        WriteLineIntended(file, "");
-                        WriteLineIntended(file, "");
+                        WriteLineIntended(file, string.Format("private global::System.IAsyncResult OnBegin{0}(object[] inValues, global::System.AsyncCallback callback, object asyncState)", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, "{");
+                        intend++;
+                        WriteLineIntended(file, string.Format("{0} request = ({0})(inValues[0]);", input));
+                        WriteLineIntended(file, string.Format("return this.Begin{0}(request, callback, asyncState);", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend--;
+                        WriteLineIntended(file, "}");
+                        file.WriteLine();
+
+                        WriteLineIntended(file, string.Format("private object[] OnEnd{0}(global::System.IAsyncResult result)", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, "{");
+                        intend++;
+                        WriteLineIntended(file, string.Format("{1} retVal = this.End{0}(result);", options.FixCase ? ToPascalCase(method.name) : method.name, output));
+                        WriteLineIntended(file, "return new object[] { retVal };");
+                        intend--;
+                        WriteLineIntended(file, "}");
+                        file.WriteLine();
+
+                        WriteLineIntended(file, string.Format("private void On{0}Completed(object state)", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, "{");
+                        intend++;
+                        WriteLineIntended(file, string.Format("if (this.{0}Completed != null)", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, "{");
+                        intend++;
+                        WriteLineIntended(file, "InvokeAsyncCompletedEventArgs e = (InvokeAsyncCompletedEventArgs)(state);");
+                        WriteLineIntended(file, string.Format("this.{0}Completed(this, new {0}CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend--;
+                        WriteLineIntended(file, "}");
+                        intend--;
+                        WriteLineIntended(file, "}");
+                        file.WriteLine();
+
+                        WriteLineIntended(file, string.Format("public void {0}Async({1} request)", options.FixCase ? ToPascalCase(method.name) : method.name, input));
+                        WriteLineIntended(file, "{");
+                        intend++;
+                        WriteLineIntended(file, string.Format("this.{0}Async(request, null);", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend--;
+                        WriteLineIntended(file, "}");
+                        file.WriteLine();
+
+                        WriteLineIntended(file, string.Format("public void {0}Async({1} request, object userState)", options.FixCase ? ToPascalCase(method.name) : method.name, input));
+                        WriteLineIntended(file, "{");
+                        intend++;
+                        WriteLineIntended(file, string.Format("if ((this.onBegin{0}Delegate == null))", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend++;
+                        WriteLineIntended(file, string.Format("this.onBegin{0}Delegate = new BeginOperationDelegate(this.OnBegin{0});", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend--;
+                        file.WriteLine();
+                        WriteLineIntended(file, string.Format("if ((this.onEnd{0}Delegate == null))", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend++;
+                        WriteLineIntended(file, string.Format("this.onEnd{0}Delegate = new EndOperationDelegate(this.OnEnd{0});", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend--;
+                        file.WriteLine();
+
+                        WriteLineIntended(file, string.Format("if ((this.on{0}CompletedDelegate == null))", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend++;
+                        WriteLineIntended(file, string.Format("this.on{0}CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.On{0}Completed);", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend--;
+                        file.WriteLine();
+
+                        WriteLineIntended(file, string.Format("base.InvokeAsync(this.onBegin{0}Delegate,", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        intend++;
+                        WriteLineIntended(file, "new object[] {request},");
+                        WriteLineIntended(file, string.Format("this.onEnd{0}Delegate,", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, string.Format("this.on{0}CompletedDelegate,", options.FixCase ? ToPascalCase(method.name) : method.name));
+                        WriteLineIntended(file, "userState);");
+                        intend--;
+
+                        intend--;
+                        WriteLineIntended(file, "}");
+                        file.WriteLine();
                     }
 
                     intend--;
                     WriteLineIntended(file, "}");
-
-                    /*
-        private global::System.IAsyncResult OnBeginS1(object[] inValues, global::System.AsyncCallback callback, object asyncState)
-        {
-            SimpleMessage request = ((SimpleMessage)(inValues[0]));
-            return this.BeginS1(request, callback, asyncState);
-        }
-
-        private object[] OnEndS1(global::System.IAsyncResult result)
-        {
-            SimpleMessage retVal = this.EndS1(result);
-            return new object[] {
-                retVal};
-        }
-
-        private void OnS1Completed(object state)
-        {
-            if ((this.S1Completed != null))
-            {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S1Completed(this, new S1CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-
-        public void S1Async(SimpleMessage request)
-        {
-            this.S1Async(request, null);
-        }
-
-        public void S1Async(SimpleMessage request, object userState)
-        {
-            if ((this.onBeginS1Delegate == null))
-            {
-                this.onBeginS1Delegate = new BeginOperationDelegate(this.OnBeginS1);
-            }
-            if ((this.onEndS1Delegate == null))
-            {
-                this.onEndS1Delegate = new EndOperationDelegate(this.OnEndS1);
-            }
-            if ((this.onS1CompletedDelegate == null))
-            {
-                this.onS1CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS1Completed);
-            }
-            base.InvokeAsync(this.onBeginS1Delegate, new object[] {
-                    request}, this.onEndS1Delegate, this.onS1CompletedDelegate, userState);
-        }
-
-                     */
                 }
             }
         }
@@ -1310,8 +1335,6 @@ namespace CompileProtobufToCSharp
 
             if (parts.Any())
             {
-                name = string.Empty;
-
                 name = parts[0].Substring(0, 1).ToLower() + parts[0].Substring(1);
 
                 for (int ix = 1; ix < parts.Count(); ix++)

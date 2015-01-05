@@ -1,8 +1,7 @@
 //#;fixCase;asynchronous;datacontract;clientProxy
 //#TreatObsoleteAsError
 
-
-message simpleMessage
+message simpleMessage1
 {
     required int32 i1_int32_test = 1;
     optional int32 i2 = 2;
@@ -17,10 +16,10 @@ message simpleMessage
 message verySimple
 {}
 
-message inMsg
+message inMsg1
 {}
 
-message outMsg
+message outMsg2
 {}
 
 enum simpleEnum
@@ -29,15 +28,15 @@ enum simpleEnum
     zwei = 2;
 }
 
-service simpleService1
+service simpleService3
 {
-    rpc s1 (inMsg) returns (outMsg);
-    rpc s11 (simpleMessage) returns (simpleMessage);
+    rpc s21 (inMsg1) returns (outMsg2);
+    rpc s211 (simpleMessage1) returns (simpleMessage1);
 }
 
-service simpleService2
+service simpleService4
 {
-    rpc s2 (simpleMessage) returns (simpleMessage);
+    rpc s22 (simpleMessage1) returns (simpleMessage1);
 }
 
 /*
