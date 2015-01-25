@@ -7,91 +7,153 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Option: data-contract serialization ([DataContract]/[DataMember]) enabled
-    
-// Option: fix case enabled
-    
 // Generated from: Test.proto
-namespace Test
+// Note: requires additional types generated from: descriptor.proto
+namespace foo.bar
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"simpleMessage1")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"simpleMessage1")]
-  public partial class SimpleMessage1 : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MyMessage")]
+  public partial class MyMessage : global::ProtoBuf.IExtensible
   {
-    private int _i1Int32Test = default(int);
-    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"i1_int32_test", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public MyMessage() {}
+
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"FooOptions")]
+  public partial class FooOptions : global::ProtoBuf.IExtensible
+  {
+    public FooOptions() {}
+
+    private int _opt1 = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"opt1", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
-    [global::System.Runtime.Serialization.DataMember(Name=@"i1_int32_test", Order = 1, IsRequired = true)]
-    
-    public int I1Int32Test
+    public int opt1
     {
-      get { return _i1Int32Test; }
-      set { _i1Int32Test = value; }
+      get { return _opt1; }
+      set { _opt1 = value; }
+    }
+    private string _opt2 = "";
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"opt2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string opt2
+    {
+      get { return _opt2; }
+      set { _opt2 = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Bar")]
+  public partial class Bar : global::ProtoBuf.IExtensible
+  {
+    public Bar() {}
+
+    private int _a = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"a", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int a
+    {
+      get { return _a; }
+      set { _a = value; }
+    }
+    private int _b = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"b", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int b
+    {
+      get { return _b; }
+      set { _b = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Foo")]
+  public partial class Foo : global::ProtoBuf.IExtensible
+  {
+    public Foo() {}
+
+    private int _bar = default(int);
+    [global::ProtoBuf.ProtoMember(126, IsRequired = false, Name=@"bar", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int bar
+    {
+      get { return _bar; }
+      set { _bar = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"simpleMessage1")]
+  public partial class simpleMessage1 : global::ProtoBuf.IExtensible
+  {
+    public simpleMessage1() {}
+
+    private int _i1_int32_test = default(int);
+    [global::System.Obsolete, global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"i1_int32_test", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int i1_int32_test
+    {
+      get { return _i1_int32_test; }
+      set { _i1_int32_test = value; }
     }
     private int _i2 = default(int);
     [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"i2", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
-    [global::System.Runtime.Serialization.DataMember(Name=@"i2", Order = 2, IsRequired = false)]
-    
-    public int I2
+    public int i2
     {
       get { return _i2; }
       set { _i2 = value; }
     }
-    private string _s1String = "";
+    private string _s1_string = "";
     [global::ProtoBuf.ProtoMember(12, IsRequired = false, Name=@"s1_string", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]
-    [global::System.Runtime.Serialization.DataMember(Name=@"s1_string", Order = 12, IsRequired = false)]
-    
-    public string S1String
+    public string s1_string
     {
-      get { return _s1String; }
-      set { _s1String = value; }
+      get { return _s1_string; }
+      set { _s1_string = value; }
     }
-    private readonly global::System.Collections.Generic.List<int> _i33d = new global::System.Collections.Generic.List<int>();
+    private readonly global::System.Collections.Generic.List<int> _i3_3d = new global::System.Collections.Generic.List<int>();
     [global::ProtoBuf.ProtoMember(3, Name=@"i3_3d", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"i3_3d", Order = 3, IsRequired = false)]
-    
-    public global::System.Collections.Generic.List<int> I33d
+    public global::System.Collections.Generic.List<int> i3_3d
     {
-      get { return _i33d; }
+      get { return _i3_3d; }
     }
   
-    private SimpleEnum _type = SimpleEnum.Zwei;
+    private foo.bar.simpleEnum _type = foo.bar.simpleEnum.zwei;
     [global::ProtoBuf.ProtoMember(44, IsRequired = false, Name=@"type", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(SimpleEnum.Zwei)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"type", Order = 44, IsRequired = false)]
-    
-    public SimpleEnum Type
+    [global::System.ComponentModel.DefaultValue(foo.bar.simpleEnum.zwei)]
+    public foo.bar.simpleEnum type
     {
       get { return _type; }
       set { _type = value; }
     }
-    private SimpleEnum _type2 = SimpleEnum.Zwei;
+    private foo.bar.simpleEnum _type2 = foo.bar.simpleEnum.zwei;
     [global::ProtoBuf.ProtoMember(45, IsRequired = false, Name=@"type2", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(SimpleEnum.Zwei)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"type2", Order = 45, IsRequired = false)]
-    
-    public SimpleEnum Type2
+    [global::System.ComponentModel.DefaultValue(foo.bar.simpleEnum.zwei)]
+    public foo.bar.simpleEnum type2
     {
       get { return _type2; }
       set { _type2 = value; }
     }
-    private VerySimple _msg = null;
+    private foo.bar.verySimple _msg = null;
     [global::ProtoBuf.ProtoMember(33, IsRequired = false, Name=@"msg", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"msg", Order = 33, IsRequired = false)]
-    
-    public VerySimple Msg
+    public foo.bar.verySimple msg
     {
       get { return _msg; }
       set { _msg = value; }
     }
-    private readonly global::System.Collections.Generic.List<VerySimple> _list = new global::System.Collections.Generic.List<VerySimple>();
+    private readonly global::System.Collections.Generic.List<foo.bar.verySimple> _list = new global::System.Collections.Generic.List<foo.bar.verySimple>();
     [global::ProtoBuf.ProtoMember(34, Name=@"list", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"list", Order = 34, IsRequired = false)]
-    
-    public global::System.Collections.Generic.List<VerySimple> List
+    public global::System.Collections.Generic.List<foo.bar.verySimple> list
     {
       get { return _list; }
     }
@@ -102,384 +164,453 @@ namespace Test
   }
   
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"verySimple")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"verySimple")]
-  public partial class VerySimple : global::ProtoBuf.IExtensible
+  public partial class verySimple : global::ProtoBuf.IExtensible
   {
+    public verySimple() {}
+
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"inMsg1")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"inMsg1")]
-  public partial class InMsg1 : global::ProtoBuf.IExtensible
+  public partial class inMsg1 : global::ProtoBuf.IExtensible
   {
+    public inMsg1() {}
+
+    private foo.bar.inMsg1.Corpus _corpus = foo.bar.inMsg1.Corpus.UNIVERSAL;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"corpus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(foo.bar.inMsg1.Corpus.UNIVERSAL)]
+    public foo.bar.inMsg1.Corpus corpus
+    {
+      get { return _corpus; }
+      set { _corpus = value; }
+    }
+    private foo.bar.outMsg2 _msg2 = null;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"msg2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public foo.bar.outMsg2 msg2
+    {
+      get { return _msg2; }
+      set { _msg2 = value; }
+    }
+    private foo.bar.inMsg1.outMsg1 _msg1 = null;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"msg1", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public foo.bar.inMsg1.outMsg1 msg1
+    {
+      get { return _msg1; }
+      set { _msg1 = value; }
+    }
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"outMsg1")]
+  public partial class outMsg1 : global::ProtoBuf.IExtensible
+  {
+    public outMsg1() {}
+
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"Corpus")]
+    public enum Corpus
+    {
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"UNIVERSAL", Value=0)]
+      UNIVERSAL = 0,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"WEB", Value=1)]
+      WEB = 1,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"IMAGES", Value=2)]
+      IMAGES = 2,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"LOCAL", Value=3)]
+      LOCAL = 3,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"NEWS", Value=4)]
+      NEWS = 4,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"PRODUCTS", Value=5)]
+      PRODUCTS = 5,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"VIDEO", Value=6)]
+      VIDEO = 6
+    }
+  
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"outMsg2")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"outMsg2")]
-  public partial class OutMsg2 : global::ProtoBuf.IExtensible
+  public partial class outMsg2 : global::ProtoBuf.IExtensible
   {
+    public outMsg2() {}
+
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"test3")]
+  public partial class test3 : global::ProtoBuf.IExtensible
+  {
+    public test3() {}
+
+    private foo.bar.test10.test11 _test = null;
+    [global::System.Obsolete, global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"test", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public foo.bar.test10.test11 test
+    {
+      get { return _test; }
+      set { _test = value; }
+    }
+    private string _testex = "";
+    [global::ProtoBuf.ProtoMember(12345, IsRequired = false, Name=@"testex", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string testex
+    {
+      get { return _testex; }
+      set { _testex = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"test2")]
+  public partial class test2 : global::ProtoBuf.IExtensible
+  {
+    public test2() {}
+
+    private readonly global::System.Collections.Generic.List<int> _field1 = new global::System.Collections.Generic.List<int>();
+    [global::ProtoBuf.ProtoMember(33, Name=@"field1", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public global::System.Collections.Generic.List<int> field1
+    {
+      get { return _field1; }
+    }
+  
+    private readonly global::System.Collections.Generic.List<int> _field2 = new global::System.Collections.Generic.List<int>();
+    [global::ProtoBuf.ProtoMember(3, Name=@"field2", DataFormat = global::ProtoBuf.DataFormat.TwosComplement, Options = global::ProtoBuf.MemberSerializationOptions.Packed)]
+    public global::System.Collections.Generic.List<int> field2
+    {
+      get { return _field2; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"test10")]
+  public partial class test10 : global::ProtoBuf.IExtensible
+  {
+    public test10() {}
+
+    private int _field1 = default(int);
+    [global::ProtoBuf.ProtoMember(10, IsRequired = false, Name=@"field1", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int field1
+    {
+      get { return _field1; }
+      set { _field1 = value; }
+    }
+    private string _field2 = "";
+    [global::ProtoBuf.ProtoMember(22, IsRequired = true, Name=@"field2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string field2
+    {
+      get { return _field2; }
+      set { _field2 = value; }
+    }
+    private readonly global::System.Collections.Generic.List<string> _fields = new global::System.Collections.Generic.List<string>();
+    [global::ProtoBuf.ProtoMember(33, Name=@"fields", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<string> fields
+    {
+      get { return _fields; }
+    }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"test11")]
+  public partial class test11 : global::ProtoBuf.IExtensible
+  {
+    public test11() {}
+
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"enum11")]
+    public enum enum11
+    {
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"test1", Value=1)]
+      test1 = 1,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"test2", Value=2)]
+      test2 = 2
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"allTypes")]
+  public partial class allTypes : global::ProtoBuf.IExtensible
+  {
+    public allTypes() {}
+
+    private double _doublef = default(double);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"doublef", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(double))]
+    public double doublef
+    {
+      get { return _doublef; }
+      set { _doublef = value; }
+    }
+    private float _floatf = default(float);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"floatf", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float floatf
+    {
+      get { return _floatf; }
+      set { _floatf = value; }
+    }
+    private long _int64f = default(long);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"int64f", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(long))]
+    public long int64f
+    {
+      get { return _int64f; }
+      set { _int64f = value; }
+    }
+    private ulong _uint64f = default(ulong);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"uint64f", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(ulong))]
+    public ulong uint64f
+    {
+      get { return _uint64f; }
+      set { _uint64f = value; }
+    }
+    private int _int32f = default(int);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"int32f", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int int32f
+    {
+      get { return _int32f; }
+      set { _int32f = value; }
+    }
+    private ulong _fixed64f = default(ulong);
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"fixed64f", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(ulong))]
+    public ulong fixed64f
+    {
+      get { return _fixed64f; }
+      set { _fixed64f = value; }
+    }
+    private uint _fixed32f = default(uint);
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"fixed32f", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(uint))]
+    public uint fixed32f
+    {
+      get { return _fixed32f; }
+      set { _fixed32f = value; }
+    }
+    private bool _boolf = default(bool);
+    [global::ProtoBuf.ProtoMember(8, IsRequired = false, Name=@"boolf", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool boolf
+    {
+      get { return _boolf; }
+      set { _boolf = value; }
+    }
+    private string _stringf = "";
+    [global::ProtoBuf.ProtoMember(9, IsRequired = false, Name=@"stringf", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string stringf
+    {
+      get { return _stringf; }
+      set { _stringf = value; }
+    }
+    private byte[] _bytesf = null;
+    [global::ProtoBuf.ProtoMember(10, IsRequired = false, Name=@"bytesf", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] bytesf
+    {
+      get { return _bytesf; }
+      set { _bytesf = value; }
+    }
+    private uint _uint32f = default(uint);
+    [global::ProtoBuf.ProtoMember(11, IsRequired = false, Name=@"uint32f", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(uint))]
+    public uint uint32f
+    {
+      get { return _uint32f; }
+      set { _uint32f = value; }
+    }
+    private int _sfixed32f = default(int);
+    [global::ProtoBuf.ProtoMember(12, IsRequired = false, Name=@"sfixed32f", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int sfixed32f
+    {
+      get { return _sfixed32f; }
+      set { _sfixed32f = value; }
+    }
+    private long _sfixed64f = default(long);
+    [global::ProtoBuf.ProtoMember(13, IsRequired = false, Name=@"sfixed64f", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(long))]
+    public long sfixed64f
+    {
+      get { return _sfixed64f; }
+      set { _sfixed64f = value; }
+    }
+    private int _sint32f = default(int);
+    [global::ProtoBuf.ProtoMember(14, IsRequired = false, Name=@"sint32f", DataFormat = global::ProtoBuf.DataFormat.ZigZag)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int sint32f
+    {
+      get { return _sint32f; }
+      set { _sint32f = value; }
+    }
+    private long _sint64f = default(long);
+    [global::ProtoBuf.ProtoMember(15, IsRequired = false, Name=@"sint64f", DataFormat = global::ProtoBuf.DataFormat.ZigZag)]
+    [global::System.ComponentModel.DefaultValue(default(long))]
+    public long sint64f
+    {
+      get { return _sint64f; }
+      set { _sint64f = value; }
+    }
+    private foo.bar.testenum1 _enumf = foo.bar.testenum1.enum2;
+    [global::ProtoBuf.ProtoMember(16, IsRequired = false, Name=@"enumf", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(foo.bar.testenum1.enum2)]
+    public foo.bar.testenum1 enumf
+    {
+      get { return _enumf; }
+      set { _enumf = value; }
+    }
+    private foo.bar.test1 _messagef = null;
+    [global::ProtoBuf.ProtoMember(17, IsRequired = false, Name=@"messagef", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public foo.bar.test1 messagef
+    {
+      get { return _messagef; }
+      set { _messagef = value; }
+    }
+    private bool _boolf2 = (bool)true;
+    [global::ProtoBuf.ProtoMember(28, IsRequired = false, Name=@"boolf2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue((bool)true)]
+    public bool boolf2
+    {
+      get { return _boolf2; }
+      set { _boolf2 = value; }
+    }
+    private int _int32f2 = (int)123;
+    [global::ProtoBuf.ProtoMember(25, IsRequired = false, Name=@"int32f2", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue((int)123)]
+    public int int32f2
+    {
+      get { return _int32f2; }
+      set { _int32f2 = value; }
+    }
+    private string _stringf2 = @"lkjlkj";
+    [global::ProtoBuf.ProtoMember(29, IsRequired = false, Name=@"stringf2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(@"lkjlkj")]
+    public string stringf2
+    {
+      get { return _stringf2; }
+      set { _stringf2 = value; }
+    }
+    private byte[] _bytesf2 =  /* 
+        1,2,3
+        */ null ;
+    [global::ProtoBuf.ProtoMember(20, IsRequired = false, Name=@"bytesf2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue( /* 
+        1,2,3
+        */ null )]
+    public byte[] bytesf2
+    {
+      get { return _bytesf2; }
+      set { _bytesf2 = value; }
+    }
+    private foo.bar.testenum1 _enumf2 = foo.bar.testenum1.enum1;
+    [global::ProtoBuf.ProtoMember(26, IsRequired = false, Name=@"enumf2", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(foo.bar.testenum1.enum1)]
+    public foo.bar.testenum1 enumf2
+    {
+      get { return _enumf2; }
+      set { _enumf2 = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"test1")]
+  public partial class test1 : global::ProtoBuf.IExtensible
+  {
+    public test1() {}
+
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
     [global::ProtoBuf.ProtoContract(Name=@"simpleEnum")]
-    [global::System.Runtime.Serialization.DataContract(Name=@"simpleEnum")]
-    public enum SimpleEnum
+    public enum simpleEnum
     {
       
       [global::ProtoBuf.ProtoEnum(Name=@"eins", Value=1)]
-      [global::System.Runtime.Serialization.EnumMember(Value=@"eins")]
-      Eins = 1,
+      eins = 1,
       
       [global::ProtoBuf.ProtoEnum(Name=@"zwei", Value=2)]
-      [global::System.Runtime.Serialization.EnumMember(Value=@"zwei")]
-      Zwei = 2
+      zwei = 2,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"drei", Value=3)]
+      drei = 3
     }
   
-    [global::System.ServiceModel.ServiceContract(Name = @"simpleService3")]
-    public interface ISimpleService3
+    [global::ProtoBuf.ProtoContract(Name=@"testenum1")]
+    public enum testenum1
     {
       
-        [global::System.ServiceModel.OperationContract(Name = @"s21")]
-        [global::ProtoBuf.ServiceModel.ProtoBehavior]
-        OutMsg2 S21(InMsg1 request);
-    
-        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s21")]
-        global::System.IAsyncResult BeginS21(InMsg1 request, global::System.AsyncCallback callback, object state);
-    OutMsg2 EndS21(global::System.IAsyncResult ar);
-    
-        [global::System.ServiceModel.OperationContract(Name = @"s211")]
-        [global::ProtoBuf.ServiceModel.ProtoBehavior]
-        SimpleMessage1 S211(SimpleMessage1 request);
-    
-        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s211")]
-        global::System.IAsyncResult BeginS211(SimpleMessage1 request, global::System.AsyncCallback callback, object state);
-    SimpleMessage1 EndS211(global::System.IAsyncResult ar);
-    
-    }
-
-    public partial class S21CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
-    {
-        private readonly object[] results;
-
-        public S21CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
-            : base(exception, cancelled, userState) 
-        {
-            this.results = results;
-        }
-        
-        public OutMsg2 Result
-        {
-            get { 
-                base.RaiseExceptionIfNecessary();
-                return (OutMsg2)(this.results[0]);
-            }
-        }
+      [global::ProtoBuf.ProtoEnum(Name=@"enum1", Value=1)]
+      enum1 = 1,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"enum2", Value=12)]
+      enum2 = 12
     }
   
-
-    public partial class S211CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
-    {
-        private readonly object[] results;
-
-        public S211CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
-            : base(exception, cancelled, userState) 
-        {
-            this.results = results;
-        }
-        
-        public SimpleMessage1 Result
-        {
-            get { 
-                base.RaiseExceptionIfNecessary();
-                return (SimpleMessage1)(this.results[0]);
-            }
-        }
-    }
-  
-    [global::System.Diagnostics.DebuggerStepThroughAttribute()]
-    public partial class SimpleService3Client : global::System.ServiceModel.ClientBase<ISimpleService3>, ISimpleService3
-    {
-        public SimpleService3Client()
-        {}
-        public SimpleService3Client(string endpointConfigurationName) 
-            : base(endpointConfigurationName) 
-        {}
-        public SimpleService3Client(string endpointConfigurationName, string remoteAddress) 
-            : base(endpointConfigurationName, remoteAddress)
-        {}
-        public SimpleService3Client(string endpointConfigurationName, global::System.ServiceModel.EndpointAddress remoteAddress)
-            : base(endpointConfigurationName, remoteAddress)
-        {}
-        public SimpleService3Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)
-            : base(binding, remoteAddress)
-        {}
-
-        
-        private BeginOperationDelegate onBeginS21Delegate;
-        private EndOperationDelegate onEndS21Delegate;
-        private global::System.Threading.SendOrPostCallback onS21CompletedDelegate;
-
-        public event global::System.EventHandler<S21CompletedEventArgs> S21Completed;
-
-        public OutMsg2 S21(InMsg1 request)
-        {
-            return base.Channel.S21(request);
-        }
-
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public global::System.IAsyncResult BeginS21(InMsg1 request, global::System.AsyncCallback callback, object asyncState)
-        {
-            return base.Channel.BeginS21(request, callback, asyncState);
-        }
-
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public OutMsg2 EndS21(global::System.IAsyncResult result)
-        {
-            return base.Channel.EndS21(result);
-        }
-
-        private global::System.IAsyncResult OnBeginS21(object[] inValues, global::System.AsyncCallback callback, object asyncState)
-        {
-            InMsg1 request = ((InMsg1)(inValues[0]));
-            return this.BeginS21(request, callback, asyncState);
-        }
-
-        private object[] OnEndS21(global::System.IAsyncResult result)
-        {
-            OutMsg2 retVal = this.EndS21(result);
-            return new object[] {
-                retVal};
-        }
-
-        private void OnS21Completed(object state)
-        {
-            if ((this.S21Completed != null))
-            {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S21Completed(this, new S21CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-
-        public void S21Async(InMsg1 request)
-        {
-            this.S21Async(request, null);
-        }
-
-        public void S21Async(InMsg1 request, object userState)
-        {
-            if ((this.onBeginS21Delegate == null))
-            {
-                this.onBeginS21Delegate = new BeginOperationDelegate(this.OnBeginS21);
-            }
-            if ((this.onEndS21Delegate == null))
-            {
-                this.onEndS21Delegate = new EndOperationDelegate(this.OnEndS21);
-            }
-            if ((this.onS21CompletedDelegate == null))
-            {
-                this.onS21CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS21Completed);
-            }
-            base.InvokeAsync(this.onBeginS21Delegate, new object[] {
-                    request}, this.onEndS21Delegate, this.onS21CompletedDelegate, userState);
-        }
-    
-        private BeginOperationDelegate onBeginS211Delegate;
-        private EndOperationDelegate onEndS211Delegate;
-        private global::System.Threading.SendOrPostCallback onS211CompletedDelegate;
-
-        public event global::System.EventHandler<S211CompletedEventArgs> S211Completed;
-
-        public SimpleMessage1 S211(SimpleMessage1 request)
-        {
-            return base.Channel.S211(request);
-        }
-
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public global::System.IAsyncResult BeginS211(SimpleMessage1 request, global::System.AsyncCallback callback, object asyncState)
-        {
-            return base.Channel.BeginS211(request, callback, asyncState);
-        }
-
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public SimpleMessage1 EndS211(global::System.IAsyncResult result)
-        {
-            return base.Channel.EndS211(result);
-        }
-
-        private global::System.IAsyncResult OnBeginS211(object[] inValues, global::System.AsyncCallback callback, object asyncState)
-        {
-            SimpleMessage1 request = ((SimpleMessage1)(inValues[0]));
-            return this.BeginS211(request, callback, asyncState);
-        }
-
-        private object[] OnEndS211(global::System.IAsyncResult result)
-        {
-            SimpleMessage1 retVal = this.EndS211(result);
-            return new object[] {
-                retVal};
-        }
-
-        private void OnS211Completed(object state)
-        {
-            if ((this.S211Completed != null))
-            {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S211Completed(this, new S211CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-
-        public void S211Async(SimpleMessage1 request)
-        {
-            this.S211Async(request, null);
-        }
-
-        public void S211Async(SimpleMessage1 request, object userState)
-        {
-            if ((this.onBeginS211Delegate == null))
-            {
-                this.onBeginS211Delegate = new BeginOperationDelegate(this.OnBeginS211);
-            }
-            if ((this.onEndS211Delegate == null))
-            {
-                this.onEndS211Delegate = new EndOperationDelegate(this.OnEndS211);
-            }
-            if ((this.onS211CompletedDelegate == null))
-            {
-                this.onS211CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS211Completed);
-            }
-            base.InvokeAsync(this.onBeginS211Delegate, new object[] {
-                    request}, this.onEndS211Delegate, this.onS211CompletedDelegate, userState);
-        }
-    
-    }
-  
-    [global::System.ServiceModel.ServiceContract(Name = @"simpleService4")]
-    public interface ISimpleService4
+    [global::ProtoBuf.ProtoContract(Name=@"testenum2")]
+    public enum testenum2
     {
       
-        [global::System.ServiceModel.OperationContract(Name = @"s22")]
-        [global::ProtoBuf.ServiceModel.ProtoBehavior]
-        SimpleMessage1 S22(SimpleMessage1 request);
-    
-        [global::System.ServiceModel.OperationContract(AsyncPattern = true, Name = @"s22")]
-        global::System.IAsyncResult BeginS22(SimpleMessage1 request, global::System.AsyncCallback callback, object state);
-    SimpleMessage1 EndS22(global::System.IAsyncResult ar);
-    
-    }
-
-    public partial class S22CompletedEventArgs : global::System.ComponentModel.AsyncCompletedEventArgs
-    {
-        private readonly object[] results;
-
-        public S22CompletedEventArgs(object[] results, global::System.Exception exception, bool cancelled, object userState)
-            : base(exception, cancelled, userState) 
-        {
-            this.results = results;
-        }
-        
-        public SimpleMessage1 Result
-        {
-            get { 
-                base.RaiseExceptionIfNecessary();
-                return (SimpleMessage1)(this.results[0]);
-            }
-        }
+      [global::ProtoBuf.ProtoEnum(Name=@"enum3", Value=1)]
+      enum3 = 1,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"enum4", Value=12)]
+      enum4 = 12,
+      
+      [global::ProtoBuf.ProtoEnum(Name=@"enum5", Value=12)]
+      enum5 = 12
     }
   
-    [global::System.Diagnostics.DebuggerStepThroughAttribute()]
-    public partial class SimpleService4Client : global::System.ServiceModel.ClientBase<ISimpleService4>, ISimpleService4
+    public interface IsimpleService3
     {
-        public SimpleService4Client()
-        {}
-        public SimpleService4Client(string endpointConfigurationName) 
-            : base(endpointConfigurationName) 
-        {}
-        public SimpleService4Client(string endpointConfigurationName, string remoteAddress) 
-            : base(endpointConfigurationName, remoteAddress)
-        {}
-        public SimpleService4Client(string endpointConfigurationName, global::System.ServiceModel.EndpointAddress remoteAddress)
-            : base(endpointConfigurationName, remoteAddress)
-        {}
-        public SimpleService4Client(global::System.ServiceModel.Channels.Binding binding, global::System.ServiceModel.EndpointAddress remoteAddress)
-            : base(binding, remoteAddress)
-        {}
-
-        
-        private BeginOperationDelegate onBeginS22Delegate;
-        private EndOperationDelegate onEndS22Delegate;
-        private global::System.Threading.SendOrPostCallback onS22CompletedDelegate;
-
-        public event global::System.EventHandler<S22CompletedEventArgs> S22Completed;
-
-        public SimpleMessage1 S22(SimpleMessage1 request)
-        {
-            return base.Channel.S22(request);
-        }
-
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public global::System.IAsyncResult BeginS22(SimpleMessage1 request, global::System.AsyncCallback callback, object asyncState)
-        {
-            return base.Channel.BeginS22(request, callback, asyncState);
-        }
-
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public SimpleMessage1 EndS22(global::System.IAsyncResult result)
-        {
-            return base.Channel.EndS22(result);
-        }
-
-        private global::System.IAsyncResult OnBeginS22(object[] inValues, global::System.AsyncCallback callback, object asyncState)
-        {
-            SimpleMessage1 request = ((SimpleMessage1)(inValues[0]));
-            return this.BeginS22(request, callback, asyncState);
-        }
-
-        private object[] OnEndS22(global::System.IAsyncResult result)
-        {
-            SimpleMessage1 retVal = this.EndS22(result);
-            return new object[] {
-                retVal};
-        }
-
-        private void OnS22Completed(object state)
-        {
-            if ((this.S22Completed != null))
-            {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.S22Completed(this, new S22CompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-
-        public void S22Async(SimpleMessage1 request)
-        {
-            this.S22Async(request, null);
-        }
-
-        public void S22Async(SimpleMessage1 request, object userState)
-        {
-            if ((this.onBeginS22Delegate == null))
-            {
-                this.onBeginS22Delegate = new BeginOperationDelegate(this.OnBeginS22);
-            }
-            if ((this.onEndS22Delegate == null))
-            {
-                this.onEndS22Delegate = new EndOperationDelegate(this.OnEndS22);
-            }
-            if ((this.onS22CompletedDelegate == null))
-            {
-                this.onS22CompletedDelegate = new global::System.Threading.SendOrPostCallback(this.OnS22Completed);
-            }
-            base.InvokeAsync(this.onBeginS22Delegate, new object[] {
-                    request}, this.onEndS22Delegate, this.onS22CompletedDelegate, userState);
-        }
+      foo.bar.outMsg2 s21(foo.bar.inMsg1 request);
+    foo.bar.simpleMessage1 s211(foo.bar.simpleMessage1 request);
     
     }
-  
+    public interface IsimpleService4
+    {
+      foo.bar.simpleMessage1 s22(foo.bar.simpleMessage1 request);
+    
+    }
+    public interface Iservice1
+    {
+      foo.bar.test2 serv1(foo.bar.test1 request);
+    foo.bar.test1 serv2(foo.bar.test2 request);
+    
+    }
 }

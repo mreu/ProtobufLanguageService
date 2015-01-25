@@ -46,6 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\Users\Michael\AppData\Local\Temp\protobuf\test.proto.cs">
+      <Link>test.proto.cs</Link>
+    </Compile>
+    <Compile Include="AnalyzeProtobuf.cs" />
     <Compile Include="CodeGenerator.proto.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -58,6 +62,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtoDescriptor.cs" />
     <Compile Include="ProtoOptions.cs" />
     <Compile Include="Test.cs">
       <AutoGen>True</AutoGen>
@@ -71,6 +76,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Test1.proto</DependentUpon>
     </Compile>
+    <Compile Include="Test2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Test2.proto</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -82,13 +93,17 @@
     <None Include="packages.config" />
     <None Include="Test.proto">
       <Generator>ProtoBufTool</Generator>
+      <CustomToolNamespace>noConstructor</CustomToolNamespace>
       <LastGenOutput>Test.cs</LastGenOutput>
-      <CustomToolNamespace>%3bfixCase%3basynchronous%3bdatacontract%3bclientProxy%3bnoConstructor</CustomToolNamespace>
     </None>
     <None Include="Test1.proto">
       <Generator>ProtoBufTool</Generator>
       <LastGenOutput>Test1.cs</LastGenOutput>
       <CustomToolNamespace>%3bbinary</CustomToolNamespace>
+    </None>
+    <None Include="Test2.proto">
+      <Generator>ProtoBufTool</Generator>
+      <LastGenOutput>Test2.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

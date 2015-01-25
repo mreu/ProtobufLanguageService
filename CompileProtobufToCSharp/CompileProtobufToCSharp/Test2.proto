@@ -1,0 +1,43 @@
+import "descriptor.proto";
+
+message MyOption
+{
+  optional string name = 1;
+  optional uint32 version = 2;
+}
+
+extend google.protobuf.MessageOptions
+{
+  optional string my_option  = 51234;
+}
+
+message A
+{
+  option (my_option) = "test";
+}
+
+
+/*
+message B
+{
+  option (my_option) = name : "Me", (MyOption).version : 2];
+
+  optional string b = 1;
+}
+*/
+
+message FooOptions {
+  optional int32 opt1 = 1;
+  optional string opt2 = 2;
+}
+
+extend google.protobuf.FieldOptions {
+  optional FooOptions foo_options = 1234;
+}
+
+// usage:
+message Bar {
+  optional int32 a = 1 [(foo_options).opt1 = 123, (foo_options).opt2 = "baz"];
+  // alternative aggregate syntax (uses TextFormat):
+  optional int32 b = 2 [(foo_options) = { opt1: 123 opt2: "baz" }];
+}
