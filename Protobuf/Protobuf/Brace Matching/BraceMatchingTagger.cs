@@ -140,6 +140,11 @@ namespace MichaelReukauff.Protobuf
                 yield break;
             }
 
+            if (spans[0].Snapshot.Length == 0)
+            {
+                yield break;
+            }
+
             // if the requested snapshot isn't the same as the one the brace is on, translate our spans to the expected snapshot
             if (spans[0].Snapshot != currentChar.Snapshot)
             {

@@ -218,6 +218,20 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
+    public void ParseMessage_OK09()
+    {
+        const string text = "  message SearchResponse {\r\n message msg {  optional int32 t1 = 1;} \r\n required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;\r\n};";
+
+        var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
+
+        Assert.IsTrue(lex.ParseMessage(true));
+
+        Assert.AreEqual(20, lex.Tokens.Count);
+        Assert.AreEqual(0, lex.Errors.Count);
+        Assert.AreEqual(38, lex.Index);
+    }
+
+    [TestMethod]
     public void ParseMessage_NOK01()
     {
       const string text = "  message SearchResponse {\r\n  required string url = 2;\r\n  optional string title = 3;\r\n  repeated string snippets = 4;";

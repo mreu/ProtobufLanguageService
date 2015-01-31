@@ -58,6 +58,20 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
+    public void ParseEnum_OK04()
+    {
+        const string text = "  enum text { \r\n ABC = 1; \r\n DEF = 2; \r\n };";
+
+        var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
+
+        Assert.IsTrue(lex.ParseEnum(true));
+
+        Assert.AreEqual(6, lex.Tokens.Count);
+        Assert.AreEqual(0, lex.Errors.Count);
+        Assert.AreEqual(16, lex.Index);
+    }
+
+    [TestMethod]
     public void ParseEnum_NOK01()
     {
       const string text = "  enum text \r\n  { \r\n DEF = 2; \r\n "; // closing bracket is missed

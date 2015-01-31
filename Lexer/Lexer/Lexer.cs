@@ -50,7 +50,7 @@ namespace MichaelReukauff.Lexer
         /// Line number of the current line.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
-        internal int Line = 0;
+        internal int Line;
 
         /// <summary>
         /// Is set to true if a package top kevel statement occurs.
@@ -514,10 +514,36 @@ namespace MichaelReukauff.Lexer
                 return false;
             }
 
-            if (Word != ";")
+            // did some options follow
+            if (Word == "{")
             {
-                AddNewError("Expected \";\".");
-                return false;
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"option\".");
+                    return false;
+                }
+
+                while (Word == "option")
+                {
+                    if (!ParseOption(false))
+                    {
+                        return false;
+                    }
+                }
+
+                if (Word != "}")
+                {
+                    AddNewError("Expected \"}\".");
+                    return false;
+                }
+            }
+            else
+            {
+                if (Word != ";")
+                {
+                    AddNewError("Expected \";\".");
+                    return false;
+                }
             }
 
             return true;
@@ -715,6 +741,7 @@ namespace MichaelReukauff.Lexer
         /// <returns>True if ok otherwise false.</returns>
         internal bool ParseOneOfField()
         {
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var field = new Field();
 
             //if (!IncrementIndex(true))
@@ -1231,7 +1258,30 @@ namespace MichaelReukauff.Lexer
             {
                 if (!IncrementIndex(true))
                 {
-                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\".");
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\" or \"=\".");
+                    return false;
+                }
+            }
+
+            if (Word == ".")
+            {
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\" or \"=\".");
+                    return false;
+                }
+
+                if (!Helper.IsIdentifier(Word))
+                {
+                    AddNewError("Expected valid option.");
+                    return false;
+                }
+
+                AddNewToken(CodeType.Keyword);
+
+                if (!IncrementIndex())
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected fieldname.");
                     return false;
                 }
             }
@@ -1248,9 +1298,72 @@ namespace MichaelReukauff.Lexer
                 return false;
             }
 
-            if (Helper.IsInteger(Word))
+            if (Word == "{")
             {
-                AddNewToken(CodeType.Number);
+                if (!IncrementIndex())
+                {
+                    AddNewError("Expected \"fieldname\".");
+                    return false;
+                }
+
+                while (Word != "}")
+                {
+                    if (!Helper.IsIdentifier(Word))
+                    {
+                        AddNewError("Expected valid option.");
+                        return false;
+                    }
+
+                    AddNewToken(CodeType.Keyword);
+
+                    if (!IncrementIndex())
+                    {
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected value.");
+                        }
+
+                        return false;
+                    }
+
+                    if (Word == "\"")
+                    {
+                        GetString("Expected string.");
+                    }
+                    else
+                    {
+                        //check for numeric value
+                        int i = Matches[Index].Index; // save position
+                        int saveIndex = Index;
+
+                        var num = GetFloatNumber();
+                        if (Helper.IsDoubleOrFloat(num))
+                        {
+                            AddNewToken(i, Matches[Index].Index + Matches[Index].Length - i, num, CodeType.Number);
+                        }
+                        //if (Helper.IsInteger(Word))
+                        //{
+                        //    AddNewToken(CodeType.Number);
+                        //}
+                        else
+                        {
+                            Index = saveIndex;
+                            if (Word == "\"")
+                            {
+                                GetString("Expected string.");
+                            }
+                            else
+                            {
+                                AddNewToken(CodeType.Keyword);
+                            }
+                        }
+                    }
+
+                        if (!IncrementIndex())
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected value or \"}\".");
+                            return false;
+                        }
+                }
             }
             else
             {
@@ -1260,7 +1373,31 @@ namespace MichaelReukauff.Lexer
                 }
                 else
                 {
-                    AddNewToken(CodeType.Keyword);
+                    //check for numeric value
+                    int i = Matches[Index].Index; // save position
+                    int saveIndex = Index;
+
+                    var num = GetFloatNumber();
+                    if (Helper.IsDoubleOrFloat(num))
+                    {
+                        AddNewToken(i, Matches[Index].Index + Matches[Index].Length - i, num, CodeType.Number);
+                    }
+                    //if (Helper.IsInteger(Word))
+                    //{
+                    //    AddNewToken(CodeType.Number);
+                    //}
+                    else
+                    {
+                        Index = saveIndex;
+                        if (Word == "\"")
+                        {
+                            GetString("Expected string.");
+                        }
+                        else
+                        {
+                            AddNewToken(CodeType.Keyword);
+                        }
+                    }
                 }
             }
 
@@ -1857,6 +1994,10 @@ namespace MichaelReukauff.Lexer
                     ret = GetExponent();
                     number += ret.Item1;
                 }
+                else
+                {
+                    Index--;
+                }
             }
 
             return number;
@@ -1870,7 +2011,7 @@ namespace MichaelReukauff.Lexer
         {
             string number = Word;
 
-            // the + sign is a single token, we must get the nect token which is the numeric part of it
+            // the + sign is a single token, we must get the next token which is the numeric part of it
             if (number == "+")
             {
                 if (Index < Matches.Count)

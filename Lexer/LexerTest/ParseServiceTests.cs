@@ -56,15 +56,29 @@ namespace MichaelReukauff.LexerTest
     [TestMethod]
     public void ParseService_OK02()
     {
-      const string text = "  service test1 { \r\n option abc = 123; \r\n rpc test2 (test3) returns (test4); }";
+        const string text = "  service test1 { \r\n option abc = 123; \r\n rpc test2 (test3) returns (test4); }";
 
-      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
+        var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
 
-      Assert.IsTrue(lex.ParseService());
+        Assert.IsTrue(lex.ParseService());
 
-      Assert.AreEqual(10, lex.Tokens.Count);
-      Assert.AreEqual(0, lex.Errors.Count);
-      Assert.AreEqual(21, lex.Index);
+        Assert.AreEqual(10, lex.Tokens.Count);
+        Assert.AreEqual(0, lex.Errors.Count);
+        Assert.AreEqual(21, lex.Index);
+    }
+
+    [TestMethod]
+    public void ParseService_OK03()
+    {
+        const string text = "  service test1 { \r\n option abc = 123; \r\n rpc test2 (test3) returns (test4); };";
+
+        var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
+
+        Assert.IsTrue(lex.ParseService());
+
+        Assert.AreEqual(10, lex.Tokens.Count);
+        Assert.AreEqual(0, lex.Errors.Count);
+        Assert.AreEqual(22, lex.Index);
     }
 
     [TestMethod]
