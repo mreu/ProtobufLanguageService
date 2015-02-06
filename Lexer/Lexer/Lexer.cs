@@ -1049,7 +1049,7 @@ namespace MichaelReukauff.Lexer
 
                     AddNewToken(CodeType.SymRef);
 
-                    if (!IncrementIndex())
+                    if (!IncrementIndex(true))
                     {
                         AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
                         return false;
@@ -1057,7 +1057,7 @@ namespace MichaelReukauff.Lexer
 
                     if (Word == ".")
                     {
-                        if (!IncrementIndex())
+                        if (!IncrementIndex(true))
                         {
                             AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
                             return false;
@@ -1207,7 +1207,7 @@ namespace MichaelReukauff.Lexer
                 if (Word == "(")
                 {
                     isOpenBracket = true;
-                    if (!IncrementIndex())
+                    if (!IncrementIndex(true))
                     {
                         AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected identifier.");
                         return false;
@@ -1222,7 +1222,7 @@ namespace MichaelReukauff.Lexer
 
                 AddNewToken(CodeType.Keyword);
 
-                if (!IncrementIndex())
+                if (!IncrementIndex(true))
                 {
                     // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                     if (isOpenBracket)
@@ -1247,18 +1247,9 @@ namespace MichaelReukauff.Lexer
                     return false;
                 }
 
-                if (!IncrementIndex())
-                {
-                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\".");
-                    return false;
-                }
-            }
-
-            if (Word == "\n")
-            {
                 if (!IncrementIndex(true))
                 {
-                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \".\" or \"=\".");
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\".");
                     return false;
                 }
             }
@@ -1300,7 +1291,7 @@ namespace MichaelReukauff.Lexer
 
             if (Word == "{")
             {
-                if (!IncrementIndex())
+                if (!IncrementIndex(true))
                 {
                     AddNewError("Expected \"fieldname\".");
                     return false;
@@ -1316,7 +1307,7 @@ namespace MichaelReukauff.Lexer
 
                     AddNewToken(CodeType.Keyword);
 
-                    if (!IncrementIndex())
+                    if (!IncrementIndex(true))
                     {
                         {
                             AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected value.");
@@ -1358,7 +1349,7 @@ namespace MichaelReukauff.Lexer
                         }
                     }
 
-                        if (!IncrementIndex())
+                        if (!IncrementIndex(true))
                         {
                             AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected value or \"}\".");
                             return false;

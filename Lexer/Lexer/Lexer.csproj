@@ -56,9 +56,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="Protobufs\Options.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Options.proto</DependentUpon>
     </Compile>
     <Compile Include="Protobufs\Package1.cs">

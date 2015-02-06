@@ -9,7 +9,7 @@
 
 // Generated from: Options.proto
 // Note: requires additional types generated from: descriptor.proto
-namespace MichaelReukauff.Lexer.Protobufs
+namespace foo
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MyMessage")]
   public partial class MyMessage : global::ProtoBuf.IExtensible
@@ -57,6 +57,102 @@ namespace MichaelReukauff.Lexer.Protobufs
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"FooOptions")]
+  public partial class FooOptions : global::ProtoBuf.IExtensible
+  {
+    public FooOptions() {}
+
+    private int _opt1 = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"opt1", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int opt1
+    {
+      get { return _opt1; }
+      set { _opt1 = value; }
+    }
+    private string _opt2 = "";
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"opt2", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string opt2
+    {
+      get { return _opt2; }
+      set { _opt2 = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Bar")]
+  public partial class Bar : global::ProtoBuf.IExtensible
+  {
+    public Bar() {}
+
+    private int _a = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"a", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int a
+    {
+      get { return _a; }
+      set { _a = value; }
+    }
+    private int _b = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"b", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int b
+    {
+      get { return _b; }
+      set { _b = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MyOption")]
+  public partial class MyOption : global::ProtoBuf.IExtensible
+  {
+    public MyOption() {}
+
+    private string _name = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"name", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string name
+    {
+      get { return _name; }
+      set { _name = value; }
+    }
+    private uint _version = default(uint);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"version", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(uint))]
+    public uint version
+    {
+      get { return _version; }
+      set { _version = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MyMessage2")]
+  public partial class MyMessage2 : global::ProtoBuf.IExtensible
+  {
+    public MyMessage2() {}
+
+    private string _b = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"b", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string b
+    {
+      get { return _b; }
+      set { _b = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
     [global::ProtoBuf.ProtoContract(Name=@"MyEnum")]
     public enum MyEnum
     {
@@ -70,7 +166,7 @@ namespace MichaelReukauff.Lexer.Protobufs
   
     public interface IMyService
     {
-      ResponseType MyMethod(RequestType request);
+      foo.ResponseType MyMethod(foo.RequestType request);
     
     }
 }
