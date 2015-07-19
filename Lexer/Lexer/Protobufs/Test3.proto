@@ -6,9 +6,9 @@ message test3 { // this is a comment
 
 import "Test2.proto";
 
-message test31 {
-  required test2 t1 = 0x12;
-  required test2 t2 = 11;
+message test31 { 
+  required .test2 t1 = 0x12;
+  required .test2 t2 = 11;
   required test2 t3 = 0xc;
 }
 
