@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protobuf", "Protobuf\Protobuf.csproj", "{BECDD61A-05C9-4ED9-BB76-CF1DE406DC01}"
 EndProject
@@ -9,22 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "..\Lexer\Lexer\Lex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexerTest", "..\Lexer\LexerTest\LexerTest.csproj", "{7EADA17E-0073-4635-BB26-3E00A7A86BFF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92014380-D403-4001-86DE-DD97D6708CC0}"
+	ProjectSection(SolutionItems) = preProject
+		..\License.md = ..\License.md
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs19
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\Lexer\\Lexer\\Lexer.csproj
-		SccProjectName1 = ../Lexer/Lexer
-		SccLocalPath1 = ..\\Lexer\\Lexer
-		SccProjectUniqueName2 = ..\\Lexer\\LexerTest\\LexerTest.csproj
-		SccProjectName2 = ../Lexer/LexerTest
-		SccLocalPath2 = ..\\Lexer\\LexerTest
-		SccProjectUniqueName3 = Protobuf\\Protobuf.csproj
-		SccProjectName3 = Protobuf
-		SccLocalPath3 = Protobuf
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
