@@ -49,7 +49,7 @@ namespace MichaelReukauff.Protobuf
     // load this package even if no solution or project is loaded
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string)]
 
-    [ProvideOptionPage(typeof(OptionPage1), "Protobuf", "Automatic Save", 0, 0, true)]
+    [ProvideOptionPage(typeof(OptionPage1), "Protobuf", "General", 0, 0, true)]
 
     // ReSharper disable once InconsistentNaming
     public sealed class ProtobufPackage : Package
@@ -104,6 +104,12 @@ namespace MichaelReukauff.Protobuf
         /// <param name="document">The document.</param>
         private void OnDocumentSaved(Document document)
         {
+            var page = (OptionPage1)GetDialogPage(typeof(OptionPage1));
+            if (!page.AutoConvert)
+            {
+                return;
+            }
+
             var path = document.FullName;
             var ext = Path.GetExtension(path);
             if (ext == null || ext.ToLowerInvariant() != ".proto")

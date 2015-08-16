@@ -93,8 +93,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +142,12 @@
     <Compile Include="Language\ProtobufWordListProvider.cs" />
     <Compile Include="Options\OptionPage1.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Options\OptionPage1Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Options\OptionPage1Control.Designer.cs">
+      <DependentUpon>OptionPage1Control.cs</DependentUpon>
     </Compile>
     <Compile Include="Outlining\OutliningTagger.cs" />
     <Compile Include="Outlining\OutliningTaggerProvider.cs" />
@@ -194,6 +202,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Options\OptionPage1Control.resx">
+      <DependentUpon>OptionPage1Control.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
