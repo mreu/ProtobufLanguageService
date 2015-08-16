@@ -17,6 +17,8 @@ namespace MichaelReukauff.Protobuf
 
     using EnvDTE;
 
+    using MichaelReukauff.Protobuf.Options;
+
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
@@ -46,6 +48,8 @@ namespace MichaelReukauff.Protobuf
 
     // load this package even if no solution or project is loaded
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string)]
+
+    [ProvideOptionPage(typeof(OptionPage1), "Protobuf", "Automatic Save", 0, 0, true)]
 
     // ReSharper disable once InconsistentNaming
     public sealed class ProtobufPackage : Package

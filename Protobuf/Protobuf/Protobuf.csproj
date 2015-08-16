@@ -138,6 +138,9 @@
     <Compile Include="Language\ProtobufLanguageTagger.cs" />
     <Compile Include="Language\ProtobufTags.cs" />
     <Compile Include="Language\ProtobufWordListProvider.cs" />
+    <Compile Include="Options\OptionPage1.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Outlining\OutliningTagger.cs" />
     <Compile Include="Outlining\OutliningTaggerProvider.cs" />
     <Compile Include="ProtobufContentType.cs" />
