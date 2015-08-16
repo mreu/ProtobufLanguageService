@@ -1042,6 +1042,15 @@ namespace MichaelReukauff.Lexer
             {
                 while (true)
                 {
+                    if (Word == ".")
+                    {
+                        if (!IncrementIndex(true))
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                            return false;
+                        }
+                    }
+
                     if (!Helper.IsIdentifier(Word))
                     {
                         AddNewError("Expected Identifier.");
@@ -1349,11 +1358,11 @@ namespace MichaelReukauff.Lexer
                         }
                     }
 
-                        if (!IncrementIndex(true))
-                        {
-                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected value or \"}\".");
-                            return false;
-                        }
+                    if (!IncrementIndex(true))
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected value or \"}\".");
+                        return false;
+                    }
                 }
             }
             else
@@ -1533,6 +1542,15 @@ namespace MichaelReukauff.Lexer
             {
                 while (true)
                 {
+                    if (Word == ".")
+                    {
+                        if (!IncrementIndex(true))
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                            return false;
+                        }
+                    }
+
                     if (!Helper.IsIdentifier(Word))
                     {
                         AddNewError("Expected expandee.");
@@ -1549,7 +1567,7 @@ namespace MichaelReukauff.Lexer
 
                     if (Word == ".")
                     {
-                        if (!IncrementIndex())
+                        if (!IncrementIndex(true))
                         {
                             AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
                             return false;

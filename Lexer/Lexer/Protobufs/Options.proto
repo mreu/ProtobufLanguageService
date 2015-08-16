@@ -65,11 +65,7 @@ message FooOptions {
   optional string opt2 = 2;
 }
 
-extend google
-.
-protobuf
-.
-FieldOptions 
+extend .google.protobuf.FieldOptions 
 {
   optional FooOptions foo_options = 1234;
 }

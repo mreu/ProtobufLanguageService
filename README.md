@@ -22,6 +22,10 @@ Errors are shown in the protobuf section of the output pane and in the error pan
 If you have any suggestions, please feel free to add an issue.
 
 Changelog:
+* 1.7.4 - August 8, 2015
+  * Fixed "Install Error : Microsoft.VisualStudio.ExtensionManager.MissingTargetFrameworkException: The extension 'Protobuf Language Service' requires a version of the .NET Framework that is not installed." 
+* 1.7.3 - July 18, 2015
+  * Fixed name resolution. Names beginning with a dot now works 
 * 1.7.2 - May 14, 2015
   * Support for Visual Studio 2015 RC added 
 * 1.7.1 - February 06, 2015
