@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OutliningTaggerProvider.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf.Outlining
 {
@@ -29,7 +27,8 @@ namespace MichaelReukauff.Protobuf.Outlining
         /// <typeparam name="T">The ITagger.</typeparam>
         /// <param name="buffer">The buffer.</param>
         /// <returns>The <see cref="ITagger{t}"/>.</returns>
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
+        public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
+            where T : ITag
         {
             // create a single tagger for each buffer.
             Func<ITagger<T>> sc = () => new OutliningTagger(buffer) as ITagger<T>;

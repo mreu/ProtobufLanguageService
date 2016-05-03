@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BraceMatchingFormatDefinition.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf
 {
@@ -23,7 +21,7 @@ namespace MichaelReukauff.Protobuf
     internal class BraceMatchingFormatDefinition : MarkerFormatDefinition
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BraceMatchingFormatDefinition"/> class. 
+        /// Initializes a new instance of the <see cref="BraceMatchingFormatDefinition"/> class.
         /// In the constructor for HighlightWordFormatDefinition, define its display name and appearance.
         /// The Background property defines the fill color, while the Foreground property defines the border color.
         /// </summary>

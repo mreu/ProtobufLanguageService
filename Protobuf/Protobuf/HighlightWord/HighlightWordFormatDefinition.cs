@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighlightWordFormatDefinition.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -24,7 +22,7 @@ namespace MichaelReukauff.Protobuf
     internal class HighlightWordFormatDefinition : MarkerFormatDefinition
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighlightWordFormatDefinition"/> class. 
+        /// Initializes a new instance of the <see cref="HighlightWordFormatDefinition"/> class.
         /// In the constructor for HighlightWordFormatDefinition, define its display name and appearance.
         /// The Background property defines the fill color, while the Foreground property defines the border color.
         /// </summary>

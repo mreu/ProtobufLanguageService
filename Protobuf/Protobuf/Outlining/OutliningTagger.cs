@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OutliningTagger.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -49,7 +47,7 @@ namespace MichaelReukauff.Protobuf
         /// <summary>
         /// The _buffer.
         /// </summary>
-        public readonly ITextBuffer Buffer;
+        private readonly ITextBuffer buffer;
 
         /// <summary>
         /// The _snapshot.
@@ -67,7 +65,7 @@ namespace MichaelReukauff.Protobuf
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OutliningTagger"/> class. 
+        /// Initializes a new instance of the <see cref="OutliningTagger"/> class.
         /// The tagger constructor that initializes the fields, parses the buffer, and adds an event handler to the Changed event.
         /// </summary>
         /// <param name="buffer">
@@ -75,11 +73,11 @@ namespace MichaelReukauff.Protobuf
         /// </param>
         public OutliningTagger(ITextBuffer buffer)
         {
-            Buffer = buffer;
+            this.buffer = buffer;
             snapshot = buffer.CurrentSnapshot;
             regions = new List<Region>();
             ReParse();
-            Buffer.Changed += BufferChanged;
+            this.buffer.Changed += BufferChanged;
         }
 
         /// <summary>
@@ -96,11 +94,11 @@ namespace MichaelReukauff.Protobuf
                 yield break;
             }
 
-            List<Region> currentRegions = regions;
-            ITextSnapshot currentSnapshot = snapshot;
-            SnapshotSpan entire = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End).TranslateTo(currentSnapshot, SpanTrackingMode.EdgeExclusive);
-            int startLineNumber = entire.Start.GetContainingLine().LineNumber;
-            int endLineNumber = entire.End.GetContainingLine().LineNumber;
+            var currentRegions = regions;
+            var currentSnapshot = snapshot;
+            var entire = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End).TranslateTo(currentSnapshot, SpanTrackingMode.EdgeExclusive);
+            var startLineNumber = entire.Start.GetContainingLine().LineNumber;
+            var endLineNumber = entire.End.GetContainingLine().LineNumber;
 
             foreach (var region in currentRegions)
             {
@@ -127,8 +125,8 @@ namespace MichaelReukauff.Protobuf
         /// <param name="e">The <see cref="TextContentChangedEventArgs"/>.</param>
         private void BufferChanged(object sender, TextContentChangedEventArgs e)
         {
-            // If this isn't the most up-to-date version of the buffer, then ignore it for now (we'll eventually get another change event). 
-            if (e.After != Buffer.CurrentSnapshot)
+            // If this isn't the most up-to-date version of the buffer, then ignore it for now (we'll eventually get another change event).
+            if (e.After != buffer.CurrentSnapshot)
             {
                 return;
             }
@@ -141,7 +139,7 @@ namespace MichaelReukauff.Protobuf
         /// </summary>
         private void ReParse()
         {
-            ITextSnapshot newSnapshot = Buffer.CurrentSnapshot;
+            var newSnapshot = buffer.CurrentSnapshot;
             var newRegions = new List<Region>();
 
             // keep the current (deepest) partial region, which will have
@@ -151,12 +149,12 @@ namespace MichaelReukauff.Protobuf
             foreach (var line in newSnapshot.Lines)
             {
                 int regionStart;
-                string text = line.GetText();
+                var text = line.GetText();
 
                 // lines that contain a "{" denote the start of a new region.
                 if ((regionStart = text.IndexOf(StartHide, StringComparison.Ordinal)) != -1)
                 {
-                    int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
+                    var currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
                     int newLevel;
 
                     if (!TryGetLevel(text, regionStart, out newLevel))
@@ -164,8 +162,8 @@ namespace MichaelReukauff.Protobuf
                         newLevel = currentLevel + 1;
                     }
 
-                    // levels are the same and we have an existing region; 
-                    // end the current region and start the next 
+                    // levels are the same and we have an existing region;
+                    // end the current region and start the next
                     if (currentLevel == newLevel && currentRegion != null)
                     {
                         newRegions.Add(new Region
@@ -186,7 +184,7 @@ namespace MichaelReukauff.Protobuf
                     }
                     else
                     {
-                        // this is a new (sub)region 
+                        // this is a new (sub)region
                         currentRegion = new PartialRegion
                         {
                             Level = newLevel,
@@ -201,7 +199,7 @@ namespace MichaelReukauff.Protobuf
                     // lines that contain "}" denote the end of a region
                     if ((regionStart = text.IndexOf(EndHide, StringComparison.Ordinal)) != -1)
                     {
-                        int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
+                        var currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
                         int closingLevel;
 
                         if (!TryGetLevel(text, regionStart, out closingLevel))
@@ -236,10 +234,10 @@ namespace MichaelReukauff.Protobuf
             var newSpanCollection = new NormalizedSpanCollection(newSpans);
 
             // the changed regions are regions that appear in one set or the other, but not both.
-            NormalizedSpanCollection removed = NormalizedSpanCollection.Difference(oldSpanCollection, newSpanCollection);
+            var removed = NormalizedSpanCollection.Difference(oldSpanCollection, newSpanCollection);
 
-            int changeStart = int.MaxValue;
-            int changeEnd = -1;
+            var changeStart = int.MaxValue;
+            var changeEnd = -1;
 
             if (removed.Count > 0)
             {
@@ -258,11 +256,8 @@ namespace MichaelReukauff.Protobuf
 
             if (changeStart <= changeEnd)
             {
-                ITextSnapshot snap = snapshot;
-                if (TagsChanged != null)
-                {
-                    TagsChanged(this, new SnapshotSpanEventArgs(new SnapshotSpan(snap, Span.FromBounds(changeStart, changeEnd))));
-                }
+                var snap = snapshot;
+                TagsChanged?.Invoke(this, new SnapshotSpanEventArgs(new SnapshotSpan(snap, Span.FromBounds(changeStart, changeEnd))));
             }
         }
 

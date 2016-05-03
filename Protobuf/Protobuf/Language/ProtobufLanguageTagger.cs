@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufLanguageTagger.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -71,7 +69,11 @@ namespace MichaelReukauff.Protobuf
             var endPoint = new SnapshotPoint(snapshot, snapshot.Length);
             var expandedSpan = new SnapshotSpan(startPoint, endPoint);
             var args = new SnapshotSpanEventArgs(expandedSpan);
-            TagsChanged(this, args);
+
+            if (TagsChanged != null)
+            {
+                TagsChanged(this, args);
+            }
         }
 
         /// <summary>
@@ -84,7 +86,9 @@ namespace MichaelReukauff.Protobuf
 
             tagList.Clear();
 
-            foreach (var message in lexer.Errors)
+            // copy the lexer.Token list to an array, because it can be changed by the parser in the background
+            // this should not happen, but under some circumstandings it happens (and I don't know when and why)
+            foreach (var message in lexer.Errors.ToArray())
             {
                 // check the length of the new span, should not be longer than the current text
                 var length = message.Length;
@@ -100,7 +104,9 @@ namespace MichaelReukauff.Protobuf
                 }
             }
 
-            foreach (var token in lexer.Tokens)
+            // copy the lexer.Token list to an array, because it can be changed by the parser in the background
+            // this should not happen, but under some circumstandings it happens (and I don't know when and why)
+            foreach (var token in lexer.Tokens.ToArray())
             {
                 // check the length of the new span, should not be longer than the current text
                 var length = token.Length;

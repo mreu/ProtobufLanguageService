@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighlightWordTagger.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -58,10 +56,12 @@ namespace MichaelReukauff.Protobuf
         /// </summary>
         public SnapshotPoint RequestedPoint { get; set; }
 
+#pragma warning disable SA1401 // Fields must be private
         /// <summary>
         /// The update lock.
         /// </summary>
         public readonly object UpdateLock = new object();
+#pragma warning restore SA1401 // Fields must be private
 
         /// <summary>
         /// The tags changed event.
@@ -69,7 +69,7 @@ namespace MichaelReukauff.Protobuf
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighlightWordTagger"/> class. 
+        /// Initializes a new instance of the <see cref="HighlightWordTagger"/> class.
         /// The constructor initializes the properties listed earlier and adds LayoutChanged and PositionChanged event handlers.
         /// </summary>
         /// <param name="view">
@@ -179,7 +179,7 @@ namespace MichaelReukauff.Protobuf
                     // If the caret is at the end of a word, pick up the word.
                     word = TextStructureNavigator.GetExtentOfWord(currentRequest - 1);
 
-                    // If the word still isn't valid, we're done 
+                    // If the word still isn't valid, we're done
                     if (!WordExtentIsValid(currentRequest, word))
                     {
                         foundWord = false;
@@ -217,7 +217,13 @@ namespace MichaelReukauff.Protobuf
             }
         }
 
-        static bool WordExtentIsValid(SnapshotPoint currentRequest, TextExtent word)
+        /// <summary>
+        /// The word extent is valid.
+        /// </summary>
+        /// <param name="currentRequest">The currentRequest.</param>
+        /// <param name="word">The word.</param>
+        /// <returns>The <see cref="bool"/>.</returns>
+        public static bool WordExtentIsValid(SnapshotPoint currentRequest, TextExtent word)
         {
             return word.IsSignificant && currentRequest.Snapshot.GetText(word.Span).Any(char.IsLetter);
         }
@@ -225,22 +231,23 @@ namespace MichaelReukauff.Protobuf
         /// <summary>
         /// The SynchronousUpdate performs a synchronous update on the WordSpans and CurrentWord properties, and raises the TagsChanged event.
         /// </summary>
-        /// <param name="currentRequest"></param>
-        /// <param name="newSpans"></param>
-        /// <param name="newCurrentWord"></param>
-        void SynchronousUpdate(SnapshotPoint currentRequest, NormalizedSnapshotSpanCollection newSpans, SnapshotSpan? newCurrentWord)
+        /// <param name="currentRequest">The current request.</param>
+        /// <param name="newSpans">The new spans.</param>
+        /// <param name="newCurrentWord">The new current word.</param>
+        public void SynchronousUpdate(SnapshotPoint currentRequest, NormalizedSnapshotSpanCollection newSpans, SnapshotSpan? newCurrentWord)
         {
             lock (UpdateLock)
             {
                 if (currentRequest != RequestedPoint)
+                {
                     return;
+                }
 
                 WordSpans = newSpans;
                 CurrentWord = newCurrentWord;
 
                 var tempEvent = TagsChanged;
-                if (tempEvent != null)
-                    tempEvent(this, new SnapshotSpanEventArgs(new SnapshotSpan(SourceBuffer.CurrentSnapshot, 0, SourceBuffer.CurrentSnapshot.Length)));
+                tempEvent?.Invoke(this, new SnapshotSpanEventArgs(new SnapshotSpan(SourceBuffer.CurrentSnapshot, 0, SourceBuffer.CurrentSnapshot.Length)));
             }
         }
 
@@ -250,12 +257,14 @@ namespace MichaelReukauff.Protobuf
         /// which enables lazy evaluation (that is, evaluation of the set only when individual items are accessed) of the tags.
         /// Here the method returns a TagSpan&lt;T&gt; object that has a "blue" TextMarkerTag, which provides a blue background.
         /// </summary>
-        /// <param name="spans"></param>
-        /// <returns></returns>
+        /// <param name="spans">The spans.</param>
+        /// <returns>List of tags.</returns>
         public IEnumerable<ITagSpan<HighlightWordTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             if (CurrentWord == null)
+            {
                 yield break;
+            }
 
             // Hold on to a "snapshot" of the word spans and current word, so that we maintain the same
             // collection throughout
@@ -263,7 +272,9 @@ namespace MichaelReukauff.Protobuf
             var wordSpans = WordSpans;
 
             if (spans.Count == 0 || wordSpans.Count == 0)
+            {
                 yield break;
+            }
 
             // If the requested snapshot isn't the same as the one our words are on, translate our spans to the expected snapshot
             if (spans[0].Snapshot != wordSpans[0].Snapshot)
@@ -277,7 +288,9 @@ namespace MichaelReukauff.Protobuf
             // Note that we'll yield back the same word again in the wordspans collection;
             // the duplication here is expected.
             if (spans.OverlapsWith(new NormalizedSnapshotSpanCollection(currentWord)))
+            {
                 yield return new TagSpan<HighlightWordTag>(currentWord, new HighlightWordTag());
+            }
 
             // Second, yield all the other words in the file
             foreach (var span in NormalizedSnapshotSpanCollection.Overlap(spans, wordSpans))

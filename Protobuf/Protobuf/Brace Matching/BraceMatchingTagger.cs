@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BraceMatchingTagger.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf
 {
@@ -23,14 +21,14 @@ namespace MichaelReukauff.Protobuf
     internal class BraceMatchingTagger : ITagger<TextMarkerTag>
     {
         /// <summary>
-        /// Gets or sets the view.
+        /// Gets the view.
         /// </summary>
-        private ITextView View { get; set; }
+        private ITextView View { get; }
 
         /// <summary>
-        /// Gets or sets the source buffer.
+        /// Gets the source buffer.
         /// </summary>
-        private ITextBuffer SourceBuffer { get; set; }
+        private ITextBuffer SourceBuffer { get; }
 
         /// <summary>
         /// Gets or sets the current char.
@@ -103,10 +101,7 @@ namespace MichaelReukauff.Protobuf
             }
 
             var tempEvent = TagsChanged;
-            if (tempEvent != null)
-            {
-                tempEvent(this, new SnapshotSpanEventArgs(new SnapshotSpan(SourceBuffer.CurrentSnapshot, 0, SourceBuffer.CurrentSnapshot.Length)));
-            }
+            tempEvent?.Invoke(this, new SnapshotSpanEventArgs(new SnapshotSpan(SourceBuffer.CurrentSnapshot, 0, SourceBuffer.CurrentSnapshot.Length)));
         }
 
         /// <summary>
@@ -132,7 +127,7 @@ namespace MichaelReukauff.Protobuf
             }
 
             // hold on to a snapshot of the current character
-            SnapshotPoint currentChar = CurrentChar.Value;
+            var currentChar = CurrentChar.Value;
 
             // if no text return;
             if (currentChar.Snapshot.Length == 0)
@@ -152,14 +147,14 @@ namespace MichaelReukauff.Protobuf
             }
 
             // get the current char or the previous char
-            char currentText = currentChar.Position == currentChar.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
+            var currentText = currentChar.Position == currentChar.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
 
             //// old code, crashed under some circumstands
             //// char currentText = CurrentChar.Value.Position >= CurrentChar.Value.Snapshot.Length ? (currentChar - 1).GetChar() : currentChar.GetChar();
 
             // if currentChar is 0 (beginning of buffer), don't move it back
-            SnapshotPoint lastChar = currentChar == 0 ? currentChar : currentChar - 1;
-            char lastText = lastChar.GetChar();
+            var lastChar = currentChar == 0 ? currentChar : currentChar - 1;
+            var lastText = lastChar.GetChar();
             SnapshotSpan pairSpan;
 
             // the key is the open brace
@@ -202,24 +197,24 @@ namespace MichaelReukauff.Protobuf
         private static bool FindMatchingCloseChar(SnapshotPoint startPoint, char open, char close, int maxLines, out SnapshotSpan pairSpan)
         {
             pairSpan = new SnapshotSpan(startPoint.Snapshot, 1, 1);
-            ITextSnapshotLine line = startPoint.GetContainingLine();
-            string lineText = line.GetText();
-            int lineNumber = line.LineNumber;
-            int offset = startPoint.Position - line.Start.Position + 1;
+            var line = startPoint.GetContainingLine();
+            var lineText = line.GetText();
+            var lineNumber = line.LineNumber;
+            var offset = startPoint.Position - line.Start.Position + 1;
 
-            int stopLineNumber = startPoint.Snapshot.LineCount - 1;
+            var stopLineNumber = startPoint.Snapshot.LineCount - 1;
             if (maxLines > 0)
             {
                 stopLineNumber = Math.Min(stopLineNumber, lineNumber + maxLines);
             }
 
-            int openCount = 0;
+            var openCount = 0;
             while (true)
             {
                 // walk the entire line
                 while (offset < line.Length)
                 {
-                    char currentChar = lineText[offset];
+                    var currentChar = lineText[offset];
 
                     // found the close character
                     if (currentChar == close)
@@ -274,10 +269,10 @@ namespace MichaelReukauff.Protobuf
         {
             pairSpan = new SnapshotSpan(startPoint, startPoint);
 
-            ITextSnapshotLine line = startPoint.GetContainingLine();
+            var line = startPoint.GetContainingLine();
 
-            int lineNumber = line.LineNumber;
-            int offset = startPoint - line.Start - 1; // move the offset to the character before this one
+            var lineNumber = line.LineNumber;
+            var offset = startPoint - line.Start - 1; // move the offset to the character before this one
 
             // if the offset is negative, move to the previous line
             if (offset < 0)
@@ -286,22 +281,22 @@ namespace MichaelReukauff.Protobuf
                 offset = line.Length - 1;
             }
 
-            string lineText = line.GetText();
+            var lineText = line.GetText();
 
-            int stopLineNumber = 0;
+            var stopLineNumber = 0;
             if (maxLines > 0)
             {
                 stopLineNumber = Math.Max(stopLineNumber, lineNumber - maxLines);
             }
 
-            int closeCount = 0;
+            var closeCount = 0;
 
             while (true)
             {
                 // Walk the entire line
                 while (offset >= 0)
                 {
-                    char currentChar = lineText[offset];
+                    var currentChar = lineText[offset];
 
                     if (currentChar == open)
                     {

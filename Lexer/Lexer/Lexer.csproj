@@ -28,6 +28,8 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\ProtobufLexer.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>MR.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -116,6 +118,9 @@
       <Generator>ProtoBufTool</Generator>
       <LastGenOutput>Test3.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

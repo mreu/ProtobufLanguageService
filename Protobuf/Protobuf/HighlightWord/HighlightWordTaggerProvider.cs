@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighlightWordTaggerProvider.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -44,7 +42,8 @@ namespace MichaelReukauff.Protobuf
         /// <param name="textView">The text view.</param>
         /// <param name="buffer">The text buffer.</param>
         /// <returns>An ITagger.</returns>
-        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer)
+            where T : ITag
         {
             // provide highlighting only on the top buffer
             if (textView.TextBuffer != buffer)
@@ -52,7 +51,7 @@ namespace MichaelReukauff.Protobuf
                 return null;
             }
 
-            ITextStructureNavigator textStructureNavigator = TextStructureNavigatorSelector.GetTextStructureNavigator(buffer);
+            var textStructureNavigator = TextStructureNavigatorSelector.GetTextStructureNavigator(buffer);
 
             return new HighlightWordTagger(textView, buffer, TextSearchService, textStructureNavigator) as ITagger<T>;
         }

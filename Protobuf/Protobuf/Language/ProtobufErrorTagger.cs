@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufErrorTagger.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -23,6 +21,7 @@ namespace MichaelReukauff.Protobuf
     /// </summary>
     internal sealed class ErrorTagger : ITagger<ErrorTag>, IDisposable
     {
+#pragma warning disable SA1401 // Fields must be private
         /// <summary>
         /// The _aggregator.
         /// </summary>
@@ -42,9 +41,10 @@ namespace MichaelReukauff.Protobuf
         /// The _document.
         /// </summary>
         public readonly ITextDocument Document;
+#pragma warning restore SA1401 // Fields must be private
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorTagger"/> class. 
+        /// Initializes a new instance of the <see cref="ErrorTagger"/> class.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="aggregatorFactory">The aggregator factory.</param>
@@ -118,7 +118,7 @@ namespace MichaelReukauff.Protobuf
         /// <param name="args">The <see cref="EventArgs"/>.</param>
         private void ReparseFile(object sender, EventArgs args)
         {
-            ITextSnapshot snapshot = Buffer.CurrentSnapshot;
+            var snapshot = Buffer.CurrentSnapshot;
             var spans = new NormalizedSnapshotSpanCollection(new SnapshotSpan(snapshot, 0, snapshot.Length));
 
             ErrorProvider.Tasks.Clear();

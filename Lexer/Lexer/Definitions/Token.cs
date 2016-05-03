@@ -1,10 +1,8 @@
-﻿#region Copyright © 2013 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Token.cs" company="Michael Reukauff">
-//   Copyright © 2013 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Lexer
@@ -44,7 +42,7 @@ namespace MichaelReukauff.Lexer
         public CodeType CodeType { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Token"/> class. 
+        /// Initializes a new instance of the <see cref="Token"/> class.
         /// </summary>
         /// <param name="line">Line number where the token was found (beginning with line 0).</param>
         /// <param name="position">Position of the token in the line (starting with 0).</param>
