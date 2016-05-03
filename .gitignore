@@ -93,6 +93,9 @@ _TeamCity*
 # DotCover is a Code Coverage Tool
 *.dotCover
 
+# dotMemory files
+Protobuf/packages/JetBrains*
+
 # NCrunch
 _NCrunch_*
 *.ncrunch*
