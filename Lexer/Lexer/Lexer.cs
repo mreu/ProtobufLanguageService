@@ -25,7 +25,8 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// The proto3 flag.
         /// </summary>
-        private bool proto3;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
+        internal bool Proto3;
 
         /// <summary>
         /// All matches from regEx.
@@ -229,11 +230,11 @@ namespace MichaelReukauff.Lexer
             switch (Word)
             {
                 case "proto2":
-                    proto3 = false;
+                    Proto3 = false;
                     AddNewToken(CodeType.Keyword);
                     break;
                 case "proto3":
-                    proto3 = true;
+                    Proto3 = true;
                     AddNewToken(CodeType.Keyword);
                     break;
                 default:
@@ -1023,7 +1024,7 @@ namespace MichaelReukauff.Lexer
         internal bool ParseMessageField()
         {
             var field = new Field();
-            if (proto3)
+            if (Proto3)
             {
                 if (Word == "repeated")
                 {
@@ -1032,6 +1033,15 @@ namespace MichaelReukauff.Lexer
                     if (!IncrementIndex(true))
                     {
                         AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (Word == "required" || Word == "optional")
+                    {
+                        AddNewError("Expected \"repeated\" or type of field");
+                        IncrementIndex(true);
                         return false;
                     }
                 }

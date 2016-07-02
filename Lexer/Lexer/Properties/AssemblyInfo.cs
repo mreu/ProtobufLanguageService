@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Lexer")]
-[assembly: AssemblyCopyright("Copyright © 2015 Michael Reukauff")]
+[assembly: AssemblyCopyright("Copyright © 2016 Michael Reukauff")]
 [assembly: AssemblyTrademark("All rights reserved")]
 [assembly: AssemblyCulture("")]
 
