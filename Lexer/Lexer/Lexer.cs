@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Lexer.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Lexer
 {
@@ -25,6 +23,12 @@ namespace MichaelReukauff.Lexer
         private readonly string buffer;
 
         /// <summary>
+        /// The proto3 flag.
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
+        internal bool Proto3;
+
+        /// <summary>
         /// All matches from regEx.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
@@ -33,12 +37,12 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// Gets the list of all token.
         /// </summary>
-        public List<Token> Tokens { get; private set; }
+        public List<Token> Tokens { get; }
 
         /// <summary>
         /// Gets the list of all errors (if anyx).
         /// </summary>
-        public List<Error> Errors { get; private set; }
+        public List<Error> Errors { get; }
 
         /// <summary>
         /// Index into the current matches.
@@ -59,7 +63,7 @@ namespace MichaelReukauff.Lexer
         internal bool HasPackage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Lexer"/> class. 
+        /// Initializes a new instance of the <see cref="Lexer"/> class.
         /// </summary>
         /// <param name="text">
         /// The text to parse.
@@ -184,10 +188,11 @@ namespace MichaelReukauff.Lexer
             }
         }
 
-        #region Parse syntax
+        #region Parse Syntax
         /// <summary>
         /// Parse the option.
         /// </summary>
+        /// <returns>True if ok otherwise false.</returns>
         internal bool ParseSyntax()
         {
             AddNewToken(CodeType.TopLevelCmd);
@@ -225,7 +230,11 @@ namespace MichaelReukauff.Lexer
             switch (Word)
             {
                 case "proto2":
+                    Proto3 = false;
+                    AddNewToken(CodeType.Keyword);
+                    break;
                 case "proto3":
+                    Proto3 = true;
                     AddNewToken(CodeType.Keyword);
                     break;
                 default:
@@ -261,9 +270,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse syntax
+        #endregion Parse Syntax
 
-        #region Parse option
+        #region Parse Option
         /// <summary>
         /// Parse the option.
         /// </summary>
@@ -302,9 +311,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse option
+        #endregion Parse Option
 
-        #region Parse service
+        #region Parse Service
         /// <summary>
         /// Parse the service entry.
         /// </summary>
@@ -393,9 +402,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse service
+        #endregion Parse Service
 
-        #region Parse rpc
+        #region Parse Rpc
         /// <summary>
         /// Parse the PRC entry.
         /// </summary>
@@ -548,9 +557,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse rpc
+        #endregion Parse Rpc
 
-        #region Parse enum
+        #region Parse Enum
         /// <summary>
         /// Parse enum entry.
         /// </summary>
@@ -675,9 +684,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse enum
+        #endregion Parse Enum
 
-        #region Parse oneof
+        #region Parse Oneof
         /// <summary>
         /// Parse a oneof.
         /// </summary>
@@ -743,12 +752,6 @@ namespace MichaelReukauff.Lexer
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
             var field = new Field();
-
-            //if (!IncrementIndex(true))
-            //{
-            //    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
-            //    return false;
-            //}
 
             field.FieldType = Helper.GetFieldType(Word);
             if (field.FieldType == FieldType.TypeUnknown)
@@ -844,9 +847,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse oneof
+        #endregion Parse Oneof
 
-        #region Parse message
+        #region Parse Message
         /// <summary>
         /// Parse a message.
         /// </summary>
@@ -1021,20 +1024,44 @@ namespace MichaelReukauff.Lexer
         internal bool ParseMessageField()
         {
             var field = new Field();
-
-            if (!Helper.IsFieldRule(Word))
+            if (Proto3)
             {
-                AddNewError("Expected \"required\", \"optional\", or \"repeated\".");
-                IncrementIndex(true);
-                return false;
+                if (Word == "repeated")
+                {
+                    AddNewToken(CodeType.FieldRule);
+
+                    if (!IncrementIndex(true))
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (Word == "required" || Word == "optional")
+                    {
+                        AddNewError("Expected \"repeated\" or type of field");
+                        IncrementIndex(true);
+                        return false;
+                    }
+                }
             }
-
-            AddNewToken(CodeType.FieldRule);
-
-            if (!IncrementIndex(true))
+            else
             {
-                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
-                return false;
+                if (!Helper.IsFieldRule(Word))
+                {
+                    AddNewError("Expected \"required\", \"optional\", or \"repeated\".");
+                    IncrementIndex(true);
+                    return false;
+                }
+
+                AddNewToken(CodeType.FieldRule);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+                    return false;
+                }
             }
 
             field.FieldType = Helper.GetFieldType(Word);
@@ -1209,7 +1236,7 @@ namespace MichaelReukauff.Lexer
         /// <returns>True if ok otherwise false.</returns>
         internal bool ParseFieldOption()
         {
-            bool isOpenBracket = false;
+            var isOpenBracket = false;
 
             do
             {
@@ -1331,19 +1358,15 @@ namespace MichaelReukauff.Lexer
                     }
                     else
                     {
-                        //check for numeric value
-                        int i = Matches[Index].Index; // save position
-                        int saveIndex = Index;
+                        // check for numeric value
+                        var i = Matches[Index].Index; // save position
+                        var saveIndex = Index;
 
                         var num = GetFloatNumber();
                         if (Helper.IsDoubleOrFloat(num))
                         {
                             AddNewToken(i, Matches[Index].Index + Matches[Index].Length - i, num, CodeType.Number);
                         }
-                        //if (Helper.IsInteger(Word))
-                        //{
-                        //    AddNewToken(CodeType.Number);
-                        //}
                         else
                         {
                             Index = saveIndex;
@@ -1373,19 +1396,15 @@ namespace MichaelReukauff.Lexer
                 }
                 else
                 {
-                    //check for numeric value
-                    int i = Matches[Index].Index; // save position
-                    int saveIndex = Index;
+                    // check for numeric value
+                    var i = Matches[Index].Index; // save position
+                    var saveIndex = Index;
 
                     var num = GetFloatNumber();
                     if (Helper.IsDoubleOrFloat(num))
                     {
                         AddNewToken(i, Matches[Index].Index + Matches[Index].Length - i, num, CodeType.Number);
                     }
-                    //if (Helper.IsInteger(Word))
-                    //{
-                    //    AddNewToken(CodeType.Number);
-                    //}
                     else
                     {
                         Index = saveIndex;
@@ -1479,7 +1498,7 @@ namespace MichaelReukauff.Lexer
 
                 case FieldType.TypeFloat:
                 case FieldType.TypeDouble:
-                    int i = Matches[Index].Index; // save position
+                    var i = Matches[Index].Index; // save position
 
                     var num = GetFloatNumber();
 
@@ -1521,9 +1540,9 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse message
+        #endregion Parse Message
 
-        #region Parse extend
+        #region Parse Extend
         /// <summary>
         /// Parse the extend message.
         /// </summary>
@@ -1634,7 +1653,7 @@ namespace MichaelReukauff.Lexer
 
             return true;
         }
-        #endregion Parse extend
+        #endregion Parse Extend
 
         #region Parse Import
         /// <summary>
@@ -1771,14 +1790,14 @@ namespace MichaelReukauff.Lexer
         }
         #endregion Parse Package
 
-        #region Comment handling
+        #region Comment Handling
         /// <summary>
         /// Eat all comments from the matches, so we get a clean list wihtout any comments.
         /// Put the whole comment into one token.
         /// </summary>
         internal void EatComments()
         {
-            for (int idx = 0; idx < Matches.Count; idx++)
+            for (var idx = 0; idx < Matches.Count; idx++)
             {
                 var match = Matches[idx];
 
@@ -1788,7 +1807,7 @@ namespace MichaelReukauff.Lexer
                     var token = new Token(Line, match.Index, 0, string.Empty, CodeType.Comment);
 
                     // now search the end of this line
-                    int i = idx;
+                    var i = idx;
                     for (; i < Matches.Count; i++)
                     {
                         if (Matches[i].Value == "\n")
@@ -1827,7 +1846,7 @@ namespace MichaelReukauff.Lexer
                     var token = new Token(Line, match.Index, 0, string.Empty, CodeType.Comment);
 
                     // now search the */
-                    int i = idx;
+                    var i = idx;
                     for (; i < Matches.Count; i++)
                     {
                         if (Matches[i].Value == "\n")
@@ -1866,9 +1885,9 @@ namespace MichaelReukauff.Lexer
                 }
             }
         }
-        #endregion Comment handling
+        #endregion Comment Handling
 
-        #region Helper methods
+        #region Helper Methods
         /// <summary>
         /// Increment the index of the match collection by one.
         /// </summary>
@@ -1914,7 +1933,7 @@ namespace MichaelReukauff.Lexer
                 return false;
             }
 
-            int i = Index + 1;
+            var i = Index + 1;
 
             // find end of string or newline whatever comes first
             for (; i < Matches.Count; i++)
@@ -1975,10 +1994,10 @@ namespace MichaelReukauff.Lexer
         /// <returns>The floating number as string.</returns>
         internal string GetFloatNumber()
         {
-            int max = Matches.Count;
+            var max = Matches.Count;
 
             var ret = GetExponent();
-            string number = ret.Item1;
+            var number = ret.Item1;
 
             if (!ret.Item2)
             {
@@ -2018,7 +2037,7 @@ namespace MichaelReukauff.Lexer
         /// <returns>The string with the floating number and if a E number was found.</returns>
         private Tuple<string, bool> GetExponent()
         {
-            string number = Word;
+            var number = Word;
 
             // the + sign is a single token, we must get the next token which is the numeric part of it
             if (number == "+")
@@ -2154,17 +2173,11 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// Gets the current token from the matches.
         /// </summary>
-        public string Word
-        {
-            get
-            {
-                return Matches[Index].Value;
-            }
-        }
-        #endregion Helper methods
+        public string Word => Matches[Index].Value;
+        #endregion Helper Methods
     }
 
-    #region class Field
+    #region Class Field
     /// <summary>
     /// The field class.
     /// </summary>
@@ -2189,5 +2202,5 @@ namespace MichaelReukauff.Lexer
             HasOption = false;
         }
     }
-    #endregion class Field
+    #endregion Class Field
 }

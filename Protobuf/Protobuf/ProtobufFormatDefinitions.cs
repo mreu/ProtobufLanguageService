@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufFormatDefinitions.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf
 {

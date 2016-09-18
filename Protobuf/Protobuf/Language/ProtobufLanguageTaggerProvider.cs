@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufLanguageTaggerProvider.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -34,7 +32,8 @@ namespace MichaelReukauff.Protobuf
         /// <returns>
         /// The <see cref="ITagger{T}"/>.
         /// </returns>
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
+        public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
+            where T : ITag
         {
             // create a single tagger for each buffer.
             Func<ITagger<T>> sc = () => new ProtobufLanguageTagger(buffer) as ITagger<T>;

@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufClassifier.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -25,6 +23,7 @@ namespace MichaelReukauff.Protobuf
     /// </summary>
     internal sealed class ProtobufClassifier : ITagger<ClassificationTag>
     {
+#pragma warning disable SA1401 // Fields must be private
         /// <summary>
         /// The _buffer.
         /// </summary>
@@ -54,9 +53,10 @@ namespace MichaelReukauff.Protobuf
         /// The _protobuf types.
         /// </summary>
         public readonly IDictionary<CodeType, IClassificationType> ProtobufTypes;
+#pragma warning restore SA1401 // Fields must be private
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProtobufClassifier"/> class. 
+        /// Initializes a new instance of the <see cref="ProtobufClassifier"/> class.
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="aggregatorFactory">The aggregate factory.</param>
@@ -105,7 +105,7 @@ namespace MichaelReukauff.Protobuf
             var temp = TagsChanged;
             if (temp != null)
             {
-                NormalizedSnapshotSpanCollection spans = e.Span.GetSpans(Buffer.CurrentSnapshot);
+                var spans = e.Span.GetSpans(Buffer.CurrentSnapshot);
                 if (spans.Count > 0)
                 {
                     var span = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End);

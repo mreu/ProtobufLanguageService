@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BraceMatchingTag.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf
 {
@@ -16,7 +14,7 @@ namespace MichaelReukauff.Protobuf
     internal class BraceMatchingTag : TextMarkerTag
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BraceMatchingTag"/> class. 
+        /// Initializes a new instance of the <see cref="BraceMatchingTag"/> class.
         /// In the constructor, pass in the name of the format definition.
         /// </summary>
         public BraceMatchingTag()

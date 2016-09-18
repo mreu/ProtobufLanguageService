@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ProtobufClassificationTypes.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf.Language
 {
@@ -25,7 +23,7 @@ namespace MichaelReukauff.Protobuf.Language
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         [Export(typeof(ClassificationTypeDefinition))]
         [Name(ProtobufFormatDefinitions.Enum)]
-        internal static ClassificationTypeDefinition ProtobufEnum = null;
+        internal static ClassificationTypeDefinition ProtobufEnum;
 
         /// <summary>
         /// Defines the "Protobuf FieldRule" classification type.
@@ -33,7 +31,7 @@ namespace MichaelReukauff.Protobuf.Language
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         [Export(typeof(ClassificationTypeDefinition))]
         [Name(ProtobufFormatDefinitions.FieldRule)]
-        internal static ClassificationTypeDefinition ProtobufFieldRule = null;
+        internal static ClassificationTypeDefinition ProtobufFieldRule;
 
         /// <summary>
         /// Defines the "Protobuf TopLevelCmd" classification type.
@@ -41,7 +39,7 @@ namespace MichaelReukauff.Protobuf.Language
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         [Export(typeof(ClassificationTypeDefinition))]
         [Name(ProtobufFormatDefinitions.TopLevelCmd)]
-        internal static ClassificationTypeDefinition ProtobufTopLevelCmd = null;
+        internal static ClassificationTypeDefinition ProtobufTopLevelCmd;
     }
 }
 

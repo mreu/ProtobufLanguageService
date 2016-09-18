@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CompletionHandler.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -49,7 +47,7 @@ namespace MichaelReukauff.Protobuf
         private ICompletionSession session;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompletionHandler"/> class. 
+        /// Initializes a new instance of the <see cref="CompletionHandler"/> class.
         /// </summary>
         /// <param name="textViewAdapter">The text view adapter.</param>
         /// <param name="textView">The text viewer.</param>
@@ -125,8 +123,8 @@ namespace MichaelReukauff.Protobuf
             }
 
             // pass along the command so the char is added to the buffer
-            int retVal = nextCommandHandler.Exec(ref pguidCmdGroup, cmdId, cmdExecOpt, pvaIn, pvaOut);
-            bool handled = false;
+            var retVal = nextCommandHandler.Exec(ref pguidCmdGroup, cmdId, cmdExecOpt, pvaIn, pvaOut);
+            var handled = false;
 
             if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
             {
@@ -176,15 +174,15 @@ namespace MichaelReukauff.Protobuf
         /// </summary>
         private void TriggerCompletion()
         {
-            // the caret must be in a non-projection location 
-            SnapshotPoint? caretPoint = textView.Caret.Position.Point.GetPoint(textBuffer => (!textBuffer.ContentType.IsOfType("projection")), PositionAffinity.Predecessor);
+            // the caret must be in a non-projection location
+            var caretPoint = textView.Caret.Position.Point.GetPoint(textBuffer => (!textBuffer.ContentType.IsOfType("projection")), PositionAffinity.Predecessor);
             if (!caretPoint.HasValue)
             {
                 return;
             }
 
             var cp = (SnapshotPoint)caretPoint;
-            int position = cp.Position;
+            var position = cp.Position;
 
             // check for "//" before the current cursor position in this line
             var line = ((SnapshotPoint)caretPoint).Snapshot.GetLineFromPosition(((SnapshotPoint)caretPoint).Position);
@@ -213,7 +211,7 @@ namespace MichaelReukauff.Protobuf
 
             session = provider.CompletionBroker.CreateCompletionSession(textView, caretPoint.Value.Snapshot.CreateTrackingPoint(caretPoint.Value.Position, PointTrackingMode.Positive), true);
 
-            // subscribe to the Dismissed event on the session 
+            // subscribe to the Dismissed event on the session
             session.Dismissed += OnSessionDismissed;
             session.Start();
         }

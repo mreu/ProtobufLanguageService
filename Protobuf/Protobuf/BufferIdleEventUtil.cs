@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BufferIdleEventUtil.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf
 {
@@ -30,7 +28,7 @@ namespace MichaelReukauff.Protobuf
         /// </summary>
         private static readonly object BufferTimerKey = new object();
 
-        #region Public interface
+        #region Public Interface
         /// <summary>
         /// The add buffer idle event listener.
         /// </summary>
@@ -97,7 +95,7 @@ namespace MichaelReukauff.Protobuf
 
             return true;
         }
-        #endregion
+        #endregion Public Interface
 
         #region Helpers
         /// <summary>
@@ -264,6 +262,6 @@ namespace MichaelReukauff.Protobuf
 
             RestartTimerForBuffer(buffer);
         }
-        #endregion
+        #endregion Helpers
     }
 }

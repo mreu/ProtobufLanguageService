@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BraceMatchingTaggerProvider.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace MichaelReukauff.Protobuf
 {
@@ -30,7 +28,8 @@ namespace MichaelReukauff.Protobuf
         /// <param name="buffer">The buffer.</param>
         /// <typeparam name="T">The tagger.</typeparam>
         /// <returns>The <see cref="ITagger{T}"/>.</returns>
-        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer)
+            where T : ITag
         {
             if (textView == null)
             {

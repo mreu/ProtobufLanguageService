@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CompletionSource.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -43,7 +41,7 @@ namespace MichaelReukauff.Protobuf
         private bool isDisposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompletionSource"/> class. 
+        /// Initializes a new instance of the <see cref="CompletionSource"/> class.
         /// </summary>
         /// <param name="navigatorSelectorService">The navigator selector service.</param>
         /// <param name="buffer">The text buffer.</param>
@@ -79,7 +77,7 @@ namespace MichaelReukauff.Protobuf
             var completions = new List<Completion>();
 
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (KeyValuePair<string, string> token in keywords)
+            foreach (var token in keywords)
             {
                 completions.Add(new Completion(token.Key, token.Key, token.Value, null, null));
             }
@@ -105,9 +103,9 @@ namespace MichaelReukauff.Protobuf
         /// <returns>The tracking span.</returns>
         private ITrackingSpan FindTokenSpanAtPosition(ICompletionSession session)
         {
-            SnapshotPoint currentPoint = session.TextView.Caret.Position.BufferPosition - 1;
-            ITextStructureNavigator navigator = navigatorSelectorService.GetTextStructureNavigator(buffer);
-            TextExtent extent = navigator.GetExtentOfWord(currentPoint);
+            var currentPoint = session.TextView.Caret.Position.BufferPosition - 1;
+            var navigator = navigatorSelectorService.GetTextStructureNavigator(buffer);
+            var extent = navigator.GetExtentOfWord(currentPoint);
             return currentPoint.Snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeInclusive);
         }
     }

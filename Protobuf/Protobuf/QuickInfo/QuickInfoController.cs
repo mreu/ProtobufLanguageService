@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuickInfoController.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -41,7 +39,7 @@ namespace MichaelReukauff.Protobuf
         private IQuickInfoSession session;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuickInfoController"/> class. 
+        /// Initializes a new instance of the <see cref="QuickInfoController"/> class.
         /// The constructor sets the fields and adds the mouse hover event handler.
         /// </summary>
         /// <param name="textView">
@@ -74,11 +72,11 @@ namespace MichaelReukauff.Protobuf
         private void OnTextViewMouseHover(object sender, MouseHoverEventArgs e)
         {
             // find the mouse position by mapping down to the subject buffer
-            SnapshotPoint? point = GetMousePosition(new SnapshotPoint(textView.TextSnapshot, e.Position));
+            var point = GetMousePosition(new SnapshotPoint(textView.TextSnapshot, e.Position));
 
             if (point != null)
             {
-                ITrackingPoint triggerPoint = point.Value.Snapshot.CreateTrackingPoint(point.Value.Position, PointTrackingMode.Positive);
+                var triggerPoint = point.Value.Snapshot.CreateTrackingPoint(point.Value.Position, PointTrackingMode.Positive);
 
                 // Find the broker for this buffer
                 if (!componentContext.QuickInfoBroker.IsQuickInfoActive(textView))
@@ -102,9 +100,9 @@ namespace MichaelReukauff.Protobuf
         {
             // Map this point down to the appropriate subject buffer.
             return textView.BufferGraph.MapDownToFirstMatch(
-                topPosition, 
-                PointTrackingMode.Positive, 
-                snapshot => subjectBuffers.Contains(snapshot.TextBuffer), 
+                topPosition,
+                PointTrackingMode.Positive,
+                snapshot => subjectBuffers.Contains(snapshot.TextBuffer),
                 PositionAffinity.Predecessor);
         }
 

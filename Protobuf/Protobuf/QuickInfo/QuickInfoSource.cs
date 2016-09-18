@@ -1,10 +1,8 @@
-﻿#region Copyright © 2014 Michael Reukauff
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuickInfoSource.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+//   Copyright © 2016 Michael Reukauff. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace MichaelReukauff.Protobuf
@@ -39,7 +37,7 @@ namespace MichaelReukauff.Protobuf
         private readonly IDictionary<string, string> keywords;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuickInfoSource"/> class. 
+        /// Initializes a new instance of the <see cref="QuickInfoSource"/> class.
         /// The constructor sets the QuickInfo source provider and the text buffer, and populates the set of method names, and method signatures and descriptions.
         /// </summary>
         /// <param name="buffer">
@@ -83,7 +81,7 @@ namespace MichaelReukauff.Protobuf
                 {
                     if (curTag.Tag.CodeType == CodeType.Keyword)
                     {
-                        SnapshotSpan tagSpan = curTag.Span.GetSpans(buffer).First();
+                        var tagSpan = curTag.Span.GetSpans(buffer).First();
                         if (keywords.Keys.Contains(tagSpan.GetText()))
                         {
                             applicableToSpan = buffer.CurrentSnapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
