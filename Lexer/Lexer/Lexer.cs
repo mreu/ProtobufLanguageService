@@ -8,9 +8,10 @@ namespace MichaelReukauff.Lexer
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text.RegularExpressions;
+
+#pragma warning disable SA1401 // Fields must be private
 
     /// <summary>
     /// Lexer class.
@@ -25,13 +26,11 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// The proto3 flag.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal bool Proto3;
 
         /// <summary>
         /// All matches from regEx.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal List<Match> Matches;
 
         /// <summary>
@@ -47,19 +46,16 @@ namespace MichaelReukauff.Lexer
         /// <summary>
         /// Index into the current matches.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal int Index;
 
         /// <summary>
         /// Line number of the current line.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal int Line;
 
         /// <summary>
         /// Is set to true if a package top kevel statement occurs.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal bool HasPackage;
 
         /// <summary>
@@ -445,6 +441,17 @@ namespace MichaelReukauff.Lexer
                 return false;
             }
 
+            if (Word == "stream")
+            {
+                AddNewToken(CodeType.Keyword);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected name of request message.");
+                    return false;
+                }
+            }
+
             if (!Helper.IsIdentifier(Word))
             {
                 AddNewError("Expected name of request message.");
@@ -495,6 +502,17 @@ namespace MichaelReukauff.Lexer
             {
                 AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected name of response message.");
                 return false;
+            }
+
+            if (Word == "stream")
+            {
+                AddNewToken(CodeType.Keyword);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected name of request message.");
+                    return false;
+                }
             }
 
             if (!Helper.IsIdentifier(Word))
