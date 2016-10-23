@@ -1,0 +1,11 @@
+syntax = "proto3";
+package Top.Pkg2;
+
+import "Top.Pkg1.proto";
+
+message Ping
+{}
+
+service Pkg1_RPC {
+   rpc Ping( Top.Pkg2.Ping ) returns ( Top.Pkg1.Ack );
+}

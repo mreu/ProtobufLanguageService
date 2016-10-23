@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Michael Reukauff">
-//   Copyright © 2014 Michael Reukauff
+// <copyright file="AssemblyInfo.cs" company="Michael Reukauff, Germany">
+//   Copyright © 2016 Michael Reukauff, Germany. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -42,4 +42,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.8.*")]
-[assembly: AssemblyFileVersion("1.8.1.0")]
+[assembly: AssemblyFileVersion("1.8.2.0")]

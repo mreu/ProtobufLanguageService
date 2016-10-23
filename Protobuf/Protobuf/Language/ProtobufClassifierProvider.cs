@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProtobufClassifierProvider.cs" company="Michael Reukauff">
-//   Copyright © 2016 Michael Reukauff. All rights reserved.
+// <copyright file="ProtobufClassifierProvider.cs" company="Michael Reukauff, Germany">
+//   Copyright © 2016 Michael Reukauff, Germany. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
