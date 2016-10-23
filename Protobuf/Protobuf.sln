@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protobuf", "Protobuf\Protobuf.csproj", "{BECDD61A-05C9-4ED9-BB76-CF1DE406DC01}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "..\Lexer\Lexer\Lexer.csproj", "{21514C31-BA82-41A3-95DE-C0BF40CBE1E5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexerTest", "..\Lexer\LexerTest\LexerTest.csproj", "{7EADA17E-0073-4635-BB26-3E00A7A86BFF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92014380-D403-4001-86DE-DD97D6708CC0}"
 	ProjectSection(SolutionItems) = preProject
 		..\License.md = ..\License.md
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protobuf", "Protobuf\Protobuf.csproj", "{BECDD61A-05C9-4ED9-BB76-CF1DE406DC01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "..\Lexer\Lexer\Lexer.csproj", "{21514C31-BA82-41A3-95DE-C0BF40CBE1E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexerTest", "..\Lexer\LexerTest\LexerTest.csproj", "{7EADA17E-0073-4635-BB26-3E00A7A86BFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
