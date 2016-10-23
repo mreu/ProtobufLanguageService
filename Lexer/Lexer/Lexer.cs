@@ -452,18 +452,34 @@ namespace MichaelReukauff.Lexer
                 }
             }
 
-            if (!Helper.IsIdentifier(Word))
+            while (true)
             {
-                AddNewError("Expected name of request message.");
-                return false;
-            }
+                if (!Helper.IsIdentifier(Word))
+                {
+                    AddNewError("Expected name of request message.");
+                    return false;
+                }
 
-            AddNewToken(CodeType.SymRef);
+                AddNewToken(CodeType.SymRef);
 
-            if (!IncrementIndex(true))
-            {
-                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\"");
-                return false;
+                if (!IncrementIndex())
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\"");
+                    return false;
+                }
+
+                if (Word == ".")
+                {
+                    if (!IncrementIndex())
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
 
             if (Word != ")")
@@ -515,18 +531,34 @@ namespace MichaelReukauff.Lexer
                 }
             }
 
-            if (!Helper.IsIdentifier(Word))
+            while (true)
             {
-                AddNewError("Expected name of response message.");
-                return false;
-            }
+                if (!Helper.IsIdentifier(Word))
+                {
+                    AddNewError("Expected name of response message.");
+                    return false;
+                }
 
-            AddNewToken(CodeType.SymRef);
+                AddNewToken(CodeType.SymRef);
 
-            if (!IncrementIndex(true))
-            {
-                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\"");
-                return false;
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \")\"");
+                    return false;
+                }
+
+                if (Word == ".")
+                {
+                    if (!IncrementIndex())
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
 
             if (Word != ")")
