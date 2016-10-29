@@ -800,10 +800,7 @@ namespace MichaelReukauff.Lexer
         /// <returns>True if ok otherwise false.</returns>
         internal bool ParseOneOfField()
         {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var field = new Field();
-
-            field.FieldType = Helper.GetFieldType(Word);
+            var field = new Field { FieldType = Helper.GetFieldType(Word) };
             if (field.FieldType == FieldType.TypeUnknown)
             {
                 while (true)
@@ -899,6 +896,196 @@ namespace MichaelReukauff.Lexer
         }
         #endregion Parse Oneof
 
+        #region Parse Map
+        /// <summary>
+        /// Parse a map.
+        /// </summary>
+        /// <returns>True if ok otherwise false.</returns>
+        internal bool ParseMap()
+        {
+            AddNewToken(CodeType.Keyword);
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"<\".");
+                return false;
+            }
+
+            if (Word != "<")
+            {
+                AddNewError("Expected \"<\".");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+                return false;
+            }
+
+            var field = new Field { FieldType = Helper.GetFieldType(Word) };
+            if (field.FieldType == FieldType.TypeUnknown)
+            {
+                while (true)
+                {
+                    if (!Helper.IsIdentifier(Word))
+                    {
+                        AddNewError("Expected Identifier.");
+                    }
+
+                    AddNewToken(CodeType.SymRef);
+
+                    if (!IncrementIndex())
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                        return false;
+                    }
+
+                    if (Word == ".")
+                    {
+                        if (!IncrementIndex())
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                AddNewToken(CodeType.Keyword);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                    return false;
+                }
+            }
+
+            if (Word != ",")
+            {
+                AddNewError("Expected \",\".");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field type.");
+                return false;
+            }
+
+            field = new Field { FieldType = Helper.GetFieldType(Word) };
+            if (field.FieldType == FieldType.TypeUnknown)
+            {
+                while (true)
+                {
+                    if (!Helper.IsIdentifier(Word))
+                    {
+                        AddNewError("Expected Identifier.");
+                    }
+
+                    AddNewToken(CodeType.SymRef);
+
+                    if (!IncrementIndex())
+                    {
+                        AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                        return false;
+                    }
+
+                    if (Word == ".")
+                    {
+                        if (!IncrementIndex())
+                        {
+                            AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected Identifier.");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                AddNewToken(CodeType.Keyword);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                    return false;
+                }
+            }
+
+            if (Word != ">")
+            {
+                AddNewError("Expected \">\".");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field name.");
+                return false;
+            }
+
+            if (!Helper.IsIdentifier(Word))
+            {
+                AddNewError("Invalid field name.");
+                return false;
+            }
+
+            AddNewToken(CodeType.SymDef);
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \"=\".");
+                return false;
+            }
+
+            if (Word != "=")
+            {
+                AddNewError("Expected \"=\".");
+                return false;
+            }
+
+            if (!IncrementIndex(true))
+            {
+                AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected field number.");
+                return false;
+            }
+
+            if (!Helper.IsPositiveInteger(Word))
+            {
+                AddNewError("Expected field number.");
+            }
+            else
+            {
+                AddNewToken(CodeType.Number);
+
+                if (!IncrementIndex(true))
+                {
+                    AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected \";\"");
+                    return false;
+                }
+            }
+
+            if (Word != ";")
+            {
+                AddNewError("Expected \";\"");
+                return false;
+            }
+
+            IncrementIndex(true);
+
+            return true;
+        }
+        #endregion Parse Map
+
         #region Parse Message
         /// <summary>
         /// Parse a message.
@@ -962,6 +1149,9 @@ namespace MichaelReukauff.Lexer
                         break;
                     case "oneof":
                         ParseOneOf();
+                        break;
+                    case "map":
+                        ParseMap();
                         break;
                     default:
                         ParseMessageField();

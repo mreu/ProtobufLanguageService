@@ -15,23 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Protobuf Language Service")]
 [assembly: AssemblyDescription("Protobuf Editor with Intellisense and Syntax Coloring for Googles Protobuf syntax.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Michael Reukauff")]
 [assembly: AssemblyProduct("Protobuf Language Service")]
-[assembly: AssemblyCopyright("Copyright © 2016 Michael Reukauff")]
-[assembly: AssemblyTrademark("All rights reserved.")]
-[assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
 [assembly: NeutralResourcesLanguage("en-US")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("1.8.*")]
-[assembly: AssemblyFileVersion("1.8.2.0")]

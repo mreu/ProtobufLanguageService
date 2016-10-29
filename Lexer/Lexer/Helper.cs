@@ -180,7 +180,7 @@ namespace MichaelReukauff.Lexer
                 //// "\\w+|//|/\\*|\\*/|\\{|\\}|=|;|\\[|\\]|\"|\\n|\\(|\\)|\\.",
                 //// @"\w+|//|/\*|\*/|\{|\}|=|;|\[|\]|\n|\(|\)|\.|\""",
                 //// @"\w+|//|/\*|\*/|\{|\}|=|;|\[|\]|\n|\(|\)|\.|([""'])(?:(?=(\\?))\2.)*?\1", // http://stackoverflow.com/questions/171480/regex-grabbing-values-between-quotation-marks
-                @"(-\w+|\w+)|//|/\*|\*/|\{|\}|=|;|\[|\]|\n|\(|\)|\.|\+|,|\""",
+                @"(-\w+|\w+)|//|/\*|\*/|\{|\}|=|;|\[|\]|\n|\(|\)|\.|\+|,|<|>|\""",
                 RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
 
             // Capture all Matches in the InputText

@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+
+package p;
+
+message m {
+  map < string , xxxstring > broken = 1;
+  map < string , xxxstring > broken = 1;
+  map < string , xxxstring > broken = 1;
+}
