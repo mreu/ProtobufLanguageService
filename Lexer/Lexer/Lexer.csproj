@@ -53,6 +53,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Protobuf\Protobuf\Properties\AssemblyInfo.shared.cs">
+      <Link>Properties\AssemblyInfo.shared.cs</Link>
+    </Compile>
     <Compile Include="Definitions\CodeType.cs" />
     <Compile Include="Definitions\Error.cs" />
     <Compile Include="Helper.cs" />

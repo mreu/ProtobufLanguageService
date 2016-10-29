@@ -103,6 +103,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.shared.cs" />
     <Compile Include="Brace Matching\BraceMatchingFormatDefinition.cs" />
     <Compile Include="Brace Matching\BraceMatchingTag.cs" />
     <Compile Include="Brace Matching\BraceMatchingTagger.cs" />

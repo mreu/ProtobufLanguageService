@@ -22,6 +22,8 @@ Errors are shown in the protobuf section of the output pane and in the error pan
 If you have any suggestions, please feel free to add an issue.
 
 Changelog:
+* 1.9.0 - October 29, 2016
+  * Support of maps
 * 1.8.2 - October 23, 2016
   * Support of namespaces in rpc request and response names 
 * 1.8.1 - September 18, 2016
