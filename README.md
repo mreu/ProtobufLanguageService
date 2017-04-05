@@ -2,6 +2,7 @@
 Protobuf Editor for Visual Studio with Intellisense and Syntax Coloring for googles protobuf syntax.
 
 You can download this Visual Studio Extension from the [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/4bc0f38c-b058-4e05-ae38-155e053c19c5)
+Source code is found [here](https://github.com/mreu/ProtobufLanguageService)
 
 This Visual Studio Language Service supports googles protobuf definitions in the following ways:
 * Brace Matching
@@ -13,7 +14,7 @@ This Visual Studio Language Service supports googles protobuf definitions in the
 
 C# code generation will follow in Version 2.0 (this will be optional and can be switched off). Supported are protbuf-net from Marc Gravell and ~~protobuf-csharp from Jon Skeet~~ the C# code generation in the new protoc.exe.
 
-The syntax coloring is now based on my own lexer/parser. Maybe this will change in the future and I use the output from  googles protoc.exe (the protobuf compiler).
+The syntax coloring is now based on my own lexer/parser. Maybe this will change in the future and I use the output from googles protoc.exe (the protobuf compiler).
 
 The standard colors are used for syntax highlighting with the exception of the Enum field-names. You can set the colors in Visual Studio in Tools -> Options -> Environment -> Fonts and Colors. The name of the colors starts with protobuf. Please scroll down.
 
@@ -22,6 +23,8 @@ Errors are shown in the protobuf section of the output pane and in the error pan
 If you have any suggestions, please feel free to add an issue.
 
 Changelog:
+* 1.10.0 - April 5, 2017
+  * Support of Visual Studio 2017
 * 1.9.0 - October 29, 2016
   * Support of maps
 * 1.8.2 - October 23, 2016
