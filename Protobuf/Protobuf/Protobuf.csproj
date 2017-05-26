@@ -165,6 +165,9 @@
     <Compile Include="QuickInfo\QuickInfoSourceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\README.md">
+      <Link>README.md</Link>
+    </None>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
