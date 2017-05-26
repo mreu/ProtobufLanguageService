@@ -16,7 +16,7 @@ namespace MichaelReukauff.LexerTest
   public class ParseFieldOptionTests
   {
     [TestMethod]
-    public void ParseFiledOption_OK01()
+    public void ParseFieldOption_OK01()
     {
       const string text = "  packed=true];";
 
@@ -37,7 +37,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_OK02()
+    public void ParseFieldOption_OK02()
     {
       const string text = "  aaa=\"farz\"];";
 
@@ -58,7 +58,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_OK03()
+    public void ParseFieldOption_OK03()
     {
       const string text = "  aaa=1234];";
 
@@ -79,7 +79,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_OK04()
+    public void ParseFieldOption_OK04()
     {
       const string text = "  aaa=abcdefgh];";
 
@@ -100,7 +100,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_OK05()
+    public void ParseFieldOption_OK05()
     {
       const string text = "  (aaa)=abcdefgh];";
 
@@ -121,7 +121,31 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK01()
+    public void ParseFieldOption_OK06()
+    {
+      const string text = "  (aaa.bbb)=abcdefgh];";
+
+      var lex = new Lexer(text) { Matches = Helper.SplitText(text) };
+
+      Assert.IsTrue(lex.ParseFieldOption());
+
+      Assert.AreEqual(3, lex.Tokens.Count);
+      Assert.AreEqual(0, lex.Errors.Count);
+      Assert.AreEqual(6, lex.Index);
+
+      Assert.AreEqual(3, lex.Tokens[0].Position);
+      Assert.AreEqual(3, lex.Tokens[0].Length);
+      Assert.AreEqual(CodeType.Keyword, lex.Tokens[0].CodeType);
+      Assert.AreEqual(7, lex.Tokens[1].Position);
+      Assert.AreEqual(3, lex.Tokens[1].Length);
+      Assert.AreEqual(CodeType.Keyword, lex.Tokens[1].CodeType);
+      Assert.AreEqual(12, lex.Tokens[2].Position);
+      Assert.AreEqual(8, lex.Tokens[2].Length);
+      Assert.AreEqual(CodeType.Keyword, lex.Tokens[2].CodeType);
+    }
+
+        [TestMethod]
+    public void ParseFieldOption_NOK01()
     {
       const string text = "  aaa="; // incomplete statement
 
@@ -139,7 +163,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK02()
+    public void ParseFieldOption_NOK02()
     {
       const string text = "  aaa"; // incomplete statement
 
@@ -157,7 +181,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK03()
+    public void ParseFieldOption_NOK03()
     {
       const string text = "  1aaa"; // incomplete statement
 
@@ -171,7 +195,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK04()
+    public void ParseFieldOption_NOK04()
     {
       const string text = "  cpp=\r\n"; // incomplete statement
 
@@ -185,7 +209,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK05()
+    public void ParseFieldOption_NOK05()
     {
       const string text = "  aaa)=abcdefgh];";
 
@@ -203,7 +227,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK06()
+    public void ParseFieldOption_NOK06()
     {
       const string text = "  (aaa=abcdefgh];"; // closing bracket is missing
 
@@ -221,7 +245,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK07()
+    public void ParseFieldOption_NOK07()
     {
       const string text = "  ("; // incomplete statement
 
@@ -235,7 +259,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK08()
+    public void ParseFieldOption_NOK08()
     {
       const string text = "  (aaa"; // incomplete statement
 
@@ -253,7 +277,7 @@ namespace MichaelReukauff.LexerTest
     }
 
     [TestMethod]
-    public void ParseFiledOption_NOK09()
+    public void ParseFieldOption_NOK09()
     {
       const string text = "  (aaa)"; // incomplete statement
 
