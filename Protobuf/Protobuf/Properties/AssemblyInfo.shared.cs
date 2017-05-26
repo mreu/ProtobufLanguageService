@@ -7,7 +7,7 @@
 using System.Reflection;
 
 [assembly: AssemblyCompany("Michael Reukauff")]
-[assembly: AssemblyCopyright("Copyright © 2016 Michael Reukauff")]
+[assembly: AssemblyCopyright("Copyright © 2017 Michael Reukauff")]
 [assembly: AssemblyTrademark("All rights reserved")]
 [assembly: AssemblyCulture("")]
 
@@ -20,5 +20,5 @@ using System.Reflection;
 //
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.10.*")]
-[assembly: AssemblyFileVersion("1.10.0.0")]
+[assembly: AssemblyVersion("1.11.*")]
+[assembly: AssemblyFileVersion("1.11.0.0")]
