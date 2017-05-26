@@ -1477,6 +1477,7 @@ namespace MichaelReukauff.Lexer
         internal bool ParseFieldOption()
         {
             var isOpenBracket = false;
+            var isFirst = true;
 
             do
             {
@@ -1487,6 +1488,22 @@ namespace MichaelReukauff.Lexer
                     {
                         AddNewError(Matches[Index - 1].Index + Matches[Index - 1].Length, 1, "Expected identifier.");
                         return false;
+                    }
+                }
+
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    if (Word == ".")
+                    {
+                        if (!IncrementIndex(true))
+                        {
+                            AddNewError("Expected valid option.");
+                            return false;
+                        }
                     }
                 }
 
