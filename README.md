@@ -23,6 +23,8 @@ Errors are shown in the protobuf section of the output pane and in the error pan
 If you have any suggestions, please feel free to add an issue.
 
 Changelog:
+* 1.11.0 - Mai 26, 2017
+  * Support of prefix in option names
 * 1.10.0 - April 5, 2017
   * Support of Visual Studio 2017
 * 1.9.0 - October 29, 2016
