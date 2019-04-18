@@ -209,3 +209,4 @@ $RECYCLE.BIN/
 # Special Folders/Files that have to be in the repository
 # ==============================================================
 !protobuf/protobuf/*.user
+/Protobuf/packages
